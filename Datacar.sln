@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datacar.Server", "Server\Datacar.Server.csproj", "{8A7C4660-9618-464A-9374-5E8DAD3656AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Datacar.Server", "Server\Datacar.Server.csproj", "{8A7C4660-9618-464A-9374-5E8DAD3656AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datacar.Client", "Client\Datacar.Client.csproj", "{AF12524F-F687-4FD6-B20B-6ADFA108E23A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Datacar.Client", "Client\Datacar.Client.csproj", "{AF12524F-F687-4FD6-B20B-6ADFA108E23A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datacar.Shared", "Shared\Datacar.Shared.csproj", "{8B2AB455-006A-464C-AE32-70216A8B9D9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Datacar.Shared", "Shared\Datacar.Shared.csproj", "{8B2AB455-006A-464C-AE32-70216A8B9D9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

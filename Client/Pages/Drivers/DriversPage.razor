@@ -1,9 +1,24 @@
 ﻿@page "/drivers"
 
-<h3>Condutores</h3>
+<h3>Lista de Condutores</h3>
 
 <a class="btn btn-info" href="/drivers/create">Criar condutor</a>
 
-@code {
+<div>
+    
+    <DriversList Drivers="drivers"></DriversList>
+</div>
 
+@code {
+    private List<Drivers> drivers;
+
+    protected override void OnInitialized()
+    {
+        drivers = new List<Drivers>()
+        {
+            new Drivers(){Name="João"},
+            new Drivers(){Name="Pedro"},
+            new Drivers(){Name="Rui"}
+        };
+    }
 }

@@ -9,14 +9,19 @@ namespace Datacar.Shared.Entities
 {
     public class Drivers
     {
-
-        public class Cars
-
-        {
-            //public Guid Id { get; set; }
+            public Guid Id { get; set; }
             [Required]
-            public string Nome { get; set; }
-            
-        }
+            public string Name { get; set; }
+           // [Required]
+            public int EmployeeNum { get; set; }
+            // [Required]
+            public string Job { get; set; }
+            // [Required]
+            public int LicenceNum { get; set; }
+            // [Required]
+            public string GSM { get; set; }
+            // [Required]
+            public string Email { get; set; }
+            public string Comment { get; set; }
     }
 }

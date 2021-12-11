@@ -1,0 +1,28 @@
+﻿@if (Drivers == null)
+{
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+}
+else if (Drivers.Count == 0)
+{
+    <text>There are not records to show</text>
+}
+else
+{
+    @foreach (var driver in Drivers)
+    {
+        <DriversIndividual Driver="driver" DeleteDriver="DeleteDriver"></DriversIndividual>
+    }
+}
+
+@code{
+
+    [Parameter] public List<Drivers> Drivers { get; set; }
+
+    private void DeleteDriver(Drivers driver)
+    {
+        Console.WriteLine($"Condutor {driver.Name} apagado");
+        Drivers.Remove(driver);
+    }
+}

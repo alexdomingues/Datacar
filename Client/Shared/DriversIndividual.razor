@@ -1,0 +1,13 @@
+﻿@*<p>Nome: @((MarkupString)@driver.Name)</p>*@
+<div>
+    <p>Nome: @Driver.Name</p>
+    <div>
+        <button class="btn btn-danger" @onclick="@(()=>DeleteDriver.InvokeAsync(Driver))">Delete</button>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Drivers Driver { get; set; }
+
+    [Parameter] public EventCallback<Drivers> DeleteDriver { get; set; }
+}

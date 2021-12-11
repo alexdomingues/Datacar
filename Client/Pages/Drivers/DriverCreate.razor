@@ -2,14 +2,14 @@
 
 <h3>Criar Condutor</h3>
 
-@*<CondutorForm Condutor="condutor" OnValidSubmit="Create"/>*@
+<DriverForm Driver="driver" OnValidSubmit="Create"></DriverForm>
 
 @code {
-    //private Condutores condutor = new Condutores();
+    public Drivers driver = new Drivers();
 
-    //private void Create()
-    //{
-    //    Console.WriteLine("Condutor criado");
-    //}
+    private void Create()
+    {
+    Console.WriteLine("Condutor criado");
+    }
     
 }
