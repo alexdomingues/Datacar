@@ -1,12 +1,18 @@
 ﻿@page "/drivers"
+@*dependency injection of the class to obtain data*@
+@inject IRepository repository
+
+@*
+@inject SingletonService singleton
+@inject TransientService transient
+*@
 
 <h3>Lista de Condutores</h3>
 
 <a class="btn btn-info" href="/drivers/create">Criar condutor</a>
 
-<div>
-    
-    <DriversList Drivers="drivers"></DriversList>
+<div> 
+    <DriversList Drivers="drivers"/>
 </div>
 
 @code {
@@ -14,11 +20,10 @@
 
     protected override void OnInitialized()
     {
-        drivers = new List<Drivers>()
-        {
-            new Drivers(){Name="João"},
-            new Drivers(){Name="Pedro"},
-            new Drivers(){Name="Rui"}
-        };
+        drivers = repository.GetDrivers();
     }
+
+    //
+    //singleton.Value += 1;
+    //transient.Value += 1
 }

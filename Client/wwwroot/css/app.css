@@ -6,10 +6,6 @@ html, body {
     box-sizing: border-box;
 }
 
-h1 {
-    color: blue;
-}
-
 a, .btn-link {
     color: #0366d6;
 }

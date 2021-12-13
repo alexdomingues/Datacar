@@ -1,0 +1,15 @@
+﻿@page "/cars/create"
+
+<h3>Criar viatura</h3>
+
+<CarForm Car="car" OnValidSubmit="Create" />
+
+@code {
+    private Cars car = new Cars();
+
+    private void Create()
+    {
+        Console.WriteLine("Create method");
+        Console.WriteLine(car.License);
+    }
+}

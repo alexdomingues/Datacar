@@ -1,28 +1,18 @@
-﻿@if (Drivers == null)
-{
-    <div class="spinner-border" role="status">
-        <span class="visually-hidden"></span>
-    </div>
-}
-else if (Drivers.Count == 0)
-{
-    <text>There are not records to show</text>
-}
-else
-{
-    @foreach (var driver in Drivers)
-    {
+﻿<GenericList List="Drivers">
+    <ElementTemplate Context="driver">
         <DriversIndividual Driver="driver" DeleteDriver="DeleteDriver"></DriversIndividual>
-    }
-}
+    </ElementTemplate>
+</GenericList>
 
 @code{
 
     [Parameter] public List<Drivers> Drivers { get; set; }
 
+    //private async Task DeleteDriver(Drivers driver)
     private void DeleteDriver(Drivers driver)
     {
-        Console.WriteLine($"Condutor {driver.Name} apagado");
+        // Modal com confirmação
+        Console.WriteLine($"Condutor apagado");
         Drivers.Remove(driver);
     }
 }

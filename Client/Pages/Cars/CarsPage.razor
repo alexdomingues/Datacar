@@ -1,9 +1,18 @@
 ﻿@page "/cars"
+@inject IRepository repository
 
 <h3>Viaturas</h3>
-
 <a class="btn btn-info" href="/cars/create">Criar viatura</a>
 
+<div>
+    <CarsList Cars="cars"></CarsList>
+</div>
+
 @code {
-    
+    private List<Cars> cars;
+
+    protected override void OnInitialized()
+    {
+        cars = repository.GetCars();
+    }
 }

@@ -9,26 +9,24 @@ namespace Datacar.Shared.Entities
 {
     public class Cars
     {
-            public Guid Id { get; set; }
-            [Required]
-            public string Matricula { get; set; }
-            //[Required]
-            //public DateTime? DataMaricula { get; set; }
-            //[Required]
-            //public string Modelo { get; set; }
-            //[Required]
-            //public string TipoVeiculo { get; set; }
-            //[Required]
-            //public int KmsIniciais { get; set; }
-            //[Required]
-            //public int KmsContratados { get; set; }
-            //[Required]
-            //public DateTime? ValidadeContrato { get; set; }
-            //[Required]
-            //public int IdCondutor { get; set; }
-            //[Required]
-            //public string IdentificadorViaVerde { get; set; }
-            //[Required]
-            //public string Url { get; set; }
+        public int Id { get; set; }
+        [Required]
+        public string License { get; set; }
+        [Required]
+        public DateTime? LicenseDate { get; set; }
+        [Required]
+        public string Model { get; set; }
+        [Required]
+        public string Type { get; set; }
+        [Required]
+        public int InitialKms { get; set; }
+        [Required]
+        public int BuyKms { get; set; }
+        [Required]
+        public DateTime? ContractValidity { get; set; }
+        
+        public int DriverId { get; set; }
+        [Required]
+        public string TollIdentifier { get; set; }
     }
 }

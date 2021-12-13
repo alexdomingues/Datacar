@@ -1,3 +1,4 @@
+using Datacar.Client.Helpers;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,9 +18,23 @@ namespace Datacar.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
+            // to configure services through Dependency injection
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+            // to configure our services
+            ConfigureServices(builder.Services);
+
             await builder.Build().RunAsync();
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            // configure our services in Service.cs and dependency injection
+            services.AddSingleton<SingletonService>();
+            services.AddTransient<TransientService>();
+            //configure the IRepository service and the class that implements the interface
+            //easily change the class to implement other sources,apis, etc
+            services.AddTransient<IRepository, RepositoryInMemory>();
         }
     }
 }

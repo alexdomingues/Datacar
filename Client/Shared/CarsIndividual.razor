@@ -1,0 +1,48 @@
+﻿<div class="row individual-driver-component">
+    <div class="col col-lg-6 col-md-6">
+        <p>Matricula: @Car.License</p>
+    </div>
+    <div class="col col-lg-6 col-md-6">
+        <p>Data da Matrícula: @Car.LicenseDate</p>
+    </div>
+    <div class="col col-lg-6 col-md-6">
+        <p>Modelo: @Car.Model</p>
+    </div>
+    <div class="col col-lg-6 col-md-6">
+        <p>Tipo: @Car.Type</p>
+    </div>
+    <div class="col col-lg-6 col-md-6">
+        <p>Kms Iniciais: @Car.InitialKms</p>
+    </div>
+    <div class="col col-lg-6 col-md-6">
+        <p>Kms Contratados: @Car.BuyKms</p>
+    </div>
+    <div class="col col-lg-6 col-md-6">
+        <p>Validade do Contrato: @Car.ContractValidity</p>
+    </div>
+    <div class="col col-lg-6 col-md-6">
+        <p>Condutor: @Car.DriverId</p>
+    </div>
+    <div class="col col-lg-6 col-md-6">
+        <p>Identificador Via Verde: @Car.TollIdentifier</p>
+    </div>
+    <div class="col col-lg-3 col-md-2">
+        <a href="@carUrl" class="btn btn-warning">Edit</a>
+    </div>
+    <div class="col col-lg-3 col-md-3">
+        <button class="btn btn-danger" @onclick="@(()=>DeleteCar.InvokeAsync(Car))">Delete</button>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Cars Car { get; set; }
+
+    [Parameter] public EventCallback<Cars> DeleteCar { get; set; }
+
+    private string carUrl = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        carUrl = $"/cars/edit/{Car.Id}";
+    }
+}

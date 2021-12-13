@@ -1,0 +1,27 @@
+﻿@*To make a component generic it is necessary to include the following directive:*@
+@typeparam TItem
+
+@if (List == null)
+{
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+}
+else if (List.Count == 0)
+{
+    <text>There are not records to show</text>
+}
+else
+{
+    @foreach (var element in List)
+    {
+        @ElementTemplate(element);
+    }
+}
+
+@code {
+    // to define how to render the TItem  
+    [Parameter] public RenderFragment<TItem> ElementTemplate { get; set; }
+    // to receive any list 
+    [Parameter] public List<TItem> List { get; set; }
+}

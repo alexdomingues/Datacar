@@ -1,0 +1,27 @@
+﻿@page "/drivers/edit/{DriverId:int}"
+
+<h3>Alterar dados do condutor @DriverId</h3>
+
+@if (driver != null)
+{
+    <DriverForm Driver="driver" OnValidSubmit="Edit" />
+}
+
+@code {
+    [Parameter] public int DriverId { get; set; }
+
+    public Drivers driver;
+
+    protected override void OnInitialized()
+    {
+        driver = new Drivers() { Id = DriverId, Name = "Alexandre" };
+    }
+
+    private void Edit()
+    {
+        Console.WriteLine("Edit method");
+        Console.WriteLine($"Id= {driver.Id}");
+        Console.WriteLine($"Matricula = {driver.Name}");
+    }
+}
+

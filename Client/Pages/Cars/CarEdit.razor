@@ -1,0 +1,52 @@
+﻿@page "/cars/edit/{CarId:int}"
+@inject IRepository repository
+
+<h3>Editar viatura</h3>
+
+@if (carToEdit != null)
+{
+    <CarForm Car="carToEdit" OnValidSubmit="Edit" />
+}
+else
+{
+    <p>Car is null</p>
+}
+
+@code {
+
+    [Parameter] public int CarId { get; set; }
+
+    public Cars carToEdit = new Cars();
+
+    private List<Cars> car;
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"car id = {CarId}");
+        car = repository.GetCars().Where(x => x.Id.Equals(CarId)).ToList();
+
+        foreach(var item in typeof(Cars).GetProperties())
+        {
+            Console.WriteLine($"item={item.Name}");
+            //carToEdit. = car[0].
+        }
+
+        carToEdit.Id = car[0].Id;
+        carToEdit.License = car[0].License;
+        carToEdit.LicenseDate = car[0].LicenseDate;
+        carToEdit.Model = car[0].Model;
+        carToEdit.Type = car[0].Type;
+        carToEdit.InitialKms = car[0].InitialKms;
+        carToEdit.BuyKms = car[0].BuyKms;
+        carToEdit.ContractValidity = car[0].ContractValidity;
+        carToEdit.DriverId = car[0].DriverId;
+        carToEdit.TollIdentifier = car[0].TollIdentifier;
+    }
+
+    private void Edit()
+    {
+        Console.WriteLine("Edit method");
+        Console.WriteLine($"Id= {carToEdit.Id}");
+        Console.WriteLine($"Matricula = {carToEdit.License}");
+    }
+}

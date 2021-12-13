@@ -1,0 +1,12 @@
+﻿@page "/driver/{DriverId:int}"
+
+<h3>DriverDetails</h3>
+
+@code {
+    [Parameter] public int DriverId { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"driver id = {DriverId}");
+    }
+}
