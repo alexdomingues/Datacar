@@ -5,14 +5,17 @@
 <a class="btn btn-info" href="/cars/create">Criar viatura</a>
 
 <div>
-    <CarsList Cars="cars"></CarsList>
+    <CarsList Cars="cars" ListType="@listTypeShort"></CarsList>
 </div>
 
 @code {
+    string listTypeShort = ListType.Short.ToString();
+
     private List<Cars> cars;
 
     protected override void OnInitialized()
     {
+        Console.WriteLine($"Enum: {listTypeShort}");
         cars = repository.GetCars();
     }
 }

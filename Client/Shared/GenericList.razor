@@ -20,6 +20,8 @@ else
 }
 
 @code {
+    // to display the type of list
+    [Parameter] public string ListType { get; set; } 
     // to define how to render the TItem  
     [Parameter] public RenderFragment<TItem> ElementTemplate { get; set; }
     // to receive any list 

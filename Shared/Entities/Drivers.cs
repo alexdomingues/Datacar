@@ -9,6 +9,7 @@ namespace Datacar.Shared.Entities
 {
     public class Drivers
     {
+        //TODO:include driver picture
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }

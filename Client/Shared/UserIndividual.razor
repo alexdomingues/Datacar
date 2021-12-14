@@ -1,0 +1,44 @@
+﻿@if (ListType == "Long")
+{
+    <div class="row individual-driver-component">
+        <div class="col col-lg-6 col-md-6">
+            <p>Primeiro Nome: @User.FirstName</p>
+        </div>
+        <div class="col col-lg-3 col-md-3">
+            <a href="@userUrl" class="btn btn-warning">Edit</a>
+        </div>
+        <div class="col col-lg-3 col-md-3">
+            <button class="btn btn-danger" @onclick="@(()=>DeleteUser.InvokeAsync(User))">Delete</button>
+        </div>
+    </div>
+}
+else if (ListType == "Short")
+{
+    <div class="row individual-driver-component">
+        <div class="col col-lg-2 col-md-2">
+            <p>Primeiro Nome: @User.FirstName</p>
+        </div>
+        <div class="col col-lg-1 col-md-1">
+            <a href="@userUrl" class="btn btn-warning">Edit</a>
+        </div>
+        <div class="col col-lg-1 col-md-1">
+            <button class="btn btn-danger" @onclick="@(()=>DeleteUser.InvokeAsync(User))">Delete</button>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter] public Users User { get; set; }
+
+    [Parameter] public string ListType { get; set; }
+
+    [Parameter] public EventCallback<Users> DeleteUser { get; set; }
+
+    private string userUrl = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        userUrl = $"/users/edit/{User.Id}";
+    }
+}

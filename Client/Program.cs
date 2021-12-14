@@ -1,4 +1,5 @@
 using Datacar.Client.Helpers;
+using Datacar.Client.Repository;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +36,8 @@ namespace Datacar.Client
             //configure the IRepository service and the class that implements the interface
             //easily change the class to implement other sources,apis, etc
             services.AddTransient<IRepository, RepositoryInMemory>();
+            services.AddScoped<IHttpService, HTTPService>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
         }
     }
 }

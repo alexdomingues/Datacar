@@ -1,0 +1,25 @@
+﻿@page "/users"
+@inject IRepository repository
+
+
+<h3>Utilizadores</h3>
+
+<a class="btn btn-info" href="/users/create">Criar utilizador</a>
+
+<div>
+    <UsersList Users="users" ListType="@listTypeShort"></UsersList>
+</div>
+
+@code {
+    string listTypeShort = ListType.Short.ToString();
+
+    private List<Users> users;
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"Enum: {listTypeShort}");
+        //users = repository.GetUsers();
+    }
+}
+
+

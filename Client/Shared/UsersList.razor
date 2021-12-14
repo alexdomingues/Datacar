@@ -1,0 +1,24 @@
+﻿<GenericList List="Users">
+    <ElementTemplate Context="user">
+        <UserIndividual User="user" DeleteUser="DeleteUser" ListType="@ListType"></UserIndividual>
+    </ElementTemplate>
+</GenericList>
+
+@code{
+    [Parameter] public string ListType { get; set; }
+
+    [Parameter] public List<Users> Users { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"Userlist List type = {ListType}");
+    }
+
+    //private async Task DeleteDriver(Drivers driver)
+    private void DeleteUser(Users user)
+    {
+        // Modal com confirmação
+        Console.WriteLine($"Utilizador apagada");
+        Users.Remove(user);
+    }
+}

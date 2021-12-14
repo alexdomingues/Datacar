@@ -1,12 +1,18 @@
 ﻿<GenericList List="Cars">
     <ElementTemplate Context="car">
-        <CarsIndividual Car="car" DeleteCar="DeleteCar"></CarsIndividual>
+        <CarsIndividual Car="car" DeleteCar="DeleteCar" ListType="@ListType"></CarsIndividual>
     </ElementTemplate>
 </GenericList>
 
 @code{
+    [Parameter] public string ListType { get; set; }
 
     [Parameter] public List<Cars> Cars { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"Carslist List type = {ListType}");
+    }
 
     //private async Task DeleteDriver(Drivers driver)
     private void DeleteCar(Cars car)

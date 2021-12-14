@@ -1,0 +1,53 @@
+﻿<EditForm Model="User" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>Primeiro Nome</label>
+        <InputText class="form-control" @bind-Value="@User.FirstName" />
+        <ValidationMessage For="@(()=>User.FirstName)" />
+        <label>Último Nome</label>
+        <InputText class="form-control" @bind-Value="@User.LastName" />
+        <ValidationMessage For="@(()=>User.LastName)" />
+        <label>Endereço</label>
+        <InputText class="form-control" @bind-Value="@User.Address" />
+        <ValidationMessage For="@(()=>User.Address)" />
+        <label>Código Postal</label>
+        <InputText class="form-control" @bind-Value="@User.PostalCode" />
+        <ValidationMessage For="@(()=>User.PostalCode)" />
+        <label>Localidade</label>
+        <InputText class="form-control" @bind-Value="@User.Local" />
+        <ValidationMessage For="@(()=>User.Local)" />
+        <label>Idioma</label>
+        <InputText class="form-control" @bind-Value="@User.Language" />
+        <ValidationMessage For="@(()=>User.Language)" />
+        <label>Data de Nascimento</label>
+        <InputDate class="form-control" @bind-Value="@User.BornDate" />
+        <ValidationMessage For="@(()=>User.BornDate)" />
+        <label>Número de Telefone</label>
+        <InputText class="form-control" @bind-Value="@User.PhoneNumber" />
+        <ValidationMessage For="@(()=>User.PhoneNumber)" />
+        <label>Número de Telemóvel</label>
+        <InputText class="form-control" @bind-Value="@User.MobilePhoneNumber" />
+        <ValidationMessage For="@(()=>User.MobilePhoneNumber)" />
+        <label>Email</label>
+        <InputText class="form-control" @bind-Value="@User.Email" />
+        <ValidationMessage For="@(()=>User.Email)" />
+        <label>Observações</label>
+        <InputTextArea class="form-control" @bind-Value="@User.Comment" />
+        <ValidationMessage For="@(()=>User.Comment)" />
+        <label>Nível de Acesso</label>
+        <InputNumber class="form-control" @bind-Value="@User.AccessLevel" />
+        <ValidationMessage For="@(()=>User.AccessLevel)" />
+        <label>Data de Validade</label>
+        <InputDate class="form-control" @bind-Value="@User.Validity" />
+        <ValidationMessage For="@(()=>User.Validity)" />
+    </div>
+    <button class="btn btn-success" type="submit">Gravar</button>
+</EditForm>
+
+@code {
+
+    [Parameter] public Users User { get; set; }
+
+    // Cascading parameter to invoke Create or Edit method
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+}

@@ -1,0 +1,26 @@
+﻿<div>
+    <label>@Label</label>
+    <div>
+        <InputFile accept=".jpg,.png,.jpeg" OnChange="OnChange"></InputFile>
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter] public string Label { get; set; }
+
+    private string imageBase64;
+
+    async Task OnChange(InputFileChangeEventArgs e)
+    {
+        var imagesFiles = e.GetMultipleFiles();
+
+        foreach (var imageFile in imagesFiles)
+        {
+            var buffer = new byte[imageFile.Size];
+            await imageFile.OpenReadStream().ReadAsync(buffer);
+            imageBase64 = Convert.ToBase64String(buffer);
+        }
+    }
+}

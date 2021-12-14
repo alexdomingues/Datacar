@@ -1,0 +1,29 @@
+﻿@page "/users/create"
+@inject IUsersRepository usersRespository
+@inject NavigationManager navigationManager
+
+<h3>Novo utilizador</h3>
+
+<div>
+    <UserForm User=user OnValidSubmit="Create"></UserForm>
+</div>
+
+@code {
+    private Users user = new Users();
+
+    private async Task Create()
+    {
+        Console.WriteLine("Create method");
+        try
+        {
+            await usersRespository.CreateUser(user);
+            navigationManager.NavigateTo("users");
+        }
+        catch(Exception ex)
+        {
+            // ..
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+}

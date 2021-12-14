@@ -23,8 +23,7 @@ namespace Datacar.Shared.Entities
         [Required]
         public int BuyKms { get; set; }
         [Required]
-        public DateTime? ContractValidity { get; set; }
-        
+        public DateTime? ContractValidity { get; set; }   
         public int DriverId { get; set; }
         [Required]
         public string TollIdentifier { get; set; }

@@ -1,41 +1,67 @@
-﻿<div class="row individual-driver-component">
-    <div class="col col-lg-6 col-md-6">
-        <p>Matricula: @Car.License</p>
+﻿@if (ListType == "Long")
+{
+    <div class="row individual-driver-component">
+        <div class="col col-lg-6 col-md-6">
+            <p>Matricula: @Car.License</p>
+        </div>
+        <div class="col col-lg-6 col-md-6">
+            <p>Data da Matrícula: @Car.LicenseDate</p>
+        </div>
+        <div class="col col-lg-6 col-md-6">
+            <p>Modelo: @Car.Model</p>
+        </div>
+        <div class="col col-lg-6 col-md-6">
+            <p>Tipo: @Car.Type</p>
+        </div>
+        <div class="col col-lg-6 col-md-6">
+            <p>Kms Iniciais: @Car.InitialKms</p>
+        </div>
+        <div class="col col-lg-6 col-md-6">
+            <p>Kms Contratados: @Car.BuyKms</p>
+        </div>
+        <div class="col col-lg-6 col-md-6">
+            <p>Validade do Contrato: @Car.ContractValidity</p>
+        </div>
+        <div class="col col-lg-6 col-md-6">
+            <p>Condutor: @Car.DriverId</p>
+        </div>
+        <div class="col col-lg-6 col-md-6">
+            <p>Identificador Via Verde: @Car.TollIdentifier</p>
+        </div>
+        <div class="col col-lg-3 col-md-3">
+            <a href="@carUrl" class="btn btn-warning">Edit</a>
+        </div>
+        <div class="col col-lg-3 col-md-3">
+            <button class="btn btn-danger" @onclick="@(()=>DeleteCar.InvokeAsync(Car))">Delete</button>
+        </div>
     </div>
-    <div class="col col-lg-6 col-md-6">
-        <p>Data da Matrícula: @Car.LicenseDate</p>
+}
+else if (ListType == "Short")
+{
+    <div class="row individual-driver-component">
+        <div class="col col-lg-2 col-md-2">
+            <p>Matricula: @Car.License</p>
+        </div>
+        <div class="col col-lg-2 col-md-2">
+            <p>Modelo: @Car.Model</p>
+        </div>
+        <div class="col col-lg-2 col-md-2">
+            <p>Tipo: @Car.Type</p>
+        </div>
+        <div class="col col-lg-1 col-md-1">
+            <a href="@carUrl" class="btn btn-warning">Edit</a>
+        </div>
+        <div class="col col-lg-1 col-md-1">
+            <button class="btn btn-danger" @onclick="@(()=>DeleteCar.InvokeAsync(Car))">Delete</button>
+        </div>
     </div>
-    <div class="col col-lg-6 col-md-6">
-        <p>Modelo: @Car.Model</p>
-    </div>
-    <div class="col col-lg-6 col-md-6">
-        <p>Tipo: @Car.Type</p>
-    </div>
-    <div class="col col-lg-6 col-md-6">
-        <p>Kms Iniciais: @Car.InitialKms</p>
-    </div>
-    <div class="col col-lg-6 col-md-6">
-        <p>Kms Contratados: @Car.BuyKms</p>
-    </div>
-    <div class="col col-lg-6 col-md-6">
-        <p>Validade do Contrato: @Car.ContractValidity</p>
-    </div>
-    <div class="col col-lg-6 col-md-6">
-        <p>Condutor: @Car.DriverId</p>
-    </div>
-    <div class="col col-lg-6 col-md-6">
-        <p>Identificador Via Verde: @Car.TollIdentifier</p>
-    </div>
-    <div class="col col-lg-3 col-md-2">
-        <a href="@carUrl" class="btn btn-warning">Edit</a>
-    </div>
-    <div class="col col-lg-3 col-md-3">
-        <button class="btn btn-danger" @onclick="@(()=>DeleteCar.InvokeAsync(Car))">Delete</button>
-    </div>
-</div>
+}
 
 @code {
+
     [Parameter] public Cars Car { get; set; }
+
+    [Parameter] public string ListType { get; set; }
 
     [Parameter] public EventCallback<Cars> DeleteCar { get; set; }
 
