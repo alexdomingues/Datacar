@@ -23,9 +23,8 @@ namespace Datacar.Client.Helpers
 
             if (responseHTTP.IsSuccessStatusCode)
             {
-                //var response = await Deserialize<T>(responseHTTP, defaultJsonSerializerOptions);
-                //return new HTTPResponseWrapper<T>(response, true, responseHTTP);
-                return new HTTPResponseWrapper<T>(default, false, responseHTTP);
+                var response = JsonSerializer.Deserialize<T>(await responseHTTP.Content.ReadAsStringAsync(), defaultJsonSerializerOptions);
+                return new HTTPResponseWrapper<T>(response, true, responseHTTP);
             }
             else
             {

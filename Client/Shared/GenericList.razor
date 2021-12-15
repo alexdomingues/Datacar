@@ -13,17 +13,26 @@ else if (List.Count == 0)
 }
 else
 {
-    @foreach (var element in List)
+    @if (ElementTemplate != null)
     {
-        @ElementTemplate(element);
+        @foreach (var element in List)
+        {
+            @ElementTemplate(element)
+            
+        }
+    }
+    else
+    {
+        @WholeListTemplate
     }
 }
 
 @code {
     // to display the type of list
-    [Parameter] public string ListType { get; set; } 
-    // to define how to render the TItem  
+    [Parameter] public string ListType { get; set; }
+    // to define how to render the TItem
     [Parameter] public RenderFragment<TItem> ElementTemplate { get; set; }
-    // to receive any list 
+    [Parameter] public RenderFragment WholeListTemplate { get; set; }
+    // to receive any list
     [Parameter] public List<TItem> List { get; set; }
 }

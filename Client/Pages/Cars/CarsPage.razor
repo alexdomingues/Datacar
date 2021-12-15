@@ -4,25 +4,50 @@
 <h3>Viaturas</h3>
 <a class="btn btn-info" href="/cars/create">Criar viatura</a>
 
+@*<CarsList Cars="cars" ListType="@listTypeShort"></CarsList>*@
+
 <div>
-    <CarsList Cars="cars" ListType="@listTypeShort"></CarsList>
+    <GenericList List="cars">
+        <WholeListTemplate>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                    <th>
+                    </th>
+                    <th>Matrícula</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in cars)
+                    {
+                        <tr>
+                            <td>
+                                <a class="btn btn-success">Edit</a>
+                                <button class="btn btn-danger">Delete</button>
+                            </td>
+                            <td>@item.License</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </WholeListTemplate>
+    </GenericList>
 </div>
 
 @code {
     string listTypeShort = ListType.Short.ToString();
 
-    private List<Cars> cars;
+    List<Cars> cars;
 
-    protected async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         try
         {
-            Console.WriteLine($"Enum: {listTypeShort}");
             cars = await carsRepository.GetCars();
         }
         catch (Exception ex)
         {
-            //...
+            Console.WriteLine(ex.Message);
         }
     }
 }

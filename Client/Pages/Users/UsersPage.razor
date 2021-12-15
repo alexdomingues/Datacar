@@ -1,5 +1,5 @@
 ﻿@page "/users"
-@inject IRepository repository
+@inject IUsersRepository usersRepository
 
 
 <h3>Utilizadores</h3>
@@ -13,12 +13,18 @@
 @code {
     string listTypeShort = ListType.Short.ToString();
 
-    private List<Users> users;
+    List<Users> users;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine($"Enum: {listTypeShort}");
-        //users = repository.GetUsers();
+        try
+        {
+            users = await usersRepository.GetUsers();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }
 

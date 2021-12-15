@@ -1,6 +1,7 @@
 ﻿using Datacar.Client.Helpers;
 using Datacar.Shared.Entities;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Datacar.Client.Repository
@@ -16,6 +17,15 @@ namespace Datacar.Client.Repository
             this.httpService = httpService;
         }
 
+        public async Task<List<Drivers>> GetDrivers()
+        {
+            var response = await httpService.Get<List<Drivers>>(url);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
         public async Task CreateDriver(Drivers driver)
         {
             var response = await httpService.Post(url, driver);

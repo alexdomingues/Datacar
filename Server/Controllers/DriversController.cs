@@ -1,7 +1,9 @@
 ﻿using Datacar.Server.Helpers;
 using Datacar.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Datacar.Server.Controllers
@@ -17,6 +19,12 @@ namespace Datacar.Server.Controllers
         {
             this.context = context;
             this.fileStorageService = fileStorageService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Drivers>>> Get()
+        {
+            return await context.Drivers.ToListAsync();
         }
 
         [HttpPost]

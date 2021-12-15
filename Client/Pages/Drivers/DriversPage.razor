@@ -1,6 +1,5 @@
 ﻿@page "/drivers"
-@*dependency injection of the class to obtain data*@
-@inject IRepository repository
+@inject IDriversRepository driversRepository
 
 @*
 @inject SingletonService singleton
@@ -15,12 +14,46 @@
     <DriversList Drivers="drivers"/>
 </div>
 
+@*<div>
+    <GenericList List="cars">
+        <WholeListTemplate>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                    <th>
+                    </th>
+                    <th>Matrícula</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in cars)
+                    {
+                        <tr>
+                            <td>
+                                <a class="btn btn-success">Edit</a>
+                                <button class="btn btn-danger">Delete</button>
+                            </td>
+                            <td>@item.License</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </WholeListTemplate>
+    </GenericList>
+</div>*@
 @code {
-    private List<Drivers> drivers;
+    List<Drivers> drivers;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        drivers = repository.GetDrivers();
+        try
+        {
+            drivers = await driversRepository.GetDrivers();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 
     //

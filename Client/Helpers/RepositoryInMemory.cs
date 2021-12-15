@@ -30,5 +30,22 @@ namespace Datacar.Client.Helpers
             };
         }
 
+        public Cars GetCar(int carId)
+        {
+            return new Cars()
+            {
+                Id = 1,
+                License = "90-CV-46",
+                LicenseDate = DateTime.Now,
+                Model = "BMW",
+                Type = "116i",
+                InitialKms = 0,
+                BuyKms = 15000,
+                ContractValidity = DateTime.Now,
+                DriverId = 1,
+                TollIdentifier = "123456"
+
+            };
+        }
     }
 }

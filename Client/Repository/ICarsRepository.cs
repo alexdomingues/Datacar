@@ -6,7 +6,8 @@ namespace Datacar.Client.Repository
 {
     public interface ICarsRepository
     {
-        Task CreateCar(Cars car);
         Task<List<Cars>> GetCars();
+        Task CreateCar(Cars car);
+        
     }
 }
