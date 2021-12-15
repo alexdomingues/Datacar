@@ -1,3 +1,4 @@
+using Datacar.Server.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,6 +26,7 @@ namespace Datacar.Server
         {
             //configure the entity framework DB and connection strings
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IFileStorageService, AzureStorageService>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

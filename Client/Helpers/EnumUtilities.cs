@@ -1,5 +1,8 @@
-﻿public enum ListType { Short, Long };
+﻿namespace Datacar.Client.Helpers
+{
+    public enum ListType { Short, Long };
 
-public enum Language { Português, Inglês };
+    public enum Language { Português, Inglês };
 
-public enum AccessLevel { Guest, User, Admin };
+    public enum AccessLevel { Guest, User, Admin };
+}
