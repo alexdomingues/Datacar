@@ -1,5 +1,5 @@
 ﻿@page "/cars"
-@inject IRepository repository
+@inject ICarsRepository carsRepository
 
 <h3>Viaturas</h3>
 <a class="btn btn-info" href="/cars/create">Criar viatura</a>
@@ -13,9 +13,16 @@
 
     private List<Cars> cars;
 
-    protected override void OnInitialized()
+    protected async Task OnInitializedAsync()
     {
-        Console.WriteLine($"Enum: {listTypeShort}");
-        cars = repository.GetCars();
+        try
+        {
+            Console.WriteLine($"Enum: {listTypeShort}");
+            cars = await carsRepository.GetCars();
+        }
+        catch (Exception ex)
+        {
+            //...
+        }
     }
 }

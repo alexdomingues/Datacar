@@ -1,4 +1,6 @@
 ﻿@page "/cars/create"
+@inject ICarsRepository carsRepository
+@inject NavigationManager navigationManager
 
 <h3>Criar viatura</h3>
 
@@ -7,9 +9,17 @@
 @code {
     private Cars car = new Cars();
 
-    private void Create()
+    private async Task Create()
     {
-        Console.WriteLine("Create method");
-        Console.WriteLine(car.License);
+        try
+        {
+            await carsRepository.CreateCar(car);
+            Console.WriteLine("Viatura criada");  
+            navigationManager.NavigateTo("cars");
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }

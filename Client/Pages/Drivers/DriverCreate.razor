@@ -1,4 +1,6 @@
 ﻿@page "/drivers/create"
+@inject IDriversRepository driversRepository
+@inject NavigationManager navigationManager
 
 <h3>Criar Condutor</h3>
 
@@ -7,8 +9,17 @@
 @code {
     public Drivers driver = new Drivers();
 
-    private void Create()
+    private async Task Create()
     {
-        Console.WriteLine("Condutor criado");        
+        try
+        {
+            await driversRepository.CreateDriver(driver);
+            Console.WriteLine("Condutor criado");  
+            navigationManager.NavigateTo("drivers");
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }

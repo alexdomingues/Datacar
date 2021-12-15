@@ -5,20 +5,20 @@ using System.Threading.Tasks;
 
 namespace Datacar.Client.Repository
 {
-    public class UsersRepository: IUsersRepository
+    public class DriversRepository: IDriversRepository
     {
         private readonly IHttpService httpService;
         //endpoint where the controller is located
-        public string url = "api/users";
+        public string url = "api/drivers";
 
-        public UsersRepository(IHttpService httpService)
+        public DriversRepository(IHttpService httpService)
         {
             this.httpService = httpService;
         }
 
-        public async Task CreateUser(Users user)
+        public async Task CreateDriver(Drivers driver)
         {
-            var response = await httpService.Post(url, user);
+            var response = await httpService.Post(url, driver);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());

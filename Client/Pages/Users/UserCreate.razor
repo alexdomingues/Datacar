@@ -1,5 +1,5 @@
 ﻿@page "/users/create"
-@inject IUsersRepository usersRespository
+@inject IUsersRepository usersRepository
 @inject NavigationManager navigationManager
 
 <h3>Novo utilizador</h3>
@@ -13,15 +13,14 @@
 
     private async Task Create()
     {
-        Console.WriteLine("Create method");
         try
         {
-            await usersRespository.CreateUser(user);
+            await usersRepository.CreateUser(user);
+            Console.WriteLine("User created");
             navigationManager.NavigateTo("users");
         }
         catch(Exception ex)
         {
-            // ..
             Console.WriteLine(ex.Message);
         }
     }

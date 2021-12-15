@@ -38,6 +38,8 @@ namespace Datacar.Client
             services.AddTransient<IRepository, RepositoryInMemory>();
             services.AddScoped<IHttpService, HTTPService>();
             services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IDriversRepository, DriversRepository>();
+            services.AddScoped<ICarsRepository, CarsRepository>();
         }
     }
 }

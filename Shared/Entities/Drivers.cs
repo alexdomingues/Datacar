@@ -41,7 +41,6 @@ namespace Datacar.Shared.Entities
         //        }
         //    }
         //}
-
         public string Photo { get; set; }
     }
 }
