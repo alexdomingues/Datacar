@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using Microsoft.Extensions.Logging;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -22,8 +23,8 @@ namespace Datacar.Client.Helpers
             var responseHTTP = await httpClient.GetAsync(url);
 
             if (responseHTTP.IsSuccessStatusCode)
-            {
-                var response = JsonSerializer.Deserialize<T>(await responseHTTP.Content.ReadAsStringAsync(), defaultJsonSerializerOptions);
+            {    
+                var response = await Deserialize<T>(responseHTTP, defaultJsonSerializerOptions);
                 return new HTTPResponseWrapper<T>(response, true, responseHTTP);
             }
             else
@@ -38,6 +39,21 @@ namespace Datacar.Client.Helpers
             var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync(url, stringContent);
             return new HTTPResponseWrapper<object>(null, response.IsSuccessStatusCode, response);
+        }
+
+        public async Task<HTTPResponseWrapper<object>> Put<T>(string url, T data)
+        {
+            var dataJson = JsonSerializer.Serialize(data);
+            var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
+            var response = await httpClient.PutAsync(url, stringContent);
+            return new HTTPResponseWrapper<object>(null, response.IsSuccessStatusCode, response);
+        }
+
+        private async Task<T> Deserialize<T>(HttpResponseMessage httpResponse, JsonSerializerOptions options)
+        {
+
+            var responseString = await httpResponse.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(responseString, options);
         }
     }
 }

@@ -17,6 +17,17 @@ namespace Datacar.Client.Repository
             this.httpService = httpService;
         }
 
+        public async Task<Users> GetUserById(int userId)
+        {
+            var response = await httpService.Get<Users>($"{url}/edit/{userId}");
+
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+
         public async Task<List<Users>> GetUsers()
         {
             var response = await httpService.Get<List<Users>>(url);

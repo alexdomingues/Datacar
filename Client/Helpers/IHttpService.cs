@@ -7,5 +7,6 @@ namespace Datacar.Client.Helpers
     {
         Task<HTTPResponseWrapper<T>> Get<T>(string url);
         Task<HTTPResponseWrapper<object>> Post<T>(string url, T data);
+        Task<HTTPResponseWrapper<object>> Put<T>(string url, T data);
     }
 }

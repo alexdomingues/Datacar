@@ -1,27 +1,30 @@
 ﻿@page "/drivers/edit/{DriverId:int}"
+@inject IDriversRepository driversRepository
+@inject ILogger<Drivers> logger
 
-<h3>Alterar dados do condutor @DriverId</h3>
-
-@if (driver != null)
-{
-    <DriverForm Driver="driver" OnValidSubmit="Edit" />
-}
+<h3>Alterar dados do condutor</h3>
 
 @code {
     [Parameter] public int DriverId { get; set; }
 
-    public Drivers driver;
+    public Drivers driverInfo;
 
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
-        driver = new Drivers() { Id = DriverId, Name = "Alexandre" };
+        try
+        {
+            logger.LogInformation("GetDriverById");
+            driverInfo = await driversRepository.GetDriverById(DriverId);
+        }
+        catch (Exception ex)
+        {
+            logger.LogCritical(ex.ToString());
+        }
     }
 
     private void Edit()
     {
         Console.WriteLine("Edit method");
-        Console.WriteLine($"Id= {driver.Id}");
-        Console.WriteLine($"Matricula = {driver.Name}");
     }
 }
 

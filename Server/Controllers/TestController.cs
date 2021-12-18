@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Datacar.Server.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class UsersController: ControllerBase
+    [ApiController]
+    public class TestController : ControllerBase
     {
         private readonly ApplicationDBContext context;
-        public UsersController(ApplicationDBContext context)
+        public TestController(ApplicationDBContext context)
         {
             this.context = context;
         }
-
-        [HttpGet("{userId}")]
-        public async Task<ActionResult<Users>> Get(int userId)
+        
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<TestEntity>> Get(int Id)
         {
-            var userInfo = await context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            var userInfo = await context.TestEntities.FirstOrDefaultAsync(x => x.Id == Id);
             if (userInfo == null)
             {
                 return NotFound();
@@ -29,17 +29,17 @@ namespace Datacar.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Users>>> Get()
+        public async Task<ActionResult<List<TestEntity>>> Get()
         {
-            return await context.Users.ToListAsync();
+            return await context.TestEntities.ToListAsync();
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post(Users user)
+        public async Task<ActionResult<int>> Post(TestEntity testEntity)
         {
-            context.Add(user);
+            context.Add(testEntity);
             await context.SaveChangesAsync();
-            return user.Id;
+            return testEntity.Id;
         }
     }
 }

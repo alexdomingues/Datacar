@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Datacar.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class DriversController
+    public class DriversController : ControllerBase
     {
         private readonly ApplicationDBContext context;
         private readonly IFileStorageService fileStorageService;
@@ -21,10 +22,27 @@ namespace Datacar.Server.Controllers
             this.fileStorageService = fileStorageService;
         }
 
+        [HttpGet("{driverId}")]
+        public async Task<ActionResult<Drivers>> Get(int driverId)
+        {
+            var driverinfo = await context.Drivers.FirstOrDefaultAsync(x => x.Id == driverId);
+            if (driverinfo == null)
+            {
+                return NotFound();
+            }
+
+            return driverinfo;
+        }
+
         [HttpGet]
         public async Task<ActionResult<List<Drivers>>> Get()
         {
-            return await context.Drivers.ToListAsync();
+            var listDrivers = await context.Drivers.ToListAsync();
+            if (listDrivers == null)
+            {
+                return NotFound();
+            }
+            return listDrivers;
         }
 
         [HttpPost]
@@ -39,5 +57,14 @@ namespace Datacar.Server.Controllers
             await context.SaveChangesAsync();
             return driver.Id;
         }
+
+        [HttpPut]
+        public async Task<ActionResult> Put(Drivers driver)
+        {
+            context.Attach(driver).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
     }
 }

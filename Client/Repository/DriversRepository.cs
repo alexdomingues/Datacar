@@ -17,6 +17,17 @@ namespace Datacar.Client.Repository
             this.httpService = httpService;
         }
 
+        public async Task<Drivers> GetDriverById(int driverId)
+        {
+            var response = await httpService.Get<Drivers>($"{url}/edit/{driverId}");
+
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+
         public async Task<List<Drivers>> GetDrivers()
         {
             var response = await httpService.Get<List<Drivers>>(url);
@@ -29,6 +40,15 @@ namespace Datacar.Client.Repository
         public async Task CreateDriver(Drivers driver)
         {
             var response = await httpService.Post(url, driver);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+        }
+
+        public async Task UpdateDriver(Drivers driver)
+        {
+            var response = await httpService.Put(url, driver);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());

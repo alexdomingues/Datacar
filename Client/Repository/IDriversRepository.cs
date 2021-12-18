@@ -8,5 +8,7 @@ namespace Datacar.Client.Repository
     {
         Task CreateDriver(Drivers driver);
         Task<List<Drivers>> GetDrivers();
+        Task<Drivers> GetDriverById(int driverId);
+        Task UpdateDriver(Drivers driver);
     }
 }

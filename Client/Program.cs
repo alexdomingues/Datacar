@@ -14,13 +14,21 @@ namespace Datacar.Client
 {
     public class Program
     {
+        private static WebServiceLoggerProvider LoggerProvider;
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            var Client = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
+
+            builder.Logging.SetMinimumLevel(LogLevel.Information);
+
+            LoggerProvider = new WebServiceLoggerProvider(Client);
+            builder.Logging.AddProvider(LoggerProvider);
+
             builder.RootComponents.Add<App>("#app");
 
             // to configure services through Dependency injection
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => Client);
 
             // to configure our services
             ConfigureServices(builder.Services);
@@ -35,7 +43,6 @@ namespace Datacar.Client
             services.AddTransient<TransientService>();
             //configure the IRepository service and the class that implements the interface
             //easily change the class to implement other sources,apis, etc
-            services.AddTransient<IRepository, RepositoryInMemory>();
             services.AddScoped<IHttpService, HTTPService>();
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IDriversRepository, DriversRepository>();

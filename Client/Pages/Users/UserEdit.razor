@@ -1,0 +1,25 @@
+﻿@page "/users/edit/{UserId:int}"
+@inject IUsersRepository usersRepository
+
+<h3>Alterar dados do users</h3>
+
+@code {
+    [Parameter] public int UserId { get; set; }
+
+    public Users userInfo;
+
+    protected async override Task OnInitializedAsync()
+    {
+        userInfo = await usersRepository.GetUserById(UserId);
+    }
+
+    private void Edit()
+    {
+        Console.WriteLine("Edit method");
+        Console.WriteLine($"Id= {userInfo.Id}");
+        Console.WriteLine($"Matricula = {userInfo.FirstName}");
+    }
+}
+
+
+
