@@ -45,5 +45,14 @@ namespace Datacar.Client.Repository
                 throw new ApplicationException(await response.GetBody());
             }
         }
+
+        public async Task DeleteUser(int userId)
+        {
+            var response = await httpService.Delete($"{url}/{userId}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+        }
     }
 }

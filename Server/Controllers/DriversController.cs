@@ -26,6 +26,7 @@ namespace Datacar.Server.Controllers
         public async Task<ActionResult<Drivers>> Get(int driverId)
         {
             var driverinfo = await context.Drivers.FirstOrDefaultAsync(x => x.Id == driverId);
+
             if (driverinfo == null)
             {
                 return NotFound();
@@ -66,5 +67,17 @@ namespace Datacar.Server.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var driver = await context.Drivers.FirstOrDefaultAsync(x => x.Id == id);
+            if (driver == null)
+            {
+                return NotFound();
+            }
+            context.Remove(driver);
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

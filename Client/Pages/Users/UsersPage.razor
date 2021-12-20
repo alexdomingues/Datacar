@@ -1,18 +1,48 @@
 ﻿@page "/users"
 @inject IUsersRepository usersRepository
+@inject ILogger<Users> logger
 
-<div class="container">
+<div class="main-page-container">
     <div class="row main-page-header">
-        <div class="col col-lg-8 col-md-8">
-            <h3>Utilizadores</h3>
+        <div class="col col-lg-10 col-md-10">
+            <main-page-title>Utilizadores</main-page-title>
         </div>
-        <div class="col col-lg-4 col-md-8">
+        <div class="col col-lg-2 col-md-2">
             <a class="btn btn-info" href="/users/create">Criar utilizador</a>
         </div>
     </div>
 </div>
-<div class="main-list">
+
+@*<div class="main-list">
     <UsersList Users="users" ListType="@listTypeShort"></UsersList>
+    </div>*@
+
+<div class="main-list">
+    <GenericList List="users">
+        <WholeListTemplate>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                        </th>
+                        <th>Nome</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in users)
+                    {
+                        <tr>
+                            <td>
+                                <a class="btn btn-success">Edit</a>
+                                <button class="btn btn-danger" @onclick="@(()=>DeleteUser(item.Id))">Delete</button>
+                            </td>
+                            <td>@item.FirstName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </WholeListTemplate>
+    </GenericList>
 </div>
 
 @code {
@@ -29,6 +59,19 @@
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+        }
+    }
+
+    private async Task DeleteUser(int Id)
+    {
+        try
+        {
+            await usersRepository.DeleteUser(Id);
+            users = await usersRepository.GetUsers();
+        }
+        catch(Exception ex)
+        {
+            logger.LogError($"{LogLevel.Error}:{ex.ToString()}");
         }
     }
 }

@@ -54,5 +54,14 @@ namespace Datacar.Client.Repository
                 throw new ApplicationException(await response.GetBody());
             }
         }
+
+        public async Task DeleteDriver(int driverId)
+        {
+            var response = await httpService.Delete($"{url}/{driverId}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+        }
     }
 }

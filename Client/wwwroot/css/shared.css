@@ -4,9 +4,21 @@
     margin-bottom: 10px;
     text-align: center;
 }
-¨/*body main page where*/
-.main-page-header{
+/*body main page where*/
+.main-page-header {
     margin-top: 32px;
+}
+
+main-page-title {
+    margin-bottom: .5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    font-size: 1.75rem;
+    color: blue;
+}
+
+.main-page-container {
+    margin: 0px;
 }
 
 .main-list {

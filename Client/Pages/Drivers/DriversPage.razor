@@ -6,10 +6,10 @@
     @inject SingletonService singleton
     @inject TransientService transient
 *@
-<div class="container">
+<div class="main-page-container">
     <div class="row main-page-header">
         <div class="col col-lg-8 col-md-8">
-            <h3>Lista de Condutores</h3>
+            <main-page-title>Lista de Condutores</main-page-title>
         </div>
         <div class="col col-lg-4 col-md-8">
             <a class="btn btn-info" href="/drivers/create">Criar condutor</a>
@@ -56,14 +56,13 @@
         {
             logger.LogInformation("Get List of Drivers");
             drivers = await driversRepository.GetDrivers();
-            
+
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
     }
-
     //
     //singleton.Value += 1;
     //transient.Value += 1

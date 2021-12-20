@@ -1,10 +1,11 @@
 ﻿@page "/cars"
 @inject ICarsRepository carsRepository
+@inject ILogger<Cars> logger
 
-<div class="container">
+<div class="main-page-container">
     <div class="row main-page-header">
         <div class="col col-lg-8 col-md-8">
-            <h3>Viaturas</h3>
+            <main-page-title>Viaturas</main-page-title>
         </div>
         <div class="col col-lg-4 col-md-8">
             <a class="btn btn-info" href="/cars/create">Criar viatura</a>
@@ -31,7 +32,7 @@
                         <tr>
                             <td>
                                 <a class="btn btn-success">Edit</a>
-                                <button class="btn btn-danger">Delete</button>
+                                <button class="btn btn-danger" @onclick="@(()=>DeleteCar(item.Id))">Delete</button>
                             </td>
                             <td>@item.License</td>
                         </tr>
@@ -56,6 +57,19 @@
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+        }
+    }
+
+        private async Task DeleteCar(int Id)
+    {
+        try
+        {
+            await carsRepository.DeleteCar(Id);
+            cars = await carsRepository.GetCars();
+        }
+        catch(Exception ex)
+        {
+            logger.LogError($"{LogLevel.Error}:{ex.ToString()}");
         }
     }
 }

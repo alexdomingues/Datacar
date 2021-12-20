@@ -8,7 +8,7 @@ namespace Datacar.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController: ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly ApplicationDBContext context;
         public UsersController(ApplicationDBContext context)
@@ -40,6 +40,19 @@ namespace Datacar.Server.Controllers
             context.Add(user);
             await context.SaveChangesAsync();
             return user.Id;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            context.Remove(user);
+            await context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

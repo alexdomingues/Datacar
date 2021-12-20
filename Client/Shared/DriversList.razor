@@ -1,4 +1,7 @@
-﻿<GenericList List="Drivers">
+﻿@inject IDriversRepository driversRepository
+@inject ILogger<Drivers> logger
+
+<GenericList List="Drivers">
     <ElementTemplate Context="driver">
         <DriversIndividual Driver="driver" DeleteDriver="DeleteDriver"></DriversIndividual>
     </ElementTemplate>
@@ -8,11 +11,18 @@
 
     [Parameter] public List<Drivers> Drivers { get; set; }
 
-    //private async Task DeleteDriver(Drivers driver)
-    private void DeleteDriver(Drivers driver)
+    private async Task DeleteDriver(Drivers driver)
     {
-        // Modal com confirmação
-        Console.WriteLine($"Condutor apagado");
-        Drivers.Remove(driver);
+        try
+        {
+            await driversRepository.DeleteDriver(driver.Id);
+            Drivers.Remove(driver);
+            logger.LogInformation($"{LogLevel.Information}:Condutor apagado:ID={driver.Id}");
+            
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"{LogLevel.Error}:{ex.ToString()}");
+        }
     }
 }

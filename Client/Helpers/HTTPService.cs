@@ -49,6 +49,12 @@ namespace Datacar.Client.Helpers
             return new HTTPResponseWrapper<object>(null, response.IsSuccessStatusCode, response);
         }
 
+        public async Task<HTTPResponseWrapper<object>> Delete(string url)
+        {
+            var responseHTTP = await httpClient.DeleteAsync(url);
+            return new HTTPResponseWrapper<object>(null, responseHTTP.IsSuccessStatusCode, responseHTTP);
+        }
+
         private async Task<T> Deserialize<T>(HttpResponseMessage httpResponse, JsonSerializerOptions options)
         {
 
