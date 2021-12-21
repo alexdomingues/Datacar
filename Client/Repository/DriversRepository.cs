@@ -19,7 +19,7 @@ namespace Datacar.Client.Repository
 
         public async Task<Drivers> GetDriverById(int driverId)
         {
-            var response = await httpService.Get<Drivers>($"{url}/edit/{driverId}");
+            var response = await httpService.Get<Drivers>($"{url}/{driverId}");
 
             if (!response.Success)
             {

@@ -9,6 +9,7 @@ namespace Datacar.Client.Repository
         Task CreateUser(Users user);
         Task<Users> GetUserById(int userId);
         Task<List<Users>> GetUsers();
-        Task DeleteUser(int userId);    
+        Task DeleteUser(int userId);
+        Task UpdateUser(Users user);
     }
 }

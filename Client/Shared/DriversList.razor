@@ -16,13 +16,12 @@
         try
         {
             await driversRepository.DeleteDriver(driver.Id);
+            logger.LogInformation($"Drivers List Component: Driver {driver.Id} deleted");
             Drivers.Remove(driver);
-            logger.LogInformation($"{LogLevel.Information}:Condutor apagado:ID={driver.Id}");
-            
         }
         catch (Exception ex)
         {
-            logger.LogError($"{LogLevel.Error}:{ex.ToString()}");
+            logger.LogError($"Drivers List Component:{ex.Message.ToString()}");
         }
     }
 }

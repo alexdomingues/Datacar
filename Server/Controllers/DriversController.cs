@@ -60,7 +60,7 @@ namespace Datacar.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Put(Drivers driver)
+        public async Task<ActionResult<Drivers>> Put(Drivers driver)
         {
             context.Attach(driver).State = EntityState.Modified;
             await context.SaveChangesAsync();

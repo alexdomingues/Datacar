@@ -24,7 +24,6 @@ namespace Datacar.Server.Controllers
             {
                 return NotFound();
             }
-
             return userInfo;
         }
 
@@ -40,6 +39,14 @@ namespace Datacar.Server.Controllers
             context.Add(user);
             await context.SaveChangesAsync();
             return user.Id;
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Users>> Put(Users user)
+        {
+            context.Attach(user).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return NoContent();
         }
 
         [HttpDelete("{id}")]

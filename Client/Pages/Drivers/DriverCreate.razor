@@ -1,12 +1,13 @@
 ﻿@page "/drivers/create"
 @inject IDriversRepository driversRepository
 @inject NavigationManager navigationManager
+@inject ILogger<Drivers> logger
 
 <h3>Criar Condutor</h3>
 
 <DriverForm Driver="driver" OnValidSubmit="Create"></DriverForm>
 
-@code {
+@code{
     public Drivers driver = new Drivers();
 
     private async Task Create()
@@ -14,12 +15,12 @@
         try
         {
             await driversRepository.CreateDriver(driver);
-            Console.WriteLine("Condutor criado");  
+            logger.LogInformation($"Driver Create Page: Driver {driver.Id} created");
             navigationManager.NavigateTo("drivers");
         }
         catch(Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            logger.LogError($"Driver Create Page:{ex.Message.ToString()}");            
         }
     }
 }

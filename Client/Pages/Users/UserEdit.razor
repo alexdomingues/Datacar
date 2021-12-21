@@ -1,23 +1,48 @@
 ﻿@page "/users/edit/{UserId:int}"
 @inject IUsersRepository usersRepository
+@inject NavigationManager navigationManager
+@inject ILogger<Users> logger
 
 <h3>Alterar dados do users</h3>
 
+@if (userInfo != null)
+{
+    <UserForm User="userInfo" OnValidSubmit="Edit" />
+}
+else
+{
+    <p>User is null</p>
+}
+
 @code {
     [Parameter] public int UserId { get; set; }
-
     public Users userInfo;
 
     protected async override Task OnInitializedAsync()
     {
-        userInfo = await usersRepository.GetUserById(UserId);
+        try
+        {
+            logger.LogInformation($"User Edit Page: GetUserById {UserId}");
+            userInfo = await usersRepository.GetUserById(UserId);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"User Edit Page: {ex.ToString()}");
+        }
     }
 
-    private void Edit()
+    private async Task Edit()
     {
-        Console.WriteLine("Edit method");
-        Console.WriteLine($"Id= {userInfo.Id}");
-        Console.WriteLine($"Matricula = {userInfo.FirstName}");
+        try
+        {            
+            await usersRepository.UpdateUser(userInfo);
+            logger.LogInformation($"User Edit Page: User {userInfo.Id} updated");
+            navigationManager.NavigateTo("users");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Error:{ex.Message.ToString()}");
+        }
     }
 }
 

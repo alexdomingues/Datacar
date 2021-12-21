@@ -17,6 +17,17 @@ namespace Datacar.Client.Repository
             this.httpService = httpService;
         }
 
+        public async Task<Cars> GetCarById(int carId)
+        {
+            var response = await httpService.Get<Cars>($"{url}/{carId}");
+
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+
         public async Task<List<Cars>> GetCars()
         {
             var response = await httpService.Get<List<Cars>>(url);
@@ -30,6 +41,15 @@ namespace Datacar.Client.Repository
         public async Task CreateCar(Cars car)
         {
             var response = await httpService.Post(url, car);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+        }
+
+        public async Task UpdateCar(Cars car)
+        {
+            var response = await httpService.Put(url, car);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());

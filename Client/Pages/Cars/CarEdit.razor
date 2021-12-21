@@ -1,52 +1,55 @@
 ﻿@page "/cars/edit/{CarId:int}"
-@inject IRepository repository
+@inject ICarsRepository carsRepository
+@inject NavigationManager navigationManager
+@inject ILogger<Cars> logger
 
 <h3>Editar viatura</h3>
 
-@if (carToEdit != null)
+@if (carInfo != null)
 {
-    <CarForm Car="carToEdit" OnValidSubmit="Edit" />
+       <div class="main-page-container">
+        <div class="row main-page-header">
+            <div class="col col-lg-12 col-md-12">
+                <main-page-title>Atualizar viatura @carInfo.License</main-page-title>
+            </div>
+        </div>
+    </div>
+
+    <CarForm Car="carInfo" OnValidSubmit="Edit" />
 }
 else
 {
-    <p>Car is null</p>
+    <p>Loading car info</p>
 }
 
 @code {
-
     [Parameter] public int CarId { get; set; }
+    public Cars carInfo;
 
-    public Cars carToEdit = new Cars();
-    
-    private List<Cars> car;
-
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
-        Console.WriteLine($"car id = {CarId}");
-        car = repository.GetCars().Where(x => x.Id.Equals(CarId)).ToList();
-
-        foreach(var item in typeof(Cars).GetProperties())
+        try
         {
-            Console.WriteLine($"item={item.Name}");
-            //carToEdit. = car[0].
+            logger.LogInformation($"Car Edit Page: GetCarById {CarId}");
+            carInfo = await carsRepository.GetCarById(CarId);
         }
-
-        carToEdit.Id = car[0].Id;
-        carToEdit.License = car[0].License;
-        carToEdit.LicenseDate = car[0].LicenseDate;
-        carToEdit.Model = car[0].Model;
-        carToEdit.Type = car[0].Type;
-        carToEdit.InitialKms = car[0].InitialKms;
-        carToEdit.BuyKms = car[0].BuyKms;
-        carToEdit.ContractValidity = car[0].ContractValidity;
-        carToEdit.DriverId = car[0].DriverId;
-        carToEdit.TollIdentifier = car[0].TollIdentifier;
+        catch (Exception ex)
+        {
+            logger.LogError($"Car Edit Page: {ex.ToString()}");
+        }
     }
 
-    private void Edit()
+    private async Task Edit()
     {
-        Console.WriteLine("Edit method");
-        Console.WriteLine($"Id= {carToEdit.Id}");
-        Console.WriteLine($"Matricula = {carToEdit.License}");
+        try
+        {            
+            await carsRepository.UpdateCar(carInfo);
+            logger.LogInformation($"Cars Edit Page: Car {carInfo.Id} updated");
+            navigationManager.NavigateTo("cars");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Error:{ex.Message.ToString()}");
+        }
     }
 }

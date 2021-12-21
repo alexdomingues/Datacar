@@ -31,7 +31,7 @@
                     {
                         <tr>
                             <td>
-                                <a class="btn btn-success">Edit</a>
+                                <a href="/cars/edit/@item.Id" class="btn btn-success">Edit</a>
                                 <button class="btn btn-danger" @onclick="@(()=>DeleteCar(item.Id))">Delete</button>
                             </td>
                             <td>@item.License</td>
@@ -45,31 +45,33 @@
 
 @code {
     string listTypeShort = ListType.Short.ToString();
-
     List<Cars> cars;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
+            logger.LogInformation("Cars Page: Get Cars list");
             cars = await carsRepository.GetCars();
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            logger.LogError($"Cars Page:{ex.ToString()}");
         }
     }
 
-        private async Task DeleteCar(int Id)
+    private async Task DeleteCar(int Id)
     {
         try
         {
             await carsRepository.DeleteCar(Id);
+            logger.LogInformation($"Cars Page: Car {Id} deleted");
+            logger.LogInformation("Cars Page: Get Cars list");
             cars = await carsRepository.GetCars();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            logger.LogError($"{LogLevel.Error}:{ex.ToString()}");
+            logger.LogError($"Cars Page:{ex.ToString()}");
         }
     }
 }

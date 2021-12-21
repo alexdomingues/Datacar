@@ -40,7 +40,7 @@ namespace Datacar.Client
             {
                 var response = await ServiceProvider.Client.PostAsync("api/log/save", content);
                 var IsOk = response.IsSuccessStatusCode;
-                Console.WriteLine(IsOk + " MY LOG INIT");
+                /*Console.WriteLine(IsOk + " MY LOG INIT");*/
              });
         }
     }

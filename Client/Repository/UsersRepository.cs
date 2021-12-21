@@ -19,7 +19,7 @@ namespace Datacar.Client.Repository
 
         public async Task<Users> GetUserById(int userId)
         {
-            var response = await httpService.Get<Users>($"{url}/edit/{userId}");
+            var response = await httpService.Get<Users>($"{url}/{userId}");
 
             if (!response.Success)
             {
@@ -40,6 +40,15 @@ namespace Datacar.Client.Repository
         public async Task CreateUser(Users user)
         {
             var response = await httpService.Post(url, user);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+        }
+
+        public async Task UpdateUser(Users user)
+        {
+            var response = await httpService.Put(url, user);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());

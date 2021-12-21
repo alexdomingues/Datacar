@@ -33,7 +33,7 @@
                     {
                         <tr>
                             <td>
-                                <a class="btn btn-success">Edit</a>
+                                <a href="/users/edit/@item.Id" class="btn btn-success">Edit</a>
                                 <button class="btn btn-danger" @onclick="@(()=>DeleteUser(item.Id))">Delete</button>
                             </td>
                             <td>@item.FirstName</td>
@@ -47,18 +47,18 @@
 
 @code {
     string listTypeShort = ListType.Short.ToString();
-
     List<Users> users;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
+            logger.LogInformation("Users Page: Get Users list");
             users = await usersRepository.GetUsers();
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            logger.LogError($"Users Page:{ex.ToString()}");
         }
     }
 
@@ -67,11 +67,13 @@
         try
         {
             await usersRepository.DeleteUser(Id);
+            logger.LogInformation($"Users Page: User {Id} deleted");
+            logger.LogInformation("Users Page: Get Users list");
             users = await usersRepository.GetUsers();
         }
         catch(Exception ex)
         {
-            logger.LogError($"{LogLevel.Error}:{ex.ToString()}");
+            logger.LogError($"Users Page:{ex.Message.ToString()}");            
         }
     }
 }

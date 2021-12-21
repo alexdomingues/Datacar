@@ -16,6 +16,7 @@
         </div>
     </div>
 </div>
+
 <div class="main-list">
     <DriversList Drivers="drivers" />
 </div>
@@ -47,6 +48,7 @@
     </WholeListTemplate>
     </GenericList>
     </div>*@
+
 @code {
     List<Drivers> drivers;
 
@@ -54,13 +56,13 @@
     {
         try
         {
-            logger.LogInformation("Get List of Drivers");
+            logger.LogInformation("Drivers Page: Get Drivers list");
             drivers = await driversRepository.GetDrivers();
 
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            logger.LogError($"Drivers Page:{ex.Message.ToString()}");            
         }
     }
     //
