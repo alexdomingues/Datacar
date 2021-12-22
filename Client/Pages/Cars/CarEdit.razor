@@ -3,18 +3,19 @@
 @inject NavigationManager navigationManager
 @inject ILogger<Cars> logger
 
-<h3>Editar viatura</h3>
+<div class="main-page-container">
+    <div class="row main-page-header">
+        <div class="col col-lg-12 col-md-12">
+            <main-page-title>Atualizar dados da viatura</main-page-title>
+        </div>
+        <div class="col col-lg-4 col-md-4">
+            <a href="/cars" class="btn btn-light">Voltar</a>
+        </div>
+    </div>
+</div>
 
 @if (carInfo != null)
 {
-       <div class="main-page-container">
-        <div class="row main-page-header">
-            <div class="col col-lg-12 col-md-12">
-                <main-page-title>Atualizar viatura @carInfo.License</main-page-title>
-            </div>
-        </div>
-    </div>
-
     <CarForm Car="carInfo" OnValidSubmit="Edit" />
 }
 else
@@ -42,7 +43,7 @@ else
     private async Task Edit()
     {
         try
-        {            
+        {
             await carsRepository.UpdateCar(carInfo);
             logger.LogInformation($"Cars Edit Page: Car {carInfo.Id} updated");
             navigationManager.NavigateTo("cars");

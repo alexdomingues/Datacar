@@ -1,13 +1,14 @@
 ﻿@page "/cars"
 @inject ICarsRepository carsRepository
 @inject ILogger<Cars> logger
+@inject IJSRuntime js
 
 <div class="main-page-container">
     <div class="row main-page-header">
         <div class="col col-lg-8 col-md-8">
             <main-page-title>Viaturas</main-page-title>
         </div>
-        <div class="col col-lg-4 col-md-8">
+        <div class="col col-lg-4 col-md-4">
             <a class="btn btn-info" href="/cars/create">Criar viatura</a>
         </div>
     </div>
@@ -21,20 +22,20 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th>Matrícula</th>
                         <th>
                         </th>
-                        <th>Matrícula</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in cars)
                     {
                         <tr>
+                            <td>@item.License</td>
                             <td>
                                 <a href="/cars/edit/@item.Id" class="btn btn-success">Edit</a>
                                 <button class="btn btn-danger" @onclick="@(()=>DeleteCar(item.Id))">Delete</button>
                             </td>
-                            <td>@item.License</td>
                         </tr>
                     }
                 </tbody>
@@ -64,10 +65,14 @@
     {
         try
         {
-            await carsRepository.DeleteCar(Id);
-            logger.LogInformation($"Cars Page: Car {Id} deleted");
-            logger.LogInformation("Cars Page: Get Cars list");
-            cars = await carsRepository.GetCars();
+            var confirmed = await js.Confirm($"Tem a certeza que pretende apagar o utilizador?");
+            if (confirmed)
+            {
+                await carsRepository.DeleteCar(Id);
+                logger.LogInformation($"Cars Page: Car {Id} deleted");
+                logger.LogInformation("Cars Page: Get Cars list");
+                cars = await carsRepository.GetCars();
+            }
         }
         catch (Exception ex)
         {

@@ -1,6 +1,7 @@
 ﻿@page "/users"
 @inject IUsersRepository usersRepository
 @inject ILogger<Users> logger
+@inject IJSRuntime js
 
 <div class="main-page-container">
     <div class="row main-page-header">
@@ -23,20 +24,20 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th>Nome</th>
                         <th>
                         </th>
-                        <th>Nome</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in users)
                     {
                         <tr>
+                            <td>@item.FirstName</td>
                             <td>
                                 <a href="/users/edit/@item.Id" class="btn btn-success">Edit</a>
                                 <button class="btn btn-danger" @onclick="@(()=>DeleteUser(item.Id))">Delete</button>
                             </td>
-                            <td>@item.FirstName</td>
                         </tr>
                     }
                 </tbody>
@@ -66,14 +67,18 @@
     {
         try
         {
-            await usersRepository.DeleteUser(Id);
-            logger.LogInformation($"Users Page: User {Id} deleted");
-            logger.LogInformation("Users Page: Get Users list");
-            users = await usersRepository.GetUsers();
+            var confirmed = await js.Confirm($"Tem a certeza que pretende apagar o utilizador?");
+            if (confirmed)
+            {
+                await usersRepository.DeleteUser(Id);
+                logger.LogInformation($"Users Page: User {Id} deleted");
+                logger.LogInformation("Users Page: Get Users list");
+                users = await usersRepository.GetUsers();
+            }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            logger.LogError($"Users Page:{ex.Message.ToString()}");            
+            logger.LogError($"Users Page:{ex.Message.ToString()}");
         }
     }
 }

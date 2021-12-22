@@ -1,5 +1,6 @@
 ﻿@inject IDriversRepository driversRepository
 @inject ILogger<Drivers> logger
+@inject IJSRuntime js
 
 <GenericList List="Drivers">
     <ElementTemplate Context="driver">
@@ -7,7 +8,7 @@
     </ElementTemplate>
 </GenericList>
 
-@code{
+@code {
 
     [Parameter] public List<Drivers> Drivers { get; set; }
 
@@ -15,9 +16,13 @@
     {
         try
         {
-            await driversRepository.DeleteDriver(driver.Id);
-            logger.LogInformation($"Drivers List Component: Driver {driver.Id} deleted");
-            Drivers.Remove(driver);
+            var confirmed = await js.Confirm($"Tem a certeza que pretende apagar o utilizador?");
+            if (confirmed)
+            {
+                await driversRepository.DeleteDriver(driver.Id);
+                logger.LogInformation($"Drivers List Component: Driver {driver.Id} deleted");
+                Drivers.Remove(driver);
+            }
         }
         catch (Exception ex)
         {

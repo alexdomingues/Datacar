@@ -20,9 +20,9 @@
             logger.LogInformation($"Users Create Page: User {user.Id} created");
             navigationManager.NavigateTo("users");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-             logger.LogError($"User Create Page:{ex.Message.ToString()}");            
+            logger.LogError($"User Create Page:{ex.Message.ToString()}");
         }
     }
 

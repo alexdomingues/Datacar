@@ -3,8 +3,16 @@
 @inject NavigationManager navigationManager
 @inject ILogger<Users> logger
 
-<h3>Alterar dados do users</h3>
-
+<div class="main-page-container">
+    <div class="row main-page-header">
+        <div class="col col-lg-8 col-md-8">
+        <h3>Atualizar dados do utilizador</h3>
+        </div>
+        <div class="col col-lg-4 col-md-4">
+            <a href="/users" class="btn btn-light">Voltar</a>
+        </div>
+    </div>
+</div>
 @if (userInfo != null)
 {
     <UserForm User="userInfo" OnValidSubmit="Edit" />
@@ -34,7 +42,7 @@ else
     private async Task Edit()
     {
         try
-        {            
+        {
             await usersRepository.UpdateUser(userInfo);
             logger.LogInformation($"User Edit Page: User {userInfo.Id} updated");
             navigationManager.NavigateTo("users");

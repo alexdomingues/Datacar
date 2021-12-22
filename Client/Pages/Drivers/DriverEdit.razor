@@ -3,20 +3,23 @@
 @inject NavigationManager navigationManager
 @inject ILogger<Drivers> logger
 
+<div class="main-page-container">
+    <div class="row main-page-header">
+        <div class="col col-lg-8 col-md-8">
+            <main-page-title>Atualizar dados do condutor</main-page-title>
+        </div>
+        <div class="col col-lg-4 col-md-4">
+            <a href="/drivers" class="btn btn-light">Voltar</a>
+        </div>
+    </div>
+</div>
+
 @if (driverInfo == null)
 {
     <p>Loading driver info</p>
 }
 else
 {
-    <div class="main-page-container">
-        <div class="row main-page-header">
-            <div class="col col-lg-12 col-md-12">
-                <main-page-title>Atualizar condutor @driverInfo.Name</main-page-title>
-            </div>
-        </div>
-    </div>
-
     <DriverForm Driver="driverInfo" OnValidSubmit="Edit"></DriverForm>
 }
 
@@ -40,14 +43,14 @@ else
     private async Task Edit()
     {
         try
-        {            
+        {
             await driversRepository.UpdateDriver(driverInfo);
             logger.LogInformation($"Driver Edit Page: Driver {driverInfo.Id} updated");
             navigationManager.NavigateTo("drivers");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            logger.LogError($"Error:{ex.Message.ToString()}");            
+            logger.LogError($"Error:{ex.Message.ToString()}");
         }
     }
 }

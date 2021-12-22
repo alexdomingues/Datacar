@@ -1,41 +1,67 @@
-﻿<EditForm Model="Car" OnValidSubmit="OnValidSubmit">
-    <DataAnnotationsValidator />
-    <div class="form-group">
-        <label>Matricula</label>
-        <InputText class="form-control" @bind-Value="@Car.License" />
-        <ValidationMessage For="@(()=>Car.License)" />
-        <label>Data da Matrícula</label>
-        <InputDate class="form-control" @bind-Value="@Car.LicenseDate" />
-        <ValidationMessage For="@(()=>Car.LicenseDate)" />
-        <label>Modelo</label>
-        <InputText class="form-control" @bind-Value="@Car.Model" />
-        <ValidationMessage For="@(()=>Car.Model)" />
-        <label>Tipo</label>
-        <InputText class="form-control" @bind-Value="@Car.Type" />
-        <ValidationMessage For="@(()=>Car.Type)" />
-        <label>Kms iniciais</label>
-        <InputNumber class="form-control" @bind-Value="@Car.InitialKms" />
-        <ValidationMessage For="@(()=>Car.InitialKms)" />
-        <label>Kms Contratados</label>
-        <InputNumber class="form-control" @bind-Value="@Car.BuyKms" />
-        <ValidationMessage For="@(()=>Car.BuyKms)" />
-        <label>Data de Validade do Contrato</label>
-        <InputDate class="form-control" @bind-Value="@Car.ContractValidity" />
-        <ValidationMessage For="@(()=>Car.ContractValidity)" />
-        <label>Condutor</label>
-        <InputNumber class="form-control" @bind-Value="@Car.DriverId" />
-        <ValidationMessage For="@(()=>Car.DriverId)" />
-        <label>Identificador Via Verde</label>
-        <InputText class="form-control" @bind-Value="@Car.TollIdentifier" />
-        <ValidationMessage For="@(()=>Car.TollIdentifier)" />
-    </div>
-    <button class="btn btn-success" type="submit">Gravar</button>
-</EditForm>
+﻿@inject IDriversRepository driversRepository
+@inject ILogger<Drivers> logger
+
+@if (drivers != null)
+{
+    <EditForm Model="Car" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label>Matricula</label>
+            <InputText class="form-control" @bind-Value="@Car.License" />
+            <ValidationMessage For="@(()=>Car.License)" />
+            <label>Data da Matrícula</label>
+            <InputDate class="form-control" @bind-Value="@Car.LicenseDate" />
+            <ValidationMessage For="@(()=>Car.LicenseDate)" />
+            <label>Modelo</label>
+            <InputText class="form-control" @bind-Value="@Car.Model" />
+            <ValidationMessage For="@(()=>Car.Model)" />
+            <label>Tipo</label>
+            <InputText class="form-control" @bind-Value="@Car.Type" />
+            <ValidationMessage For="@(()=>Car.Type)" />
+            <label>Kms iniciais</label>
+            <InputNumber class="form-control" @bind-Value="@Car.InitialKms" />
+            <ValidationMessage For="@(()=>Car.InitialKms)" />
+            <label>Kms Contratados</label>
+            <InputNumber class="form-control" @bind-Value="@Car.BuyKms" />
+            <ValidationMessage For="@(()=>Car.BuyKms)" />
+            <label>Data de Validade do Contrato</label>
+            <InputDate class="form-control" @bind-Value="@Car.ContractValidity" />
+            <ValidationMessage For="@(()=>Car.ContractValidity)" />
+            <label>Condutor</label>
+            <select class="form-control" @bind="@Car.DriverId">
+                <option value="0">
+                    -- Seleccione um condutor
+                </option>
+                @foreach (Drivers driver in drivers)
+                {
+                    <option value="@driver.Id">@driver.Name</option>
+                }
+            </select>
+            <ValidationMessage For="@(()=>Car.DriverId)" />
+            <label>Identificador Via Verde</label>
+            <InputText class="form-control" @bind-Value="@Car.TollIdentifier" />
+            <ValidationMessage For="@(()=>Car.TollIdentifier)" />
+        </div>
+        <button class="btn btn-success" type="submit">Gravar</button>
+    </EditForm>
+}
 
 @code {
-
     [Parameter] public Cars Car { get; set; }
-
     // Cascading parameter to invoke Create or Edit method
     [Parameter] public EventCallback OnValidSubmit { get; set; }
+    List<Drivers> drivers;
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            logger.LogInformation("Car form Page: Get Drivers list");
+            drivers = await driversRepository.GetDrivers();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Drivers Page:{ex.Message.ToString()}");
+        }
+    }
 }
