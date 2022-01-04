@@ -21,34 +21,6 @@
     <DriversList Drivers="drivers" />
 </div>
 
-@*<div>
-    <GenericList List="cars">
-    <WholeListTemplate>
-    <table class="table table-striped">
-    <thead>
-    <tr>
-    <th>
-    </th>
-    <th>Matrícula</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in cars)
-    {
-    <tr>
-    <td>
-    <a class="btn btn-success">Edit</a>
-    <button class="btn btn-danger">Delete</button>
-    </td>
-    <td>@item.License</td>
-    </tr>
-    }
-    </tbody>
-    </table>
-    </WholeListTemplate>
-    </GenericList>
-    </div>*@
-
 @code {
     List<Drivers> drivers;
 

@@ -1,6 +1,11 @@
 ﻿@page "/"
-
-<h1>DATACAR</h1>
-
-<p>This is where the map will be displayed</p>
-<p>No NavMenu</p>
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <h1>DATACAR</h1>
+        <p>This is where the map will be displayed</p>
+        <p>No NavMenu</p>
+    </Authorized>
+    <NotAuthorized>
+        <h1>Oops! Not authorized</h1>
+    </NotAuthorized>
+</AuthorizeView>

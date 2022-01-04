@@ -1,5 +1,7 @@
+using Datacar.Client.Auth;
 using Datacar.Client.Helpers;
 using Datacar.Client.Repository;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +30,7 @@ namespace Datacar.Client
             builder.RootComponents.Add<App>("#app");
 
             // to configure services through Dependency injection
-            builder.Services.AddScoped(sp => Client);
+            builder.Services.AddSingleton(sp => Client);
 
             // to configure our services
             ConfigureServices(builder.Services);
@@ -48,6 +50,8 @@ namespace Datacar.Client
             services.AddScoped<IDriversRepository, DriversRepository>();
             services.AddScoped<ICarsRepository, CarsRepository>();
             services.AddAuthorizationCore();
+
+            services.AddScoped<AuthenticationStateProvider, DummyAuthenticationStateProvider>();
         }
     }
 }
