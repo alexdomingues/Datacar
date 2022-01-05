@@ -1,5 +1,7 @@
 ﻿using Datacar.Server.Helpers;
 using Datacar.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -36,6 +38,7 @@ namespace Datacar.Server.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<Drivers>>> Get()
         {
             var listDrivers = await context.Drivers.ToListAsync();
