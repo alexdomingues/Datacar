@@ -1,16 +1,11 @@
 ﻿@page "/"
-
-@attribute [Authorize]
-
-<h1>DATACAR</h1>
 <AuthorizeView Roles="Admin">
     <Authorized>
-        <text>Authorized!!!, @context.User.Identity.Name</text>
+        <h1>DATACAR</h1>
+        <p>This is where the map will be displayed</p>
+        <p>No NavMenu</p>
     </Authorized>
     <NotAuthorized>
-        <text>Not Authorized!?!?!</text>
+        <h1>Oops! Not authorized</h1>
     </NotAuthorized>
-
 </AuthorizeView>
-<p>This is where the map will be displayed</p>
-<p>No NavMenu</p>

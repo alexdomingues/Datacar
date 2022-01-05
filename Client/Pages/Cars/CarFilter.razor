@@ -1,26 +1,25 @@
 ﻿@page "/cars/search"
 @inject IRepository repository
-@attribute [Authorize]
 
 <h3>Procurar viatura</h3>
 
 <div class="form-inline">
     <div class="form-group mb-2">
         <label for="title" class="sr-only">Matricula</label>
-        <input type="text" class="form-control" id="license" placeholder="Matricula"
-               @bind-value="license" @bind-value:event="oninput"
-               @onkeypress="@((KeyboardEventArgs e)=> LicenseKeyPressed(e))" />
+        <input type="text" class="form-control" id="license" placeholder="Matricula" 
+            @bind-value="license" @bind-value:event="oninput"
+            @onkeypress="@((KeyboardEventArgs e)=> LicenseKeyPressed(e))"
+            />
     </div>
     <div class="form-group mx-sm-3 mb-2">
         <select class="form-control" @bind="selectedLicense">
-            <option value="0">
+            <option value = "0">
                 -- Escolha a matrícula
             </option>
             @foreach (var car in Cars)
-            {
-                <option value="@car.Id">@car.License</option>
-
-            }
+           {
+            <option value="@car.Id">@car.License</option>   
+           }
 
         </select>
     </div>
@@ -39,7 +38,7 @@
     string selectedLicense = "0";
 
     private List<Cars> cars = new List<Cars>()
-{
+    {
         new Cars() {Id=1, License= "90-CV-43"},
         new Cars() {Id=2, License= "AE10VM"}
     };
@@ -69,7 +68,7 @@
         if (e.Key == "Enter")
         {
             SearchCar();
-        }
+        }   
     }
 
 

@@ -1,20 +1,19 @@
 ﻿@page "/drivers"
 @inject IDriversRepository driversRepository
 @inject ILogger<Drivers> logger
-@attribute [Authorize]
 
+@*
+    @inject SingletonService singleton
+    @inject TransientService transient
+*@
 <div class="main-page-container">
     <div class="row main-page-header">
         <div class="col col-lg-8 col-md-8">
             <main-page-title>Condutores</main-page-title>
         </div>
-        <AuthorizeView>
-            <Authorized>
-                <div class="col col-lg-4 col-md-8">
-                    <a class="btn btn-info" href="/drivers/create">Criar condutor</a>
-                </div>
-            </Authorized>
-        </AuthorizeView>
+        <div class="col col-lg-4 col-md-8">
+            <a class="btn btn-info" href="/drivers/create">Criar condutor</a>
+        </div>
     </div>
 </div>
 
@@ -35,7 +34,7 @@
         }
         catch (Exception ex)
         {
-            logger.LogError($"Drivers Page:{ex.Message.ToString()}");
+            logger.LogError($"Drivers Page:{ex.Message.ToString()}");            
         }
     }
     //

@@ -2,7 +2,6 @@
 @inject IDriversRepository driversRepository
 @inject NavigationManager navigationManager
 @inject ILogger<Drivers> logger
-@attribute [Authorize]
 
 <h3>Criar Condutor</h3>
 
@@ -19,9 +18,9 @@
             logger.LogInformation($"Driver Create Page: Driver {driver.Id} created");
             navigationManager.NavigateTo("drivers");
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
-            logger.LogError($"Driver Create Page:{ex.Message.ToString()}");
+            logger.LogError($"Driver Create Page:{ex.Message.ToString()}");            
         }
     }
 }

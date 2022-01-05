@@ -2,7 +2,6 @@
 @inject ICarsRepository carsRepository
 @inject NavigationManager navigationManager
 @inject ILogger<Cars> logger
-@attribute [Authorize]
 
 <h3>Criar viatura</h3>
 
@@ -19,9 +18,9 @@
             logger.LogInformation($"Cars Create Page: Car {car.Id} created");
             navigationManager.NavigateTo("cars");
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
-            logger.LogError($"Cars Create Page:{ex.Message.ToString()}");
+            logger.LogError($"Cars Create Page:{ex.Message.ToString()}");            
         }
     }
 }
