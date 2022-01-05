@@ -1,29 +1,85 @@
 ﻿@page "/users"
 @inject IUsersRepository usersRepository
+@inject ILogger<Users> logger
+@inject IJSRuntime js
+@attribute [Authorize]
 
+<div class="main-page-container">
+    <div class="row main-page-header">
+        <div class="col col-lg-10 col-md-10">
+            <main-page-title>Utilizadores</main-page-title>
+        </div>
+        <div class="col col-lg-2 col-md-2">
+            <a class="btn btn-info" href="/users/create">Criar utilizador</a>
+        </div>
+    </div>
+</div>
 
-<h3>Utilizadores</h3>
-
-<a class="btn btn-info" href="/users/create">Criar utilizador</a>
-
-<div>
+@*<div class="main-list">
     <UsersList Users="users" ListType="@listTypeShort"></UsersList>
+    </div>*@
+
+<div class="main-list">
+    <GenericList List="users">
+        <WholeListTemplate>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in users)
+                    {
+                        <tr>
+                            <td>@item.FirstName</td>
+                            <td>
+                                <a href="/users/edit/@item.Id" class="btn btn-success">Edit</a>
+                                <button class="btn btn-danger" @onclick="@(()=>DeleteUser(item.Id))">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </WholeListTemplate>
+    </GenericList>
 </div>
 
 @code {
     string listTypeShort = ListType.Short.ToString();
-
     List<Users> users;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
+            logger.LogInformation("Users Page: Get Users list");
             users = await usersRepository.GetUsers();
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            logger.LogError($"Users Page:{ex.ToString()}");
+        }
+    }
+
+    private async Task DeleteUser(int Id)
+    {
+        try
+        {
+            var confirmed = await js.Confirm($"Tem a certeza que pretende apagar o utilizador?");
+            if (confirmed)
+            {
+                await usersRepository.DeleteUser(Id);
+                logger.LogInformation($"Users Page: User {Id} deleted");
+                logger.LogInformation("Users Page: Get Users list");
+                users = await usersRepository.GetUsers();
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Users Page:{ex.Message.ToString()}");
         }
     }
 }

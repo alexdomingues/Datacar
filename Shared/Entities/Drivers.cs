@@ -13,15 +13,15 @@ namespace Datacar.Shared.Entities
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        // [Required]
+        [Required]
         public int EmployeeNum { get; set; }
-        // [Required]
+        [Required]
         public string Job { get; set; }
-        // [Required]
-        public int LicenceNum { get; set; }
-        // [Required]
+        [Required]
+        public int LicenseNum { get; set; }
+        [Required]
         public string GSM { get; set; }
-        // [Required]
+        [Required]
         public string Email { get; set; }
         public string Comment { get; set; }
         //{

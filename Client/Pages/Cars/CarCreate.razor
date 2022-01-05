@@ -1,6 +1,8 @@
 ﻿@page "/cars/create"
 @inject ICarsRepository carsRepository
 @inject NavigationManager navigationManager
+@inject ILogger<Cars> logger
+@attribute [Authorize]
 
 <h3>Criar viatura</h3>
 
@@ -14,12 +16,12 @@
         try
         {
             await carsRepository.CreateCar(car);
-            Console.WriteLine("Viatura criada");  
+            logger.LogInformation($"Cars Create Page: Car {car.Id} created");
             navigationManager.NavigateTo("cars");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            logger.LogError($"Cars Create Page:{ex.Message.ToString()}");
         }
     }
 }

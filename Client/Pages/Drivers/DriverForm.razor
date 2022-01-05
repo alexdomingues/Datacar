@@ -9,30 +9,31 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Número de Funcionário</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" @bind-value="@Driver.EmployeeNum">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Cargo</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" @bind-value="@Driver.Job" >
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Carta de Condução</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" @bind-value="@Driver.LicenseNum" >
                     </div>
                     <div class="mb-3">
                         <label class="form-label">GSM</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" @bind-value="@Driver.GSM" >
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email</label>
-                        <input type="email" class="form-control">
+                        <input type="email" class="form-control" @bind-value="@Driver.Email" >
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Observação</label>
-                        <textarea type="text" class="form-control" rows="3"></textarea>
+                        @*TODO: como atribuir uma bind value a uma textarea*@
+                        <input type="text" class="form-control" @bind-value="@Driver.Comment" rows="3" ></input>
                     </div>
                     <div class="mb-3 form-driver-buttons">
-                        <button type="reset" class="btn btn-secondary">Limpar formulário</button>
+                        @*<button type="reset" class="btn btn-secondary">Limpar formulário</button>*@
                         <button type="submit" class="btn btn-primary">Gravar</button>
                     </div>
             </div>

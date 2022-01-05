@@ -1,31 +1,43 @@
 ﻿@page "/cars"
 @inject ICarsRepository carsRepository
+@inject ILogger<Cars> logger
+@inject IJSRuntime js
+@attribute [Authorize]
 
-<h3>Viaturas</h3>
-<a class="btn btn-info" href="/cars/create">Criar viatura</a>
+
+<div class="main-page-container">
+    <div class="row main-page-header">
+        <div class="col col-lg-8 col-md-8">
+            <main-page-title>Viaturas</main-page-title>
+        </div>
+        <div class="col col-lg-4 col-md-4">
+            <a class="btn btn-info" href="/cars/create">Criar viatura</a>
+        </div>
+    </div>
+</div>
 
 @*<CarsList Cars="cars" ListType="@listTypeShort"></CarsList>*@
 
-<div>
+<div class="main-list">
     <GenericList List="cars">
         <WholeListTemplate>
             <table class="table table-striped">
                 <thead>
                     <tr>
-                    <th>
-                    </th>
-                    <th>Matrícula</th>
+                        <th>Matrícula</th>
+                        <th>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in cars)
                     {
                         <tr>
-                            <td>
-                                <a class="btn btn-success">Edit</a>
-                                <button class="btn btn-danger">Delete</button>
-                            </td>
                             <td>@item.License</td>
+                            <td>
+                                <a href="/cars/edit/@item.Id" class="btn btn-success">Edit</a>
+                                <button class="btn btn-danger" @onclick="@(()=>DeleteCar(item.Id))">Delete</button>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -36,18 +48,37 @@
 
 @code {
     string listTypeShort = ListType.Short.ToString();
-
     List<Cars> cars;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
+            logger.LogInformation("Cars Page: Get Cars list");
             cars = await carsRepository.GetCars();
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            logger.LogError($"Cars Page:{ex.ToString()}");
+        }
+    }
+
+    private async Task DeleteCar(int Id)
+    {
+        try
+        {
+            var confirmed = await js.Confirm($"Tem a certeza que pretende apagar o utilizador?");
+            if (confirmed)
+            {
+                await carsRepository.DeleteCar(Id);
+                logger.LogInformation($"Cars Page: Car {Id} deleted");
+                logger.LogInformation("Cars Page: Get Cars list");
+                cars = await carsRepository.GetCars();
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Cars Page:{ex.ToString()}");
         }
     }
 }

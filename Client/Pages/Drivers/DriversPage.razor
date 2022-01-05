@@ -1,46 +1,55 @@
 ﻿@page "/drivers"
 @inject IDriversRepository driversRepository
+@inject ILogger<Drivers> logger
+@attribute [Authorize]
 
-@*
-@inject SingletonService singleton
-@inject TransientService transient
-*@
+<div class="main-page-container">
+    <div class="row main-page-header">
+        <div class="col col-lg-8 col-md-8">
+            <main-page-title>Condutores</main-page-title>
+        </div>
+        <AuthorizeView>
+            <Authorized>
+                <div class="col col-lg-4 col-md-8">
+                    <a class="btn btn-info" href="/drivers/create">Criar condutor</a>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+    </div>
+</div>
 
-<h3>Lista de Condutores</h3>
-
-<a class="btn btn-info" href="/drivers/create">Criar condutor</a>
-
-<div> 
-    <DriversList Drivers="drivers"/>
+<div class="main-list">
+    <DriversList Drivers="drivers" />
 </div>
 
 @*<div>
     <GenericList List="cars">
-        <WholeListTemplate>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                    <th>
-                    </th>
-                    <th>Matrícula</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in cars)
-                    {
-                        <tr>
-                            <td>
-                                <a class="btn btn-success">Edit</a>
-                                <button class="btn btn-danger">Delete</button>
-                            </td>
-                            <td>@item.License</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </WholeListTemplate>
+    <WholeListTemplate>
+    <table class="table table-striped">
+    <thead>
+    <tr>
+    <th>
+    </th>
+    <th>Matrícula</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in cars)
+    {
+    <tr>
+    <td>
+    <a class="btn btn-success">Edit</a>
+    <button class="btn btn-danger">Delete</button>
+    </td>
+    <td>@item.License</td>
+    </tr>
+    }
+    </tbody>
+    </table>
+    </WholeListTemplate>
     </GenericList>
-</div>*@
+    </div>*@
+
 @code {
     List<Drivers> drivers;
 
@@ -48,14 +57,15 @@
     {
         try
         {
+            logger.LogInformation("Drivers Page: Get Drivers list");
             drivers = await driversRepository.GetDrivers();
+
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            logger.LogError($"Drivers Page:{ex.Message.ToString()}");
         }
     }
-
     //
     //singleton.Value += 1;
     //transient.Value += 1

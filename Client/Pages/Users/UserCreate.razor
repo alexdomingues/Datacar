@@ -1,6 +1,8 @@
 ﻿@page "/users/create"
 @inject IUsersRepository usersRepository
 @inject NavigationManager navigationManager
+@inject ILogger<Users> logger
+@attribute [Authorize]
 
 <h3>Novo utilizador</h3>
 
@@ -16,12 +18,12 @@
         try
         {
             await usersRepository.CreateUser(user);
-            Console.WriteLine("User created");
+            logger.LogInformation($"Users Create Page: User {user.Id} created");
             navigationManager.NavigateTo("users");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            logger.LogError($"User Create Page:{ex.Message.ToString()}");
         }
     }
 

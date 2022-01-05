@@ -1,0 +1,59 @@
+﻿@page "/users/edit/{UserId:int}"
+@inject IUsersRepository usersRepository
+@inject NavigationManager navigationManager
+@inject ILogger<Users> logger
+@attribute [Authorize]
+
+<div class="main-page-container">
+    <div class="row main-page-header">
+        <div class="col col-lg-8 col-md-8">
+            <h3>Atualizar dados do utilizador</h3>
+        </div>
+        <div class="col col-lg-4 col-md-4">
+            <a href="/users" class="btn btn-light">Voltar</a>
+        </div>
+    </div>
+</div>
+@if (userInfo != null)
+{
+    <UserForm User="userInfo" OnValidSubmit="Edit" />
+}
+else
+{
+    <p>User is null</p>
+}
+
+@code {
+    [Parameter] public int UserId { get; set; }
+    public Users userInfo;
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            logger.LogInformation($"User Edit Page: GetUserById {UserId}");
+            userInfo = await usersRepository.GetUserById(UserId);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"User Edit Page: {ex.ToString()}");
+        }
+    }
+
+    private async Task Edit()
+    {
+        try
+        {
+            await usersRepository.UpdateUser(userInfo);
+            logger.LogInformation($"User Edit Page: User {userInfo.Id} updated");
+            navigationManager.NavigateTo("users");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Error:{ex.Message.ToString()}");
+        }
+    }
+}
+
+
+

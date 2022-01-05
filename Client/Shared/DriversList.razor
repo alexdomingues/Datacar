@@ -1,18 +1,32 @@
-﻿<GenericList List="Drivers">
+﻿@inject IDriversRepository driversRepository
+@inject ILogger<Drivers> logger
+@inject IJSRuntime js
+
+<GenericList List="Drivers">
     <ElementTemplate Context="driver">
         <DriversIndividual Driver="driver" DeleteDriver="DeleteDriver"></DriversIndividual>
     </ElementTemplate>
 </GenericList>
 
-@code{
+@code {
 
     [Parameter] public List<Drivers> Drivers { get; set; }
 
-    //private async Task DeleteDriver(Drivers driver)
-    private void DeleteDriver(Drivers driver)
+    private async Task DeleteDriver(Drivers driver)
     {
-        // Modal com confirmação
-        Console.WriteLine($"Condutor apagado");
-        Drivers.Remove(driver);
+        try
+        {
+            var confirmed = await js.Confirm($"Tem a certeza que pretende apagar o utilizador?");
+            if (confirmed)
+            {
+                await driversRepository.DeleteDriver(driver.Id);
+                logger.LogInformation($"Drivers List Component: Driver {driver.Id} deleted");
+                Drivers.Remove(driver);
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Drivers List Component:{ex.Message.ToString()}");
+        }
     }
 }

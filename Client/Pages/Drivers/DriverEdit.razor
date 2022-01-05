@@ -1,27 +1,58 @@
 ﻿@page "/drivers/edit/{DriverId:int}"
+@inject IDriversRepository driversRepository
+@inject NavigationManager navigationManager
+@inject ILogger<Drivers> logger
+@attribute [Authorize]
 
-<h3>Alterar dados do condutor @DriverId</h3>
+<div class="main-page-container">
+    <div class="row main-page-header">
+        <div class="col col-lg-8 col-md-8">
+            <main-page-title>Atualizar dados do condutor</main-page-title>
+        </div>
+        <div class="col col-lg-4 col-md-4">
+            <a href="/drivers" class="btn btn-light">Voltar</a>
+        </div>
+    </div>
+</div>
 
-@if (driver != null)
+@if (driverInfo == null)
 {
-    <DriverForm Driver="driver" OnValidSubmit="Edit" />
+    <p>Loading driver info</p>
+}
+else
+{
+    <DriverForm Driver="driverInfo" OnValidSubmit="Edit"></DriverForm>
 }
 
 @code {
     [Parameter] public int DriverId { get; set; }
+    public Drivers driverInfo;
 
-    public Drivers driver;
-
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
-        driver = new Drivers() { Id = DriverId, Name = "Alexandre" };
+        try
+        {
+            logger.LogInformation($"Driver Edit Page: GetDriverById {DriverId}");
+            driverInfo = await driversRepository.GetDriverById(DriverId);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Driver Edit Page: {ex.ToString()}");
+        }
     }
 
-    private void Edit()
+    private async Task Edit()
     {
-        Console.WriteLine("Edit method");
-        Console.WriteLine($"Id= {driver.Id}");
-        Console.WriteLine($"Matricula = {driver.Name}");
+        try
+        {
+            await driversRepository.UpdateDriver(driverInfo);
+            logger.LogInformation($"Driver Edit Page: Driver {driverInfo.Id} updated");
+            navigationManager.NavigateTo("drivers");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Error:{ex.Message.ToString()}");
+        }
     }
 }
 
