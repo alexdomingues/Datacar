@@ -36,8 +36,12 @@
                         <tr>
                             <td>@item.FirstName</td>
                             <td>
-                                <a href="/users/edit/@item.Id" class="btn btn-success">Edit</a>
-                                <button class="btn btn-danger" @onclick="@(()=>DeleteUser(item.Id))">Delete</button>
+                                <AuthorizeView>
+                                    <Authorized>
+                                        <a href="/users/edit/@item.Id" class="btn btn-success">Edit</a>
+                                        <button class="btn btn-danger" @onclick="@(()=>DeleteUser(item.Id))">Delete</button>
+                                    </Authorized>
+                                </AuthorizeView>
                             </td>
                         </tr>
                     }
