@@ -1,12 +1,11 @@
 ﻿<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
     <Found Context="routeData">
-        @*<RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />*@
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" >
             <Authorizing>
-                <p>Esperando</p>
+                <text>Custom authorizing</text>
             </Authorizing>
             <NotAuthorized>
-                <p>Sem perimssões</p>
+                <text>Custom not authorized</text>
             </NotAuthorized>
         </AuthorizeRouteView>
     </Found>

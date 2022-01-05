@@ -2,6 +2,7 @@
 @inject IUsersRepository usersRepository
 @inject ILogger<Users> logger
 @inject IJSRuntime js
+@attribute [Authorize]
 
 <div class="main-page-container">
     <div class="row main-page-header">
