@@ -1,4 +1,6 @@
 ﻿using Datacar.Shared.DTOs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +16,7 @@ using System.Threading.Tasks;
 namespace Datacar.Server.Controllers
 {
     [ApiController]
-    [Route("api/controller")]
+    [Route("api/[controller]")]
     public class AccountsController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -22,11 +24,8 @@ namespace Datacar.Server.Controllers
         private readonly IConfiguration _configuration;
 
         public AccountsController(
-            // used to create a user
             UserManager<IdentityUser> userManager,
-            // used to sign in a user
             SignInManager<IdentityUser> signInManager,
-            // used to retrieve the jwt key
             IConfiguration configuration)
         {
             _userManager = userManager;
@@ -41,7 +40,6 @@ namespace Datacar.Server.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                //create a token
                 return await BuildToken(model);
             }
             else
@@ -66,6 +64,18 @@ namespace Datacar.Server.Controllers
             }
         }
 
+        [HttpGet("RenewToken")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<UserToken>> Renew()
+        {
+            var userInfo = new UserInfo()
+            {
+                Email = HttpContext.User.Identity.Name
+            };
+
+            return await BuildToken(userInfo);
+        }
+
         private async Task<UserToken> BuildToken(UserInfo userinfo)
         {
             var claims = new List<Claim>()
@@ -75,10 +85,10 @@ namespace Datacar.Server.Controllers
                 new Claim("myvalue", "whatever I want")
             };
 
-            //var identityUser = await _userManager.FindByEmailAsync(userinfo.Email);
-            //var claimsDB = await _userManager.GetClaimsAsync(identityUser);
+            var identityUser = await _userManager.FindByEmailAsync(userinfo.Email);
+            var claimsDB = await _userManager.GetClaimsAsync(identityUser);
 
-            //claims.AddRange(claimsDB);
+            claims.AddRange(claimsDB);
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

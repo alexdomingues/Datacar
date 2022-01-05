@@ -2,7 +2,7 @@
 @attribute [Authorize]
 
 <h1>DATACAR</h1>
-<AuthorizeView Roles="Admin">
+<AuthorizeView>
     <Authorized>
         <text>Authorized!!!, @context.User.Identity.Name</text>
     </Authorized>

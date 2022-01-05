@@ -45,13 +45,22 @@ namespace Datacar.Client
             services.AddTransient<TransientService>();
             //configure the IRepository service and the class that implements the interface
             //easily change the class to implement other sources,apis, etc
-            services.AddScoped<IHttpService, HTTPService>();
+            services.AddScoped<IHttpService, HttpService>();
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IDriversRepository, DriversRepository>();
             services.AddScoped<ICarsRepository, CarsRepository>();
+            services.AddScoped<IAccountsRepository, AccountsRepository>();
+
             services.AddAuthorizationCore();
 
-            services.AddScoped<AuthenticationStateProvider, DummyAuthenticationStateProvider>();
+            services.AddScoped<JWTAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(
+                provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
+                );
+
+            services.AddScoped<ILoginService, JWTAuthenticationStateProvider>(
+                provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
+                );
         }
     }
 }
