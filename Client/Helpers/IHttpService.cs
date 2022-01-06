@@ -1,13 +1,16 @@
-﻿using Datacar.Client.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Datacar.Client.Helpers
 {
     public interface IHttpService
     {
-        Task<HTTPResponseWrapper<object>> Delete(string url);
-        Task<HTTPResponseWrapper<T>> Get<T>(string url);
-        Task<HTTPResponseWrapper<object>> Post<T>(string url, T data);
-        Task<HTTPResponseWrapper<object>> Put<T>(string url, T data);
+        Task<HttpResponseWrapper<object>> Delete(string url);
+        Task<HttpResponseWrapper<T>> Get<T>(string url);
+        Task<HttpResponseWrapper<object>> Post<T>(string url, T data);
+        Task<HttpResponseWrapper<TResponse>> Post<T, TResponse>(string url, T data);
+        Task<HttpResponseWrapper<object>> Put<T>(string url, T data);
     }
 }

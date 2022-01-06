@@ -1,5 +1,7 @@
 ﻿using Datacar.Server.Helpers;
 using Datacar.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,6 +13,9 @@ namespace Datacar.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class DriversController : ControllerBase
     {
         private readonly ApplicationDBContext context;
@@ -35,7 +40,7 @@ namespace Datacar.Server.Controllers
             return driverinfo;
         }
 
-        [HttpGet]
+        [HttpGet]        
         public async Task<ActionResult<List<Drivers>>> Get()
         {
             var listDrivers = await context.Drivers.ToListAsync();
