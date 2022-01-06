@@ -50,6 +50,7 @@ namespace Datacar.Client
             services.AddScoped<IDriversRepository, DriversRepository>();
             services.AddScoped<ICarsRepository, CarsRepository>();
             services.AddScoped<IAccountsRepository, AccountsRepository>();
+            services.AddScoped<IDisplayMessage, DisplayMessage>();
 
             services.AddAuthorizationCore();
 
