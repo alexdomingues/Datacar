@@ -13,6 +13,9 @@ namespace Datacar.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class DriversController : ControllerBase
     {
         private readonly ApplicationDBContext context;
@@ -37,8 +40,7 @@ namespace Datacar.Server.Controllers
             return driverinfo;
         }
 
-        [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet]        
         public async Task<ActionResult<List<Drivers>>> Get()
         {
             var listDrivers = await context.Drivers.ToListAsync();
