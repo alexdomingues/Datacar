@@ -1,0 +1,94 @@
+﻿<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        @foreach (var link in links)
+        {
+<li @onclick="@(() => SelectedPageInternal(link))"
+    style="cursor: pointer;"
+    class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)">
+    <span class="page-link" href="#">@link.Text</span>
+</li>}
+    </ul>
+</nav>
+
+@code {
+    [Parameter] public int CurrentPage { get; set; } = 1;
+    [Parameter] public int TotalAmountPages { get; set; }
+    // to limit the number of pages available between the page selected
+    [Parameter] public int Radius { get; set; } = 3;
+    // event when the user clicks Previous, After or a Page number
+    [Parameter] public EventCallback<int> SelectedPage { get; set; }
+    List<LinkModel> links;
+
+    private async Task SelectedPageInternal(LinkModel link)
+    {
+        if (link.Page == CurrentPage)
+        {
+            return;
+        }
+
+        if (!link.Enabled)
+        {
+            return;
+        }
+
+        CurrentPage = link.Page;
+        await SelectedPage.InvokeAsync(link.Page);
+    }
+
+    protected override void OnParametersSet()
+    {
+        LoadPages();
+        base.OnParametersSet();
+    }
+
+    // link generation
+    private void LoadPages()
+    {
+        links = new List<LinkModel>();
+        // previous button
+        var isPreviousPageLinkEnabled = CurrentPage != 1;
+        var previousPage = CurrentPage - 1;
+        links.Add(new LinkModel(previousPage, isPreviousPageLinkEnabled, "Previous"));
+
+        // iteration to display the pages in the pagination
+        for (int i = 1; i <= TotalAmountPages; i++)
+        {
+            // logic to determine the links to display
+            if (i >= CurrentPage - Radius && i <= CurrentPage + Radius)
+            {
+                links.Add(new LinkModel(i) { Active = CurrentPage == i });
+            }
+        }
+
+        // next button
+        var isNextPageLinkEnabled = CurrentPage != TotalAmountPages;
+        var nextPage = CurrentPage + 1;
+        links.Add(new LinkModel(nextPage, isNextPageLinkEnabled, "Next"));
+    }
+
+    class LinkModel
+    {
+        public LinkModel(int page)
+            : this(page, true) { }
+
+        public LinkModel(int page, bool enabled)
+            : this(page, enabled, page.ToString())
+        { }
+
+        public LinkModel(int page, bool enabled, string text)
+        {
+            Page = page;
+            Enabled = enabled;
+            Text = text;
+        }
+
+        // text to display in the button
+        public string Text { get; set; }
+        // page to which the page the button is linked to
+        public int Page { get; set; }
+        // if the option is enabled or disabled
+        public bool Enabled { get; set; } = true;
+        // current page selected
+        public bool Active { get; set; } = false;
+    }
+}

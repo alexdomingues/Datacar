@@ -1,0 +1,68 @@
+﻿<EditForm Model="DatacarUser" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>Primeiro Nome</label>
+        <InputText class="form-control" @bind-Value="@DatacarUser.FirstName" />
+        <ValidationMessage For="@(()=>DatacarUser.FirstName)" />
+        <label>Último Nome</label>
+        <InputText class="form-control" @bind-Value="@DatacarUser.LastName" />
+        <ValidationMessage For="@(()=>DatacarUser.LastName)" />
+        <label>Endereço</label>
+        <InputText class="form-control" @bind-Value="@DatacarUser.Address" />
+        <ValidationMessage For="@(()=>DatacarUser.Address)" />
+        <label>Código Postal</label>
+        <InputText class="form-control" @bind-Value="@DatacarUser.PostalCode" />
+        <ValidationMessage For="@(()=>DatacarUser.PostalCode)" />
+        <label>Localidade</label>
+        <InputText class="form-control" @bind-Value="@DatacarUser.Local" />
+        <ValidationMessage For="@(()=>DatacarUser.Local)" />
+        <label>Idioma</label>
+        <select class="form-control" @bind="@DatacarUser.Language">
+            <option value="0">
+                -- Seleccione um idioma
+            </option>
+            @foreach (int language in Enum.GetValues(typeof(Language)))
+            {
+                <option value="@language">@Enum.GetName(typeof (Language), language)</option>
+            }
+        </select>
+        <ValidationMessage For="@(()=>DatacarUser.Language)" />
+        <label>Data de Nascimento</label>
+        <InputDate class="form-control" @bind-Value="@DatacarUser.BornDate" />
+        <ValidationMessage For="@(()=>DatacarUser.BornDate)" />
+        <label>Número de Telefone</label>
+        <InputText class="form-control" @bind-Value="@DatacarUser.PhoneNumber" />
+        <ValidationMessage For="@(()=>DatacarUser.PhoneNumber)" />
+        <label>Número de Telemóvel</label>
+        <InputText class="form-control" @bind-Value="@DatacarUser.MobilePhoneNumber" />
+        <ValidationMessage For="@(()=>DatacarUser.MobilePhoneNumber)" />
+        <label>Email</label>
+        <InputText class="form-control" @bind-Value="@DatacarUser.Email" />
+        <ValidationMessage For="@(()=>DatacarUser.Email)" />
+        <label>Observações</label>
+        <InputTextArea class="form-control" @bind-Value="@DatacarUser.Comment" />
+        <ValidationMessage For="@(()=>DatacarUser.Comment)" />
+        <label>Nível de Acesso</label>
+        <select class="form-control" @bind="@DatacarUser.AccessLevel">
+            <option value="0">
+                -- Seleccione um nível de acesso
+            </option>
+            @foreach (int accessLevel in Enum.GetValues(typeof(AccessLevel)))
+            {
+                <option value="@accessLevel">@Enum.GetName(typeof (AccessLevel), accessLevel)</option>
+            }
+        </select>
+        <ValidationMessage For="@(()=>DatacarUser.AccessLevel)" />
+        <label>Data de Validade</label>
+        <InputDate class="form-control" @bind-Value="@DatacarUser.Validity" />
+        <ValidationMessage For="@(()=>DatacarUser.Validity)" />
+    </div>
+    <button class="btn btn-success" type="submit">Gravar</button>
+</EditForm>
+
+@code {
+    [Parameter] public DatacarUser DatacarUser { get; set; }
+
+    // Cascading parameter to invoke Create or Edit method
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+}

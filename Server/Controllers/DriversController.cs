@@ -1,4 +1,5 @@
 ﻿using Datacar.Server.Helpers;
+using Datacar.Shared.DTOs;
 using Datacar.Shared.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -40,15 +41,21 @@ namespace Datacar.Server.Controllers
             return driverinfo;
         }
 
-        [HttpGet]        
-        public async Task<ActionResult<List<Drivers>>> Get()
+        [HttpGet]
+        // We use input parameter for pagination and [FromQuery] because we are going to use query string
+        public async Task<ActionResult<List<Drivers>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
-            var listDrivers = await context.Drivers.ToListAsync();
-            if (listDrivers == null)
+            var queryable = context.Drivers.AsQueryable();
+            await HttpContext.InsertPaginationParametersInResponse(queryable, paginationDTO.RecordsPerPage);
+
+            //var listDrivers = await context.Drivers.ToListAsync();
+            var listDriversPaginated = await queryable.Paginate(paginationDTO).ToListAsync();
+
+            if (listDriversPaginated == null)
             {
                 return NotFound();
             }
-            return listDrivers;
+            return listDriversPaginated;
         }
 
         [HttpPost]

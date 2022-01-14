@@ -1,4 +1,4 @@
-﻿<GenericList List="Users">
+﻿<GenericList List="DatacarUser">
     <ElementTemplate Context="user">
         <UserIndividual User="user" DeleteUser="DeleteUser" ListType="@ListType"></UserIndividual>
     </ElementTemplate>
@@ -7,7 +7,7 @@
 @code{
     [Parameter] public string ListType { get; set; }
 
-    [Parameter] public List<Users> Users { get; set; }
+    [Parameter] public List<DatacarUser> DatacarUser { get; set; }
 
     protected override void OnInitialized()
     {
@@ -15,10 +15,10 @@
     }
 
     //private async Task DeleteDriver(Drivers driver)
-    private void DeleteUser(Users user)
+    private void DeleteUser(DatacarUser user)
     {
         // Modal com confirmação
         Console.WriteLine($"Utilizador apagada");
-        Users.Remove(user);
+        DatacarUser.Remove(user);
     }
 }

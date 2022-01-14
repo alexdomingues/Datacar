@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Datacar.Shared.Entities
 {
-    public class Users
+    public class DatacarUser
     {
         public int Id { get; set; }
         [Required]

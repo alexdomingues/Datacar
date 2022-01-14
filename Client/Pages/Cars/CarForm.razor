@@ -51,13 +51,15 @@
     // Cascading parameter to invoke Create or Edit method
     [Parameter] public EventCallback OnValidSubmit { get; set; }
     List<Drivers> drivers;
+    PaginationDTO paginationDTO = new PaginationDTO();
 
     protected async override Task OnInitializedAsync()
     {
         try
         {
             logger.LogInformation("Car form Page: Get Drivers list");
-            drivers = await driversRepository.GetDrivers();
+            var paginatedResponse = await driversRepository.GetDrivers(paginationDTO);
+            drivers = paginatedResponse.Response;
         }
         catch (Exception ex)
         {

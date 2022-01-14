@@ -1,9 +1,14 @@
-﻿using Datacar.Shared.Entities;
+﻿using Datacar.Server.Helpers;
+using Datacar.Shared.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Datacar.Server.Controllers
@@ -11,59 +16,47 @@ namespace Datacar.Server.Controllers
     [ApiController]
     [Route("api/[controller]")]
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-
     public class UsersController : ControllerBase
     {
         private readonly ApplicationDBContext context;
-        public UsersController(ApplicationDBContext context)
+        private readonly UserManager<IdentityUser> userManager;
+
+        public UsersController(ApplicationDBContext context,
+            UserManager<IdentityUser> userManager)
         {
             this.context = context;
-        }
-
-        [HttpGet("{userId}")]
-        public async Task<ActionResult<Users>> Get(int userId)
-        {
-            var userInfo = await context.Users.FirstOrDefaultAsync(x => x.Id == userId);
-            if (userInfo == null)
-            {
-                return NotFound();
-            }
-            return userInfo;
+            this.userManager = userManager;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Users>>> Get()
+        public async Task<ActionResult<List<UserDTO>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
-            return await context.Users.ToListAsync();
+            var queryable = context.Users.AsQueryable();
+            await HttpContext.InsertPaginationParametersInResponse(queryable, paginationDTO.RecordsPerPage);
+            return await queryable.Paginate(paginationDTO)
+                .Select(x => new UserDTO { Email = x.Email, UserId = x.Id }).ToListAsync();
         }
 
-        [HttpPost]
-        public async Task<ActionResult<int>> Post(Users user)
+        [HttpGet("roles")]
+        public async Task<ActionResult<List<RoleDTO>>> Get()
         {
-            context.Add(user);
-            await context.SaveChangesAsync();
-            return user.Id;
+            return await context.Roles
+                .Select(x => new RoleDTO { RoleName = x.Name }).ToListAsync();
         }
 
-        [HttpPut]
-        public async Task<ActionResult<Users>> Put(Users user)
+        [HttpPost("assignRole")]
+        public async Task<ActionResult> AssignRole(EditRoleDTO editRoleDTO)
         {
-            context.Attach(user).State = EntityState.Modified;
-            await context.SaveChangesAsync();
+            var user = await userManager.FindByIdAsync(editRoleDTO.UserId);
+            await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, editRoleDTO.RoleName));
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        [HttpPost("removeRole")]
+        public async Task<ActionResult> RemoveRole(EditRoleDTO editRoleDTO)
         {
-            var user = await context.Users.FirstOrDefaultAsync(x => x.Id == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            context.Remove(user);
-            await context.SaveChangesAsync();
+            var user = await userManager.FindByIdAsync(editRoleDTO.UserId);
+            await userManager.RemoveClaimAsync(user, new Claim(ClaimTypes.Role, editRoleDTO.RoleName));
             return NoContent();
         }
     }
