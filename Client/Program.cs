@@ -46,10 +46,12 @@ namespace Datacar.Client
             //configure the IRepository service and the class that implements the interface
             //easily change the class to implement other sources,apis, etc
             services.AddScoped<IHttpService, HttpService>();
-            services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IDatacarUserRepository, DatacarUserRepository>();
+            services.AddScoped<IUsersRepository, UserRepository>();
             services.AddScoped<IDriversRepository, DriversRepository>();
             services.AddScoped<ICarsRepository, CarsRepository>();
             services.AddScoped<IAccountsRepository, AccountsRepository>();
+            services.AddScoped<IDisplayMessage, DisplayMessage>();
 
             services.AddAuthorizationCore();
 

@@ -1,17 +1,17 @@
-﻿@page "/users/create"
-@inject IUsersRepository usersRepository
+﻿@page "/datacaruser/create"
+@inject IDatacarUserRepository usersRepository
 @inject NavigationManager navigationManager
-@inject ILogger<Users> logger
+@inject ILogger<DatacarUser> logger
 @attribute [Authorize]
 
 <h3>Novo utilizador</h3>
 
 <div>
-    <UserForm User=user OnValidSubmit="Create"></UserForm>
+    <DatacarUserForm User=user OnValidSubmit="Create"></DatacarUserForm>
 </div>
 
 @code {
-    private Users user = new Users();
+    private DatacarUser user = new DatacarUser();
 
     private async Task Create()
     {

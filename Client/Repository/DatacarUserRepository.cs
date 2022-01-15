@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Datacar.Client.Repository
 {
-    public class UsersRepository: IUsersRepository
+    public class DatacarUserRepository: IDatacarUserRepository
     {
         private readonly IHttpService httpService;
         //endpoint where the controller is located
-        public string url = "api/users";
+        public string url = "api/datacaruser";
 
-        public UsersRepository(IHttpService httpService)
+        public DatacarUserRepository(IHttpService httpService)
         {
             this.httpService = httpService;
         }
 
-        public async Task<Users> GetUserById(int userId)
+        public async Task<DatacarUser> GetUserById(int userId)
         {
-            var response = await httpService.Get<Users>($"{url}/{userId}");
+            var response = await httpService.Get<DatacarUser>($"{url}/{userId}");
 
             if (!response.Success)
             {
@@ -28,16 +28,16 @@ namespace Datacar.Client.Repository
             return response.Response;
         }
 
-        public async Task<List<Users>> GetUsers()
+        public async Task<List<DatacarUser>> GetUsers()
         {
-            var response = await httpService.Get<List<Users>>(url);
+            var response = await httpService.Get<List<DatacarUser>>(url);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());
             }
             return response.Response;
         }
-        public async Task CreateUser(Users user)
+        public async Task CreateUser(DatacarUser user)
         {
             var response = await httpService.Post(url, user);
             if (!response.Success)
@@ -46,7 +46,7 @@ namespace Datacar.Client.Repository
             }
         }
 
-        public async Task UpdateUser(Users user)
+        public async Task UpdateUser(DatacarUser user)
         {
             var response = await httpService.Put(url, user);
             if (!response.Success)

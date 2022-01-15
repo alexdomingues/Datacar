@@ -1,12 +1,9 @@
-﻿using Datacar.Server.Helpers;
-using Datacar.Shared.Entities;
+﻿using Datacar.Shared.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Datacar.Server.Controllers
@@ -16,43 +13,43 @@ namespace Datacar.Server.Controllers
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
-    public class CarsController : ControllerBase
+    public class DatacarUserController : ControllerBase
     {
         private readonly ApplicationDBContext context;
-        public CarsController(ApplicationDBContext context)
+        public DatacarUserController(ApplicationDBContext context)
         {
             this.context = context;
         }
 
-        [HttpGet("{carId}")]
-        public async Task<ActionResult<Cars>> Get(int carId)
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<DatacarUser>> Get(int userId)
         {
-            var carInfo = await context.Cars.FirstOrDefaultAsync(x => x.Id == carId);
-            if (carInfo == null)
+            var userInfo = await context.DatacarUser.FirstOrDefaultAsync(x => x.Id == userId);
+            if (userInfo == null)
             {
                 return NotFound();
             }
-            return carInfo;
+            return userInfo;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Cars>>> Get()
+        public async Task<ActionResult<List<DatacarUser>>> Get()
         {
-            return await context.Cars.ToListAsync();
+            return await context.DatacarUser.ToListAsync();
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post(Cars car)
+        public async Task<ActionResult<int>> Post(DatacarUser datacarUser)
         {
-            context.Add(car);
+            context.Add(datacarUser);
             await context.SaveChangesAsync();
-            return car.Id;
+            return datacarUser.Id;
         }
-        
+
         [HttpPut]
-        public async Task<ActionResult<Cars>> Put(Cars car)
+        public async Task<ActionResult<DatacarUser>> Put(DatacarUser datacarUser)
         {
-            context.Attach(car).State = EntityState.Modified;
+            context.Attach(datacarUser).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return NoContent();
         }
@@ -60,12 +57,12 @@ namespace Datacar.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var car = await context.Cars.FirstOrDefaultAsync(x => x.Id == id);
-            if (car == null)
+            var user = await context.DatacarUser.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null)
             {
                 return NotFound();
             }
-            context.Remove(car);
+            context.Remove(user);
             await context.SaveChangesAsync();
             return NoContent();
         }

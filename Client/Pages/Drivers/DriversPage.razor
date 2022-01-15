@@ -1,7 +1,7 @@
 ﻿@page "/drivers"
 @inject IDriversRepository driversRepository
 @inject ILogger<Drivers> logger
-@attribute [Authorize]
+@*attribute [Authorize]*@
 
 <div class="main-page-container">
     <div class="row main-page-header">
@@ -17,6 +17,9 @@
         </AuthorizeView>
     </div>
 </div>
+
+<Pagination CurrentPage="@paginationDTO.Page" TotalAmountPages="totalAmountPages"
+            SelectedPage="SelectedPage" />
 
 <div class="main-list">
     <DriversList Drivers="drivers" />
@@ -52,20 +55,37 @@
 
 @code {
     List<Drivers> drivers;
+    PaginationDTO paginationDTO = new PaginationDTO() { RecordsPerPage = 1 };
+    private int totalAmountPages;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            logger.LogInformation("Drivers Page: Get Drivers list");
-            drivers = await driversRepository.GetDrivers();
-
+            await LoadDrivers();
         }
         catch (Exception ex)
         {
             logger.LogError($"Drivers Page:{ex.Message.ToString()}");
         }
     }
+
+    private async Task LoadDrivers()
+    {
+        logger.LogInformation("Drivers Page: Get Drivers list");
+        var paginatedResponse = await driversRepository.GetDrivers(paginationDTO);
+        drivers = paginatedResponse.Response;
+        totalAmountPages = paginatedResponse.TotalAmountPages;
+
+        Console.WriteLine($"Total Pages = {paginatedResponse.TotalAmountPages}");
+    }
+
+    private async Task SelectedPage(int page)
+    {
+        paginationDTO.Page = page;
+        await LoadDrivers();
+    }
+
     //
     //singleton.Value += 1;
     //transient.Value += 1

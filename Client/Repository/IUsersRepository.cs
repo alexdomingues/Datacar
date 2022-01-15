@@ -1,15 +1,16 @@
-﻿using Datacar.Shared.Entities;
+﻿using Datacar.Shared.DTOs;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Datacar.Client.Repository
 {
     public interface IUsersRepository
     {
-        Task CreateUser(Users user);
-        Task<Users> GetUserById(int userId);
-        Task<List<Users>> GetUsers();
-        Task DeleteUser(int userId);
-        Task UpdateUser(Users user);
+        Task AssignRole(EditRoleDTO editRole);
+        Task<List<RoleDTO>> GetRoles();
+        Task<PaginatedResponse<List<UserDTO>>> GetUsers(PaginationDTO paginationDTO);
+        Task RemoveRole(EditRoleDTO editRole);
     }
 }

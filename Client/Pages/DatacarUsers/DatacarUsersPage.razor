@@ -1,8 +1,8 @@
-﻿@page "/users"
-@inject IUsersRepository usersRepository
-@inject ILogger<Users> logger
+﻿@page "/datacaruser"
+@inject IDatacarUserRepository usersRepository
+@inject ILogger<DatacarUser> logger
 @inject IJSRuntime js
-@attribute [Authorize]
+@*attribute [Authorize]*@
 
 <div class="main-page-container">
     <div class="row main-page-header">
@@ -20,7 +20,7 @@
     </div>*@
 
 <div class="main-list">
-    <GenericList List="users">
+    <GenericList List="datacarUser">
         <WholeListTemplate>
             <table class="table table-striped">
                 <thead>
@@ -31,7 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in users)
+                    @foreach (var item in datacarUser)
                     {
                         <tr>
                             <td>@item.FirstName</td>
@@ -49,14 +49,14 @@
 
 @code {
     string listTypeShort = ListType.Short.ToString();
-    List<Users> users;
+    List<DatacarUser> datacarUser;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             logger.LogInformation("Users Page: Get Users list");
-            users = await usersRepository.GetUsers();
+            datacarUser = await usersRepository.GetUsers();
         }
         catch (Exception ex)
         {
@@ -74,7 +74,7 @@
                 await usersRepository.DeleteUser(Id);
                 logger.LogInformation($"Users Page: User {Id} deleted");
                 logger.LogInformation("Users Page: Get Users list");
-                users = await usersRepository.GetUsers();
+                datacarUser = await usersRepository.GetUsers();
             }
         }
         catch (Exception ex)

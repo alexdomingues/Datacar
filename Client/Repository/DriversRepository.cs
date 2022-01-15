@@ -1,4 +1,5 @@
 ﻿using Datacar.Client.Helpers;
+using Datacar.Shared.DTOs;
 using Datacar.Shared.Entities;
 using System;
 using System.Collections.Generic;
@@ -28,15 +29,23 @@ namespace Datacar.Client.Repository
             return response.Response;
         }
 
-        public async Task<List<Drivers>> GetDrivers()
+        //Get the whole list of drivers
+        //public async Task<List<Drivers>> GetDrivers()
+        //{
+        //    var response = await httpService.Get<List<Drivers>>(url);
+        //    if (!response.Success)
+        //    {
+        //        throw new ApplicationException(await response.GetBody());
+        //    }
+        //    return response.Response;
+        //}
+
+        // Get the list of drivers paginated
+        public async Task<PaginatedResponse<List<Drivers>>> GetDrivers(PaginationDTO paginationDTO)
         {
-            var response = await httpService.Get<List<Drivers>>(url);
-            if (!response.Success)
-            {
-                throw new ApplicationException(await response.GetBody());
-            }
-            return response.Response;
+            return await httpService.GetHelper<List<Drivers>>(url, paginationDTO);
         }
+
         public async Task CreateDriver(Drivers driver)
         {
             var response = await httpService.Post(url, driver);

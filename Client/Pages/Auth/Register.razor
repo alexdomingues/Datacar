@@ -8,7 +8,7 @@
 
 <h3>Register</h3>
 
-<EditForm Model="userInfo" OnValidSubmit="CreateUser">
+<EditForm Model="userInfo" OnValidSubmit="RegisterUser">
     <DataAnnotationsValidator />
 
     <div class="form-group">
@@ -34,7 +34,7 @@
 @code {
     private UserInfo userInfo = new UserInfo();
 
-    private async Task CreateUser()
+    private async Task RegisterUser()
     {
         var userToken = await accountsRepository.Register(userInfo);
         await loginService.Login(userToken);
