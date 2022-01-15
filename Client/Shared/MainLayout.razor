@@ -1,19 +1,16 @@
 ﻿@inherits LayoutComponentBase
 @inject IDisplayMessage displayMessage
+@inject NavigationManager navigationManager
 
 <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
-
     <div class="main">
-        <LoginLinks></LoginLinks>
         <div class="top-row px-4">
-            <a href="" class="btn btn-danger" @onclick="@(()=>sweetalert())">Logout</a>
+            @*<a href="" class="btn btn-danger" @onclick="@(()=>sweetalert())">Logout</a>*@
+            <a href="" class="btn btn-danger" @onclick="@(()=>LogoutUser())">Logout</a>
         </div>
-
-        
-
         @*<div class="content px-4">*@
         <div class="main-content">
             @Body
@@ -26,5 +23,11 @@
     private async void sweetalert()
     {
         await displayMessage.DisplayErrorMessage("You must be logged in");
+    }
+
+    private void LogoutUser()
+    {
+        Console.WriteLine("LOGOUT");
+        navigationManager.NavigateTo("logout");
     }
 }

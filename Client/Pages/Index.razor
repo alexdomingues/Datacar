@@ -1,15 +1,15 @@
 ﻿@page "/"
 @attribute [Authorize]
+@layout MainLayout
 
-<h1>DATACAR</h1>
-<AuthorizeView>
-    <Authorized>
-        <text>Authorized!!!, @context.User.Identity.Name</text>
-    </Authorized>
-    <NotAuthorized>
-        <text>Not Authorized!?!?!</text>
-    </NotAuthorized>
+    <h1>DATACAR</h1>
 
-</AuthorizeView>
-<p>This is where the map will be displayed</p>
-<p>No NavMenu</p>
+    <AuthorizeView>
+        <Authorized>
+            <text>USER: @context.User.Identity.Name</text>
+        </Authorized>
+    </AuthorizeView>
+    <p>This is where the map will be displayed</p>
+    <p>No NavMenu</p>
+
+

@@ -11,7 +11,6 @@ namespace Datacar.Server
         {
 
         }
-
         public DbSet<Cars> Cars { get; set; }
         public DbSet<Drivers> Drivers { get; set; }
         public DbSet<DatacarUser> DatacarUser { get; set; }

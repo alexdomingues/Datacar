@@ -1,0 +1,16 @@
+﻿@page "/pagenotfound"
+
+@attribute [Authorize]
+@inherits LayoutComponentBase
+@inject NavigationManager navigationManager
+@layout MainLayout
+
+<AuthorizeView>
+    <Authorized>
+        <h3>404PageNotFound</h3>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+
+}
