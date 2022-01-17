@@ -1,15 +1,19 @@
 ﻿@page "/"
-@attribute [Authorize]
 @layout MainLayout
+@attribute [Authorize]
 
-    <h1>DATACAR</h1>
+<h1>DATACAR</h1>
 
-    <AuthorizeView>
-        <Authorized>
-            <text>USER: @context.User.Identity.Name</text>
-        </Authorized>
-    </AuthorizeView>
-    <p>This is where the map will be displayed</p>
-    <p>No NavMenu</p>
+<AuthorizeView>
+    <Authorized>
+        <p>USER: @context.User.Identity.Name</p>
+    </Authorized>
+</AuthorizeView>
+
+<br />
+
+<p>This is where the map will be displayed</p>
+
+<p>index.razor</p>
 
 

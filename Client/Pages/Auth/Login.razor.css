@@ -1,0 +1,11 @@
+﻿.loginform {
+    padding: 32px;
+    margin-top: 140px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+}
+
+h3 {
+    margin-top: 0px;
+    margin-bottom: 24px;
+    color: darkorange;
+}

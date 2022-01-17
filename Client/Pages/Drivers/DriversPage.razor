@@ -1,7 +1,8 @@
 ﻿@page "/drivers"
+@layout MainLayout
 @inject IDriversRepository driversRepository
 @inject ILogger<Drivers> logger
-@*attribute [Authorize]*@
+@attribute [Authorize]
 
 <div class="main-page-container">
     <div class="row main-page-header">
@@ -18,12 +19,13 @@
     </div>
 </div>
 
-<Pagination CurrentPage="@paginationDTO.Page" TotalAmountPages="totalAmountPages"
-            SelectedPage="SelectedPage" />
-
 <div class="main-list">
     <DriversList Drivers="drivers" />
 </div>
+
+<Pagination CurrentPage="@paginationDTO.Page" TotalAmountPages="totalAmountPages"
+            SelectedPage="SelectedPage" />
+
 
 @*<div>
     <GenericList List="cars">

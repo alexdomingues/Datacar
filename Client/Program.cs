@@ -1,3 +1,4 @@
+using BlazorStrap;
 using Datacar.Client.Auth;
 using Datacar.Client.Helpers;
 using Datacar.Client.Repository;
@@ -52,6 +53,8 @@ namespace Datacar.Client
             services.AddScoped<ICarsRepository, CarsRepository>();
             services.AddScoped<IAccountsRepository, AccountsRepository>();
             services.AddScoped<IDisplayMessage, DisplayMessage>();
+
+            services.AddBlazorStrap();
 
             services.AddAuthorizationCore();
 

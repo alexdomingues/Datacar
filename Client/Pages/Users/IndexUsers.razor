@@ -1,41 +1,63 @@
 ﻿@page "/users"
+@layout MainLayout
 @inject IUsersRepository usersRepository
+@inject NavigationManager navigationManager
+@attribute [Authorize(Roles = Constants.Admin)]
 
-<Pagination CurrentPage="@paginationDTO.Page" SelectedPage="SelectedPage"
-            TotalAmountPages="totalAmountOfPages"></Pagination>
-
-<h3>Index Users</h3>
-
-<GenericList List="Users">
-    <WholeListTemplate>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>User</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Users)
-                {
-                    <tr>
-                        <td>
-                            <a href="/users/edit/@user.UserId" class="btn btn-success">Edit</a>
-                        </td>
-                        <td>
-                            @user.Email
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </WholeListTemplate>
-</GenericList>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="listTitle">
+                <h3>Lista de utilizadores</h3>
+            </div>
+            <div>
+                <button type="button" class="btn btn-outline-dark" @onclick="@(()=>Register())">Register</button>
+            </div>
+            <div>
+                <GenericList List="Users">
+                    <WholeListTemplate>
+                        <table class="table table-hover generic-list">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Utilizador</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Users)
+                                {
+                                    <tr>
+                                        <td>
+                                            @user.Email
+                                        </td>
+                                        <td>
+                                            <a href="/users/edit/@user.UserId" class="btn btn-success">Edit</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </WholeListTemplate>
+                </GenericList>
+            </div>
+            <div>
+                <Pagination CurrentPage="@paginationDTO.Page" TotalAmountPages="totalAmountPages"
+                            SelectedPage="SelectedPage" />
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     List<UserDTO> Users;
+
     PaginationDTO paginationDTO = new PaginationDTO();
-    int totalAmountOfPages;
+    int totalAmountPages;
+
+    private void Register()
+    {
+        navigationManager.NavigateTo("register");
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,6 +74,6 @@
     {
         var paginatedResponse = await usersRepository.GetUsers(paginationDTO);
         Users = paginatedResponse.Response;
-        totalAmountOfPages = paginatedResponse.TotalAmountPages;
+        totalAmountPages = paginatedResponse.TotalAmountPages;
     }
 }

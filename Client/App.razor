@@ -1,16 +1,16 @@
 ﻿@using Datacar.Client.Pages.Auth
- 
+
 <Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
     <Found Context="routeData">
-        @*<AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" >*@
-        <AuthorizeRouteView RouteData="@routeData">
+        @*<AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">*@
+            <AuthorizeRouteView RouteData="@routeData">
             <Authorizing>                
-                <LayoutView Layout="@typeof(MainLayout)">
+                <LayoutView>
                     <text>Custom authorizing</text>
                 </LayoutView>
             </Authorizing>
             <NotAuthorized>
-                <LayoutView Layout="@typeof(Login)">
+                <LayoutView Layout="@typeof(Login)">            
                     <RedirectToLogin />
                 </LayoutView>
             </NotAuthorized>

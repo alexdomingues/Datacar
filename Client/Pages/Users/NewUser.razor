@@ -1,21 +1,22 @@
-﻿@page "/login"
+﻿@page "/register"
 @inherits LayoutComponentBase
 @inject IAccountsRepository accountsRepository
 @inject NavigationManager navigationManager
 @inject ILoginService loginService
 @inject IDisplayMessage displayMessage
+@attribute [Authorize(Roles = Constants.Admin)]
 
 @using Datacar.Client.Auth
 
 <div class="container">
     <div class="row justify-content-center">
         <div class="col col-lg-4">
-            <div class="rounded loginform">
+            <div class="rounded registerform">
                 <div>
-                    <h3>Login to Datacar</h3>
+                    <h3>Register new user</h3>
                 </div>
                 <div>
-                    <EditForm Model="userInfo" OnValidSubmit="LoginUser">
+                    <EditForm Model="userInfo" OnValidSubmit="RegisterUser">
                         <DataAnnotationsValidator />
                         <div class="form-group">
                             <label>Email:</label>
@@ -31,8 +32,8 @@
                                 <ValidationMessage For="@(() => userInfo.Password)" />
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Login</button>                        
-                        @*<button type="button" class="btn btn-outline-dark" @onclick="@(()=>Register())">Register</button>*@
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        <a href="login">Return to login</a>
                     </EditForm>
                 </div>
             </div>
@@ -43,17 +44,18 @@
 
 @code {
     private UserInfo userInfo = new UserInfo();
-    
+
     private async void sweetalert(String type, String message)
     {
         await displayMessage.DisplayErrorMessage(message);
     }
 
-    private async Task LoginUser()
+    private async Task RegisterUser()
+
     {
         try
         {
-            var userToken = await accountsRepository.Login(userInfo);
+            var userToken = await accountsRepository.Register(userInfo);
             await loginService.Login(userToken);
             navigationManager.NavigateTo("");
         }
@@ -63,9 +65,5 @@
 
         }
     }
-
-    private void Register()
-    {
-        navigationManager.NavigateTo("register");
-    }
+}
 }
