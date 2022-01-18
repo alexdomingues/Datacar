@@ -59,7 +59,7 @@
             await loginService.Login(userToken);
             navigationManager.NavigateTo("");
         }
-        catch (Exception ex)
+        catch 
         {
             sweetalert(Constants.SWError, Constants.AuthorizationFailed);
 

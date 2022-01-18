@@ -19,10 +19,10 @@ namespace Datacar.Server.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ApplicationDBContext context;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
         public UsersController(ApplicationDBContext context,
-            UserManager<IdentityUser> userManager)
+            UserManager<ApplicationUser> userManager)
         {
             this.context = context;
             this.userManager = userManager;

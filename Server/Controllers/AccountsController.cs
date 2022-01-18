@@ -19,13 +19,13 @@ namespace Datacar.Server.Controllers
     [Route("api/[controller]")]
     public class AccountsController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
 
         public AccountsController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             IConfiguration configuration)
         {
             _userManager = userManager;
@@ -36,10 +36,22 @@ namespace Datacar.Server.Controllers
         [HttpPost("Create")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
         {
-            var user = new IdentityUser
+            // TODO must have the field already available in the AspNetUsers
+            var user = new ApplicationUser
             {
                 UserName = model.Email,
-                Email = model.Email
+                Email = model.Email,
+                // new fields required by Datacar scope
+                Language = model.Language,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Address = model.Address,
+                PostalCode = model.PostalCode,
+                Local = model.Local,
+                BornDate = model.BornDate,
+                MobilePhoneNumber = model.MobilePhoneNumber,
+                Comment = model.Comment,
+                ExpireDate = model.ExpireDate
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
