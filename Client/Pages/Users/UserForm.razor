@@ -38,7 +38,8 @@
     <div class="form-group">
         @*TODO: use a blazor field for option and add Validation*@
         <label>Idioma</label>
-        <select class="form-control" @bind="@UserInfo.Language">
+
+@*        <select class="form-control" @bind="@UserInfo.Language">
             <option value="0">
                 -- Seleccione um idioma
             </option>
@@ -46,7 +47,18 @@
             {
                 <option value="@language">@Enum.GetName(typeof(Language), language)</option>
             }
-        </select>
+        </select>*@
+
+        <InputSelect class="form-control" @bind-Value="@UserInfo.Language">
+            <option value="0">
+                -- Seleccione um idioma
+            </option>
+             @foreach (int language in Enum.GetValues(typeof(Language)))
+            {
+                <option value="@language">@Enum.GetName(typeof(Language), language)</option>
+            }
+        </InputSelect>
+
         <ValidationMessage For="@(()=>UserInfo.Language)" />
     </div>
     <div class="form-group">
