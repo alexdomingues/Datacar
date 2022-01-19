@@ -5,14 +5,16 @@
 @attribute [Authorize(Roles = Constants.Admin)]
 
 <div class="container">
+    <div class="row list-title">
+        <div class="col">
+            <h3>Lista de utilizadores</h3>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-outline-dark" @onclick="@(()=>Register())">Novo Utilizador</button>
+        </div>
+    </div>
     <div class="row">
         <div class="col">
-            <div class="listTitle">
-                <h3>Lista de utilizadores</h3>
-            </div>
-            <div>
-                <button type="button" class="btn btn-outline-dark" @onclick="@(()=>Register())">Register</button>
-            </div>
             <div>
                 <GenericList List="Users">
                     <WholeListTemplate>
@@ -56,7 +58,7 @@
 
     private void Register()
     {
-        navigationManager.NavigateTo("register");
+        navigationManager.NavigateTo("users/create");
     }
 
     protected override async Task OnInitializedAsync()

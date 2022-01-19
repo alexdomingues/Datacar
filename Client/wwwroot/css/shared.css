@@ -33,6 +33,11 @@ main-page-title {
     border-bottom: 1pt;
     border-color: grey;
 }
-.listTitle h3 {
+.list-title h3 {
     color: green;
+}
+
+/*form list*/
+.form-list {
+    margin-top: 32px;
 }

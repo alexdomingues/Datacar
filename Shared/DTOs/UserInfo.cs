@@ -26,5 +26,6 @@ namespace Datacar.Shared.DTOs
         //[Required]
         //public int AccessLevel { get; set; }
         public DateTime? ExpireDate { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }
