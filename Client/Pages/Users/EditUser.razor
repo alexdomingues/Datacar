@@ -1,11 +1,15 @@
-﻿@page "/users/edit/{userId}"
+﻿@page "/users/edit/{UserId}"
 @layout MainLayout
 @inject IUsersRepository usersRepository
 @inject IDisplayMessage displayMessage
-@attribute [Authorize]
+@inject ILogger<UserInfo> logger
+@attribute [Authorize(Roles = "Admin")]
 
-<h3>Edit User</h3>
-
+<h3>Editar utilizador</h3>
+<div>
+    <a href="/users">Voltar</a>
+</div>
+<h3>ROLE</h3>
 <div class="form-inline">
     <select class="form-control mb-2 mr-sm-2" @bind="selectedRole">
         <option value="0">--Select a role--</option>
@@ -18,15 +22,40 @@
     <button class="btn btn-info mb-2 mr-sm-2" @onclick="AssignRole">Assign Role</button>
     <button class="btn btn-danger mb-2 mr-sm-2" @onclick="RemoveRole">Remove Role</button>
 </div>
+<h3>USER DATA</h3>
+<div>    
+    <UserForm UserInfo=userInfo OnValidSubmit="UpdateUser"></UserForm>
+</div>
 
 @code {
     [Parameter] public string UserId { get; set; }
+
+
+    public UserInfo userInfo = new UserInfo();
+
     private List<RoleDTO> roles = new List<RoleDTO>();
     private string selectedRole = "0";
 
     protected override async Task OnInitializedAsync()
     {
         roles = await usersRepository.GetRoles();
+        userInfo = await usersRepository.GetUserById(UserId);
+    }
+
+    private async Task UpdateUser()
+    {
+        try
+        {            
+            logger.LogInformation($"Edit user {userInfo.Email}");
+            //TODO
+            //await usersRepository.UpdateUser(userInfo);
+            logger.LogInformation($"Edit user {userInfo.Email} successfully");
+            //navigationManager.NavigateTo("users");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Edit user error {userInfo.Email}: {ex.Message}");            
+        }
     }
 
     private async Task AssignRole()
@@ -52,5 +81,4 @@
         await usersRepository.RemoveRole(new EditRoleDTO() { RoleName = selectedRole, UserId = UserId });
         await displayMessage.DisplaySuccessMessage("Role removed");
     }
-
 }

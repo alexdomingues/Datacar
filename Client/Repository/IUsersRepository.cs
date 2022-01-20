@@ -10,7 +10,8 @@ namespace Datacar.Client.Repository
     {
         Task AssignRole(EditRoleDTO editRole);
         Task<List<RoleDTO>> GetRoles();
-        Task<PaginatedResponse<List<UserDTO>>> GetUsers(PaginationDTO paginationDTO);
+        Task<UserInfo> GetUserById(string userId);
+        Task<PaginatedResponse<List<UserInfo>>> GetUsers(PaginationDTO paginationDTO);
         Task RemoveRole(EditRoleDTO editRole);
     }
 }

@@ -17,9 +17,20 @@ namespace Datacar.Client.Repository
             this.httpService = httpService;
         }
 
-        public async Task<PaginatedResponse<List<UserDTO>>> GetUsers(PaginationDTO paginationDTO)
+        public async Task<PaginatedResponse<List<UserInfo>>> GetUsers(PaginationDTO paginationDTO)
         {
-            return await httpService.GetHelper<List<UserDTO>>(url, paginationDTO);
+            return await httpService.GetHelper<List<UserInfo>>(url, paginationDTO);
+        }
+
+        public async Task<UserInfo> GetUserById(string userId)
+        {
+            var response = await httpService.Get<UserInfo>($"{url}/{userId}");
+
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
         }
 
         public async Task<List<RoleDTO>> GetRoles()

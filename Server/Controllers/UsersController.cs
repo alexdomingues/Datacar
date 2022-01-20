@@ -28,13 +28,24 @@ namespace Datacar.Server.Controllers
             this.userManager = userManager;
         }
 
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<ApplicationUser>> Get(string userId)
+        {
+            var userInfo = await context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            if (userInfo == null)
+            {
+                return NotFound();
+            }
+            return userInfo;
+        }
+
         [HttpGet]
-        public async Task<ActionResult<List<UserDTO>>> Get([FromQuery] PaginationDTO paginationDTO)
+        public async Task<ActionResult<List<UserInfo>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             var queryable = context.Users.AsQueryable();
             await HttpContext.InsertPaginationParametersInResponse(queryable, paginationDTO.RecordsPerPage);
             return await queryable.Paginate(paginationDTO)
-                .Select(x => new UserDTO { Email = x.Email, UserId = x.Id }).ToListAsync();
+              .Select(x => new UserInfo { FirstName = x.FirstName, MobilePhoneNumber = x.MobilePhoneNumber , Email = x.Email, UserId = x.Id }).ToListAsync();
         }
 
         [HttpGet("roles")]

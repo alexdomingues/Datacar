@@ -7,9 +7,9 @@ namespace Datacar.Shared.DTOs
 {
     public class UserInfo
     {
+        public string UserId { get; set; }
         [Required]
         public string Email { get; set; }
-        [Required]
         public string Password { get; set; }
 
         // new fields required by Datacar scope
@@ -20,6 +20,7 @@ namespace Datacar.Shared.DTOs
         public string PostalCode { get; set; }
         public string Local { get; set; }
         public DateTime? BornDate { get; set; }
+        [Required]
         public string MobilePhoneNumber { get; set; }
         public string Comment { get; set; }
         // Use roles

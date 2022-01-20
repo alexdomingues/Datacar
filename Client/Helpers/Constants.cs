@@ -15,8 +15,9 @@ namespace Datacar.Client.Helpers
         public const string SWWarning = "Warning";
 
         // sweet alert messages : system messages
-        public const string AuthorizationFailed = "Erro no Login";
+        public const string AuthorizationFailed = "Erro no Login";        
         public const string RegistrationFailed = "Erro no Registo";
         public const string Logout = "Logout efetuado com sucesso";
+        public const string NewUserCreated = "Novo utilizador criado com sucesso";
     }
 }
