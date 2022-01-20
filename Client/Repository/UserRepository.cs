@@ -33,6 +33,24 @@ namespace Datacar.Client.Repository
             return response.Response;
         }
 
+        public async Task UpdateUser(UserInfo user)
+        {
+            var response = await httpService.Put(url, user);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+        }
+
+        public async Task DeleteUser(string userId)
+        {
+            var response = await httpService.Delete($"{url}/{userId}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+        }
+
         public async Task<List<RoleDTO>> GetRoles()
         {
             return await httpService.GetHelper<List<RoleDTO>>($"{url}/roles");
