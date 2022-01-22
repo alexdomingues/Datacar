@@ -1,34 +1,34 @@
 ﻿<EditForm Model="UserInfo" OnValidSubmit="OnValidSubmit">
-    <DataAnnotationsValidator />    
+    <DataAnnotationsValidator />
     <div class="form-group">
         <label>Email</label>
         <InputText class="form-control" @bind-Value="@UserInfo.Email" />
-        <ValidationMessage For="@(()=>UserInfo.Email)" />
-    </div>    
+        <ValidationMessage For="@(() => UserInfo.Email)" />
+    </div>
     <div class="form-group">
         <label>Primeiro Nome</label>
         <InputText class="form-control" @bind-Value="@UserInfo.FirstName" />
-        <ValidationMessage For="@(()=>UserInfo.FirstName)" />
+        <ValidationMessage For="@(() => UserInfo.FirstName)" />
     </div>
     <div class="form-group">
         <label>Último Nome</label>
         <InputText class="form-control" @bind-Value="@UserInfo.LastName" />
-        <ValidationMessage For="@(()=>UserInfo.LastName)" />
+        <ValidationMessage For="@(() => UserInfo.LastName)" />
     </div>
     <div class="form-group">
         <label>Endereço</label>
         <InputText class="form-control" @bind-Value="@UserInfo.Address" />
-        <ValidationMessage For="@(()=>UserInfo.Address)" />
+        <ValidationMessage For="@(() => UserInfo.Address)" />
     </div>
     <div class="form-group">
         <label>Código Postal</label>
         <InputText class="form-control" @bind-Value="@UserInfo.PostalCode" />
-        <ValidationMessage For="@(()=>UserInfo.PostalCode)" />
+        <ValidationMessage For="@(() => UserInfo.PostalCode)" />
     </div>
     <div class="form-group">
         <label>Localidade</label>
         <InputText class="form-control" @bind-Value="@UserInfo.Local" />
-        <ValidationMessage For="@(()=>UserInfo.Local)" />
+        <ValidationMessage For="@(() => UserInfo.Local)" />
     </div>
     <div class="form-group">
         <label>Idioma</label>
@@ -41,39 +41,40 @@
                 <option value="@language">@Enum.GetName(typeof(Language), language)</option>
             }
         </InputSelect>
-        <ValidationMessage For="@(()=>UserInfo.Language)" />
+        <ValidationMessage For="@(() => UserInfo.Language)" />
     </div>
     <div class="form-group">
         <label>Data de Nascimento</label>
         <InputDate class="form-control" @bind-Value="@UserInfo.BornDate" />
-        <ValidationMessage For="@(()=>UserInfo.BornDate)" />
+        <ValidationMessage For="@(() => UserInfo.BornDate)" />
     </div>
     <div class="form-group">
         <label>Número de Telefone</label>
         <InputText class="form-control" @bind-Value="@UserInfo.PhoneNumber" />
-        <ValidationMessage For="@(()=>UserInfo.PhoneNumber)" />
+        <ValidationMessage For="@(() => UserInfo.PhoneNumber)" />
     </div>
     <div class="form-group">
         <label>Número de Telemóvel</label>
         <InputText class="form-control" @bind-Value="@UserInfo.MobilePhoneNumber" />
-        <ValidationMessage For="@(()=>UserInfo.MobilePhoneNumber)" />
+        <ValidationMessage For="@(() => UserInfo.MobilePhoneNumber)" />
     </div>
     <div class="form-group">
         <label>Observações</label>
         <InputTextArea class="form-control" @bind-Value="@UserInfo.Comment" />
-        <ValidationMessage For="@(()=>UserInfo.Comment)" />
+        <ValidationMessage For="@(() => UserInfo.Comment)" />
     </div>
     <div class="form-group">
         <label>Data de Validade</label>
         <InputDate class="form-control" @bind-Value="@UserInfo.ExpireDate" />
-        <ValidationMessage For="@(()=>UserInfo.ExpireDate)" />
+        <ValidationMessage For="@(() => UserInfo.ExpireDate)" />
     </div>
     <button class="btn btn-success" type="submit">Gravar</button>
 </EditForm>
 
 @code {
-    [Parameter] public UserInfo UserInfo { get; set; }    
+    [Parameter] public UserInfo UserInfo { get; set; }
 
     // Cascading parameter to invoke Create or Edit method
     [Parameter] public EventCallback OnValidSubmit { get; set; }
+
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Datacar.Client.Repository
 {
-    public class UserRepository: IUsersRepository
+    public class UserRepository : IUsersRepository
     {
         private readonly IHttpService httpService;
         private readonly string url = "api/users";
@@ -24,7 +24,17 @@ namespace Datacar.Client.Repository
 
         public async Task<UserInfo> GetUserById(string userId)
         {
-            var response = await httpService.Get<UserInfo>($"{url}/{userId}");
+            var response = await httpService.Get<UserInfo>($"{url}/GetUserById/{userId}");
+
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+        public async Task<ApplicationUser> GetUserByName(string userName)
+        {
+            var response = await httpService.Get<ApplicationUser>($"{url}/GetUserByName/{userName}");
 
             if (!response.Success)
             {
@@ -33,6 +43,7 @@ namespace Datacar.Client.Repository
             return response.Response;
         }
 
+
         public async Task UpdateUser(UserInfo user)
         {
             var response = await httpService.Put(url, user);
@@ -40,6 +51,15 @@ namespace Datacar.Client.Repository
             {
                 throw new ApplicationException(await response.GetBody());
             }
+        }
+
+        public async Task ChangePassword(ChangePasswordDTO userPass)
+        {
+            var response = await httpService.Post(url, userPass);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }            
         }
 
         public async Task DeleteUser(string userId)

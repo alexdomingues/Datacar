@@ -3,33 +3,51 @@
 @inject IUsersRepository usersRepository
 @inject IDisplayMessage displayMessage
 @inject ILogger<UserInfo> logger
+@inject NavigationManager navigationManager
 @attribute [Authorize(Roles = "Admin")]
 
-<h3>Editar utilizador</h3>
-<div>
-    <a href="/users">Voltar</a>
-</div>
-<h3>ROLE</h3>
-<div class="form-inline">
-    <select class="form-control mb-2 mr-sm-2" @bind="selectedRole">
-        <option value="0">--Select a role--</option>
-        @foreach (var role in roles)
-        {
-            <option value="@role.RoleName">@role.RoleName</option>
-        }
-    </select>
+<div class="container">
+    <div class="row">
+        <div class="col col-lg-6">
+            <div class="list-title">
+                <h3>Editar utilizador</h3>
+                <div>
+                    <a href="/users">Voltar</a>
+                </div>
+            </div>
+        </div>
+        <h3>ROLE</h3>
+        <div class="form-inline">
+            <select class="form-control mb-2 mr-sm-2" @bind="selectedRole">
+                <option value="0">--Select a role--</option>
+                @foreach (var role in roles)
+                {
+                    <option value="@role.RoleName">@role.RoleName</option>
+                }
+            </select>
 
-    <button class="btn btn-info mb-2 mr-sm-2" @onclick="AssignRole">Assign Role</button>
-    <button class="btn btn-danger mb-2 mr-sm-2" @onclick="RemoveRole">Remove Role</button>
-</div>
-<h3>USER DATA</h3>
-<div>    
-    <UserForm UserInfo=userInfo OnValidSubmit="UpdateUser"></UserForm>
+            <button class="btn btn-info mb-2 mr-sm-2" @onclick="AssignRole">Assign Role</button>
+            <button class="btn btn-danger mb-2 mr-sm-2" @onclick="RemoveRole">Remove Role</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-lg-6">
+            <div class="list-title">
+                <h3>USER DATA</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div>            
+            <UserForm UserInfo=userInfo OnValidSubmit="UpdateUser"></UserForm>            
+        </div>
+    </div>
 </div>
 
 @code {
-    [Parameter] public string UserId { get; set; }
+    bool isLoaded = false;
 
+    [Parameter] public string UserId { get; set; }
 
     public UserInfo userInfo = new UserInfo();
 
@@ -39,22 +57,22 @@
     protected override async Task OnInitializedAsync()
     {
         roles = await usersRepository.GetRoles();
-        userInfo = await usersRepository.GetUserById(UserId);
+        userInfo = await usersRepository.GetUserById(UserId);        
     }
 
     private async Task UpdateUser()
     {
         try
-        {            
-            logger.LogInformation($"Edit user {userInfo.Email}");
-            //TODO
-            //await usersRepository.UpdateUser(userInfo);
-            logger.LogInformation($"Edit user {userInfo.Email} successfully");
-            //navigationManager.NavigateTo("users");
+        {
+            userInfo.UserId = UserId;
+            await usersRepository.UpdateUser(userInfo);
+            await displayMessage.SweetAlert(Constants.SWSuccess, Constants.UpdatedUser);
+            userInfo = await usersRepository.GetUserById(UserId);
         }
         catch (Exception ex)
         {
-            logger.LogError($"Edit user error {userInfo.Email}: {ex.Message}");            
+            await displayMessage.SweetAlert(Constants.SWError, Constants.UpdatedUserError);
+            logger.LogError($"Edit user error {userInfo.Email}: {ex.Message}");
         }
     }
 
@@ -62,23 +80,23 @@
     {
         if (selectedRole == "0")
         {
-            await displayMessage.DisplayErrorMessage("You must select a role");
+            await displayMessage.SweetAlert(Constants.SWWarning, Constants.RoleMandatory);
             return;
         }
 
         await usersRepository.AssignRole(new EditRoleDTO() { RoleName = selectedRole, UserId = UserId });
-        await displayMessage.DisplaySuccessMessage("Role assigned");
+        await displayMessage.SweetAlert(Constants.SWSuccess, Constants.RoleAssignedSuccess);
     }
 
     private async Task RemoveRole()
     {
         if (selectedRole == "0")
         {
-            await displayMessage.DisplayErrorMessage("You must select a role");
+            await displayMessage.SweetAlert(Constants.SWWarning, Constants.RoleMandatory);
             return;
         }
 
         await usersRepository.RemoveRole(new EditRoleDTO() { RoleName = selectedRole, UserId = UserId });
-        await displayMessage.DisplaySuccessMessage("Role removed");
+        await displayMessage.SweetAlert(Constants.SWSuccess, Constants.RoleRemovedSuccess);
     }
 }

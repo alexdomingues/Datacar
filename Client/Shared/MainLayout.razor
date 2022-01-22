@@ -1,6 +1,4 @@
 ﻿@inherits LayoutComponentBase
-
-@inject IDisplayMessage displayMessage
 @inject NavigationManager navigationManager
 
 <div class="page">
@@ -19,15 +17,9 @@
 
 @code {
 
-    private async void sweetalert(String Type, String message)
-    {
-        await displayMessage.DisplayWarningMessage(message);
-    }
-
     private void LogoutUser()
-    {
-        //sweetalert("Warning",Constants.Logout);
-        //TODO: to change to not go to a page to perform logout
+    {        
+        //TODO: to change to not go to a page to perform logout immediatelly
         navigationManager.NavigateTo("logout");
     }
 }

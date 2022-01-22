@@ -2,6 +2,8 @@
 @layout MainLayout
 @inject IUsersRepository usersRepository
 @inject NavigationManager navigationManager
+@inject IJSRuntime js
+@inject ILogger<UserInfo> logger
 @attribute [Authorize(Roles = Constants.Admin)]
 
 <div class="container">
@@ -10,7 +12,9 @@
             <h3>Lista de utilizadores</h3>
         </div>
         <div class="col">
-            <button type="button" class="btn btn-outline-dark" @onclick="@(()=>Register())">Novo Utilizador</button>
+            <div class="btn-area">
+                <button type="button" class="btn btn-outline-dark" @onclick="@(()=>Register())">Novo Utilizador</button>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -30,20 +34,21 @@
                             <tbody>
                                 @foreach (var user in Users)
                                 {
-                                <tr>
-                                    <td>
-                                        @user.FirstName
-                                    </td>
-                                    <td>
-                                        @user.Email
-                                    </td>
-                                    <td>
-                                        @user.MobilePhoneNumber
-                                    </td>
-                                    <td>
-                                        <a href="/users/edit/@user.UserId" class="btn btn-success">Edit</a>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td>
+                                            @user.FirstName
+                                        </td>
+                                        <td>
+                                            @user.Email
+                                        </td>
+                                        <td>
+                                            @user.MobilePhoneNumber
+                                        </td>
+                                        <td>
+                                            <a href="/users/edit/@user.UserId" class="btn btn-success">Edit</a>
+                                            <button class="btn btn-danger" @onclick="@(()=>DeleteUser(user.UserId))">Delete</button>
+                                        </td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
@@ -82,8 +87,28 @@
 
     private async Task LoadUsers()
     {
+        //TODO : implement order by
         var paginatedResponse = await usersRepository.GetUsers(paginationDTO);
         Users = paginatedResponse.Response;
         totalAmountPages = paginatedResponse.TotalAmountPages;
+    }
+
+    private async Task DeleteUser(string UserId)
+    {
+        try
+        {
+            var confirmed = await js.Confirm($"Tem a certeza que pretende apagar o utilizador?");
+            if (confirmed)
+            {
+                logger.LogInformation($"Users Page: User {UserId} to be deleted");
+                await usersRepository.DeleteUser(UserId);
+                logger.LogInformation("Users Page: Get Users list");
+                await LoadUsers();
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Users Page:{ex.Message.ToString()}");
+        }
     }
 }

@@ -34,5 +34,22 @@ namespace Datacar.Client.Helpers
         {
             await js.InvokeVoidAsync("Swal.fire", title, message, messageType);
         }
+
+        public async Task SweetAlert(string type, string message)
+        {
+            //Implement CASE
+            switch (type)
+            {
+                case Constants.SWError:
+                    await DisplayErrorMessage(message);
+                    break;
+                case Constants.SWSuccess:
+                    await DisplaySuccessMessage(message);
+                    break;
+                case Constants.SWWarning:
+                    await DisplayWarningMessage(message);
+                    break;
+            }
+        }
     }
 }

@@ -41,13 +41,8 @@
 </div>
 
 
-@code {
+@code {    
     private UserLoginDTO userLogin = new UserLoginDTO();
-
-    private async void sweetalert(String type, String message)
-    {
-        await displayMessage.DisplayErrorMessage(message);
-    }
 
     private async Task LoginUser()
     {
@@ -60,7 +55,7 @@
         catch (Exception ex)
         {
             logger.LogError($"LOGIN ERROR: {ex.Message}");
-            sweetalert(Constants.SWError, Constants.AuthorizationFailed);
+            await displayMessage.SweetAlert(Constants.SWError, Constants.AuthorizationFailed);
 
         }
     }

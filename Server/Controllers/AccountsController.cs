@@ -70,21 +70,6 @@ namespace Datacar.Server.Controllers
             }
         }
 
-        //[HttpPost("Login")]
-        //public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
-        //{
-        //    var result = await _signInManager.PasswordSignInAsync(userInfo.Email,
-        //        userInfo.Password, isPersistent: false, lockoutOnFailure: false);
-
-        //    if (result.Succeeded)
-        //    {
-        //        return await BuildToken(userInfo);
-        //    }
-        //    else
-        //    {
-        //        return BadRequest("Invalid login attempt");
-        //    }
-        //}
 
         [HttpPost("Login")]
         public async Task<ActionResult<UserToken>> Login([FromBody] UserLoginDTO userLogin)
@@ -148,3 +133,19 @@ namespace Datacar.Server.Controllers
         }
     }
 }
+
+//[HttpPost("Login")]
+//public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
+//{
+//    var result = await _signInManager.PasswordSignInAsync(userInfo.Email,
+//        userInfo.Password, isPersistent: false, lockoutOnFailure: false);
+
+//    if (result.Succeeded)
+//    {
+//        return await BuildToken(userInfo);
+//    }
+//    else
+//    {
+//        return BadRequest("Invalid login attempt");
+//    }
+//}

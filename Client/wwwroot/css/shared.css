@@ -8,6 +8,7 @@
 .main-page-container {
     margin: 0px;
 }
+
 .main-page-header {
     margin-top: 32px;
 }
@@ -29,10 +30,11 @@ main-page-title {
     margin-top: 32px;
 }
 
-.generic-list tr {
-    border-bottom: 1pt;
-    border-color: grey;
-}
+    .generic-list tr {
+        border-bottom: 1pt;
+        border-color: grey;
+    }
+
 .list-title h3 {
     color: green;
 }
@@ -40,4 +42,10 @@ main-page-title {
 /*form list*/
 .form-list {
     margin-top: 32px;
+}
+
+/*buttons*/
+.btn-area {
+    margin-top: .5rem;
+    margin-bottom: .5rem;   
 }

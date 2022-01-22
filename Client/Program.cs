@@ -56,7 +56,7 @@ namespace Datacar.Client
 
             services.AddBlazorStrap();
 
-            services.AddAuthorizationCore();
+            services.AddAuthorizationCore();            
 
             services.AddScoped<JWTAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(

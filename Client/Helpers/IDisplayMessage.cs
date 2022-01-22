@@ -10,5 +10,6 @@ namespace Datacar.Client.Helpers
         ValueTask DisplayErrorMessage(string message);
         ValueTask DisplaySuccessMessage(string message);
         ValueTask DisplayWarningMessage(string message);
+        Task SweetAlert(string type, string message);
     }
 }

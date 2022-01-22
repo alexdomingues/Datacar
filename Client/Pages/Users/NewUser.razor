@@ -4,7 +4,7 @@
 @inject NavigationManager navigationManager
 @inject ILoginService loginService
 @inject IDisplayMessage displayMessage
-@inject ILogger<UserLoginDTO> logger
+@inject ILogger<UserInfo> logger
 @attribute [Authorize(Roles = Constants.Admin)]
 
 @using Datacar.Client.Auth
@@ -30,36 +30,22 @@
 @code {
     private UserInfo userInfo = new UserInfo();
 
-    //TODO put in helpers
-    private async void sweetalert(String type, String message)
-    {
-        if (type == Constants.SWError)
-        {
-            await displayMessage.DisplayErrorMessage(message);
-        }
-        else if (type == Constants.SWSuccess)
-        {
-            await displayMessage.DisplaySuccessMessage(message);
-        }
-    }
-
     private async Task RegisterUser()
-
     {
         try
         {
             logger.LogInformation($"New User : {userInfo.Email}");
             var userToken = await accountsRepository.Register(userInfo);
+            await displayMessage.SweetAlert(Constants.SWSuccess, Constants.NewUserCreated);
+            navigationManager.NavigateTo("users");
+
             //if I want to try to login immediatelly with new user credentials
             //await loginService.Login(userToken);
-            sweetalert(Constants.SWSuccess, Constants.NewUserCreated);
-            navigationManager.NavigateTo("users");
         }
         catch (Exception ex)
         {
-            logger.LogError($"Error creating new user : {ex.Message}");
-            sweetalert(Constants.SWError, Constants.AuthorizationFailed);
-
+            await displayMessage.SweetAlert(Constants.SWError, Constants.AuthorizationFailed);
+            logger.LogError($"ERROR : Creat User : {ex.Message}");
         }
     }
 }

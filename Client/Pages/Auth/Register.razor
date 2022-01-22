@@ -45,13 +45,7 @@
 @code {
     private UserInfo userInfo = new UserInfo();
     
-    private async void sweetalert(String type, String message)
-    {
-        await displayMessage.DisplayErrorMessage(message);
-    }
-
     private async Task RegisterUser()
-
     {
         try
         {
@@ -61,9 +55,7 @@
         }
         catch 
         {
-            sweetalert(Constants.SWError, Constants.AuthorizationFailed);
-
+            await displayMessage.SweetAlert(Constants.SWError, Constants.AuthorizationFailed);
         }
     }
-}
 }

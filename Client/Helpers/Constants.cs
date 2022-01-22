@@ -19,5 +19,14 @@ namespace Datacar.Client.Helpers
         public const string RegistrationFailed = "Erro no Registo";
         public const string Logout = "Logout efetuado com sucesso";
         public const string NewUserCreated = "Novo utilizador criado com sucesso";
+        public const string UpdatedUser = "Utilizador atualizado com sucesso";
+        public const string UpdatedUserError = "Erro na atualização do utilizador";
+        public const string RoleAssignedSuccess = "Role atribuído";
+        public const string RoleMandatory = "Tem que seleccionar um role";
+        public const string RoleRemovedSuccess = "Role removido";
+        public const string ChangePasswordSuccess = "Password alterada com sucesso";
+        public const string ChangePasswordError = "Erro na alteração de password";
+        public const string PasswordsMismatch = "As novas passwords não são iguais";
+
     }
 }
