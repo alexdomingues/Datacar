@@ -28,6 +28,7 @@
                                     <th scope="col">Nome</th>
                                     <th scope="col">Utilizador</th>
                                     <th scope="col">Telemóvel</th>
+                                    <th scope="col">Role</th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
@@ -44,6 +45,7 @@
                                         <td>
                                             @user.MobilePhoneNumber
                                         </td>
+                                        <td>TBD</td>
                                         <td>
                                             <a href="/users/edit/@user.UserId" class="btn btn-success">Edit</a>
                                             <button class="btn btn-danger" @onclick="@(()=>DeleteUser(user.UserId))">Delete</button>
@@ -64,7 +66,7 @@
 </div>
 
 @code {
-    List<UserInfo> Users;
+    List<UserInfo> Users;    
 
     PaginationDTO paginationDTO = new PaginationDTO();
     int totalAmountPages;

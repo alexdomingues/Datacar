@@ -5,46 +5,47 @@
 @inject IJSRuntime js
 @attribute [Authorize]
 
-
-<div class="main-page-container">
-    <div class="row main-page-header">
-        <div class="col col-lg-8 col-md-8">
-            <main-page-title>Viaturas</main-page-title>
+<div class="container">
+    <div class="row list-title">
+        <div class="col">
+            <h3>Viaturas</h3>
         </div>
-        <div class="col col-lg-4 col-md-4">
-            <a class="btn btn-info" href="/cars/create">Criar viatura</a>
+        <div class="col">
+            <div class="btn-area">
+                <a class="btn btn-outline-dark" href="/cars/create">Criar viatura</a>
+            </div>
         </div>
     </div>
-</div>
-
-@*<CarsList Cars="cars" ListType="@listTypeShort"></CarsList>*@
-
-<div class="main-list">
-    <GenericList List="cars">
-        <WholeListTemplate>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Matrícula</th>
-                        <th>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in cars)
-                    {
-                        <tr>
-                            <td>@item.License</td>
-                            <td>
-                                <a href="/cars/edit/@item.Id" class="btn btn-success">Edit</a>
-                                <button class="btn btn-danger" @onclick="@(()=>DeleteCar(item.Id))">Delete</button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </WholeListTemplate>
-    </GenericList>
+    <div class="row">
+        <div class="col">
+            <div>
+                <GenericList List="cars">
+                    <WholeListTemplate>
+                        <table class="table table-hover generic-list">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Matrícula</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in cars)
+                                {
+                                    <tr>
+                                        <td>@item.License</td>
+                                        <td>
+                                            <a href="/cars/edit/@item.Id" class="btn btn-success">Edit</a>
+                                            <button class="btn btn-danger" @onclick="@(()=>DeleteCar(item.Id))">Delete</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </WholeListTemplate>
+                </GenericList>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {

@@ -4,56 +4,51 @@
 @inject ILogger<Drivers> logger
 @attribute [Authorize]
 
-<div class="main-page-container">
-    <div class="row main-page-header">
-        <div class="col col-lg-8 col-md-8">
-            <main-page-title>Condutores</main-page-title>
+<div class="container">
+    <div class="row list-title">
+        <div class="col">
+            <h3>Condutores</h3>
         </div>
-        <AuthorizeView>
-            <Authorized>
-                <div class="col col-lg-4 col-md-8">
-                    <a class="btn btn-info" href="/drivers/create">Criar condutor</a>
-                </div>
-            </Authorized>
-        </AuthorizeView>
+        <div class="col">
+            <div class="btn-area">
+                <AuthorizeView>
+                    <Authorized>
+                        <a class="btn btn-outline-dark" href="/drivers/create">Criar condutor</a>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
+        </div>
     </div>
+    <div>
+        <GenericList List="drivers">
+            <WholeListTemplate>
+                <table class="table table-hover generic-list">
+                    <thead>
+                        <tr>                            
+                            <th scope="col">Matrícula</th>
+                            <th scope ="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in drivers)
+                        {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>
+                                <a class="btn btn-success">Edit</a>
+                                <button class="btn btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </WholeListTemplate>
+        </GenericList>
+    </div>
+
+    <Pagination CurrentPage="@paginationDTO.Page" TotalAmountPages="totalAmountPages"
+                SelectedPage="SelectedPage" />
 </div>
-
-<div class="main-list">
-    <DriversList Drivers="drivers" />
-</div>
-
-<Pagination CurrentPage="@paginationDTO.Page" TotalAmountPages="totalAmountPages"
-            SelectedPage="SelectedPage" />
-
-
-@*<div>
-    <GenericList List="cars">
-    <WholeListTemplate>
-    <table class="table table-striped">
-    <thead>
-    <tr>
-    <th>
-    </th>
-    <th>Matrícula</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in cars)
-    {
-    <tr>
-    <td>
-    <a class="btn btn-success">Edit</a>
-    <button class="btn btn-danger">Delete</button>
-    </td>
-    <td>@item.License</td>
-    </tr>
-    }
-    </tbody>
-    </table>
-    </WholeListTemplate>
-    </GenericList>
-    </div>*@
 
 @code {
     List<Drivers> drivers;

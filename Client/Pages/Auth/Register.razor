@@ -1,10 +1,11 @@
 ﻿@page "/register-no-login"
 @inherits LayoutComponentBase
 @inject IAccountsRepository accountsRepository
+@inject IUsersRepository usersRepository
 @inject NavigationManager navigationManager
 @inject ILoginService loginService
 @inject IDisplayMessage displayMessage
-@attribute [Authorize(Roles = Constants.Admin)]
+@inject ILogger<UserInfo> logger
 
 @using Datacar.Client.Auth
 
@@ -18,6 +19,7 @@
                 <div>
                     <EditForm Model="userInfo" OnValidSubmit="RegisterUser">
                         <DataAnnotationsValidator />
+                        <ValidationSummary />
                         <div class="form-group">
                             <label>Email:</label>
                             <div>
@@ -32,8 +34,14 @@
                                 <ValidationMessage For="@(() => userInfo.Password)" />
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Register</button>
-                        <a href="login">Return to login</a>
+                        <div class="form-group">
+                            <label>Mobile Phone Number:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="@userInfo.MobilePhoneNumber" />
+                                <ValidationMessage For="@(() => userInfo.MobilePhoneNumber)" />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Novo utilizador</button>
                     </EditForm>
                 </div>
             </div>
@@ -44,16 +52,20 @@
 
 @code {
     private UserInfo userInfo = new UserInfo();
-    
+    ApplicationUser appUser = new ApplicationUser();
+
     private async Task RegisterUser()
     {
         try
         {
+
             var userToken = await accountsRepository.Register(userInfo);
-            await loginService.Login(userToken);
-            navigationManager.NavigateTo("");
+            //await loginService.Login(userToken);
+            appUser = await usersRepository.GetUserByName(userInfo.Email);
+            await usersRepository.AssignRole(new EditRoleDTO() { RoleName = Constants.Admin, UserId = appUser.Id });
+            await displayMessage.SweetAlert(Constants.SWSuccess, Constants.NewUserCreated);
         }
-        catch 
+        catch
         {
             await displayMessage.SweetAlert(Constants.SWError, Constants.AuthorizationFailed);
         }

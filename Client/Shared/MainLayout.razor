@@ -1,13 +1,25 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager navigationManager
 
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
     <div class="main">
         <div class="top-row px-4">            
-            <a href="" class="btn btn-danger" @onclick="@(()=>LogoutUser())">Logout</a>
+            <div>
+                <AuthorizeView>
+                    <Authorized>
+                        <div class="">
+                            <p class="top-nav-p">@context.User.Identity.Name ( <ShowUserRole auth="@context" /> )</p>
+                        </div>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
+            <div>
+                <a href="" class="btn btn-danger" @onclick="@(()=>LogoutUser())">Logout</a>
+            </div>
         </div>        
         <div class="main-content">
             @Body

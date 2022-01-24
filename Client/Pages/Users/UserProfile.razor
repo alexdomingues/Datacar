@@ -13,11 +13,6 @@
         </div>
     </div>
     <div class="row">
-        <div class="col col-lg-12">
-            <p>User Name: @userName / User ID: @appUser.Id</p>
-        </div>
-    </div>
-    <div class="row">
         <div class="col col-lg-6">
             <UserForm UserInfo=userInfo OnValidSubmit="UpdateUser"></UserForm>
         </div>
@@ -57,7 +52,7 @@
     protected override async Task OnInitializedAsync()
     {
         var authState = await authenticationStateTask;
-        var user = authState.User;
+        var user = authState.User;        
 
         if (user.Identity.IsAuthenticated)
         {

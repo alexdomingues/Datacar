@@ -1,0 +1,20 @@
+﻿@if (auth.User.IsInRole(Constants.Admin))
+{
+    <text>Admin</text>
+}
+else if (auth.User.IsInRole(Constants.User))
+{
+    <text>User</text>
+}
+else if (auth.User.IsInRole(Constants.Guest))
+{
+    <text>Guest</text>
+}
+else
+{
+    <text></text>
+}
+
+@code {
+    [Parameter] public AuthenticationState auth { get; set; }
+}

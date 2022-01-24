@@ -8,6 +8,7 @@ namespace Datacar.Client.Helpers
         // Datacar roles
         public const string Admin = "Admin";
         public const string User = "User";
+        public const string Guest = "Guest";
 
         // sweet alert 
         public const string SWError = "Error";

@@ -139,9 +139,9 @@ namespace Datacar.Server.Controllers
         [HttpPost("removeRole")]
         public async Task<ActionResult> RemoveRole(EditRoleDTO editRoleDTO)
         {
-            var user = await userManager.FindByIdAsync(editRoleDTO.UserId);
+            var user = await userManager.FindByIdAsync(editRoleDTO.UserId);            
             await userManager.RemoveClaimAsync(user, new Claim(ClaimTypes.Role, editRoleDTO.RoleName));
             return NoContent();
-        }
+        }    
     }
 }

@@ -36,7 +36,7 @@ namespace Datacar.Server.Controllers
 
         [HttpPost("Create")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
-        {            
+        {
             var user = new ApplicationUser
             {
                 UserName = model.Email,
@@ -78,7 +78,7 @@ namespace Datacar.Server.Controllers
                 userLogin.Password, isPersistent: false, lockoutOnFailure: false);
 
             if (result.Succeeded)
-            {
+            {                
                 return await BuildToken(userLogin);
             }
             else
@@ -105,12 +105,12 @@ namespace Datacar.Server.Controllers
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, userLogin.Email),
-                new Claim(ClaimTypes.Email, userLogin.Email)                
+                new Claim(ClaimTypes.Email, userLogin.Email)
             };
 
             var identityUser = await _userManager.FindByEmailAsync(userLogin.Email);
             var claimsDB = await _userManager.GetClaimsAsync(identityUser);
-
+            
             claims.AddRange(claimsDB);
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
@@ -119,7 +119,7 @@ namespace Datacar.Server.Controllers
             var expiration = DateTime.UtcNow.AddYears(1);
 
             JwtSecurityToken token = new JwtSecurityToken(
-                  issuer: null,
+               issuer: null,
                audience: null,
                claims: claims,
                expires: expiration,
