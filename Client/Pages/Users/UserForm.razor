@@ -73,7 +73,7 @@
 
 @code {
     [Parameter] public UserInfo UserInfo { get; set; }
-
+    [Parameter] public UserClaims UserClaims { get; set; }
     // Cascading parameter to invoke Create or Edit method
     [Parameter] public EventCallback OnValidSubmit { get; set; }
 

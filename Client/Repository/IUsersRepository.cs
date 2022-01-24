@@ -18,5 +18,6 @@ namespace Datacar.Client.Repository
         Task RemoveRole(EditRoleDTO editRole);
         Task UpdateUser(UserInfo user);
         Task ChangePassword(ChangePasswordDTO userPass);
+        Task<List<UserClaims>> GetUserRoles(string userId);
     }
 }

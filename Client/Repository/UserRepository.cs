@@ -76,6 +76,11 @@ namespace Datacar.Client.Repository
             return await httpService.GetHelper<List<RoleDTO>>($"{url}/roles");
         }
 
+        public async Task<List<UserClaims>> GetUserRoles(string userId)
+        {
+            return await httpService.GetHelper<List<UserClaims>>($"{url}/GetUserRoles/{userId}");
+        }
+
         public async Task AssignRole(EditRoleDTO editRole)
         {
             var response = await httpService.Post($"{url}/assignRole", editRole);

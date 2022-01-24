@@ -128,6 +128,15 @@ namespace Datacar.Server.Controllers
                 .Select(x => new RoleDTO { RoleName = x.Name }).ToListAsync();
         }
 
+        [Route("[action]/{userId}")]
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<List<UserClaims>>> GetUserRoles(string userId)
+        {
+            return await context.UserClaims 
+                .Select(x => new UserClaims { ClaimValue = x.ClaimValue, UserId = x.UserId})
+                .Where(x => x.UserId == userId).ToListAsync();            
+        }
+
         [HttpPost("assignRole")]
         public async Task<ActionResult> AssignRole(EditRoleDTO editRoleDTO)
         {

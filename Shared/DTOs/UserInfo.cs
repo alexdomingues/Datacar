@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text;
 
 namespace Datacar.Shared.DTOs
@@ -11,7 +12,6 @@ namespace Datacar.Shared.DTOs
         [Required]
         public string Email { get; set; }
         public string Password { get; set; }
-
         // new fields required by Datacar scope
         public string Language { get; set; }
         public string FirstName { get; set; }
@@ -23,9 +23,6 @@ namespace Datacar.Shared.DTOs
         [Required]
         public string MobilePhoneNumber { get; set; }
         public string Comment { get; set; }
-        // Use roles
-        //[Required]
-        //public int AccessLevel { get; set; }
         public DateTime? ExpireDate { get; set; }
         public string PhoneNumber { get; set; }
     }

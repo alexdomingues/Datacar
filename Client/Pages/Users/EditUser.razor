@@ -51,21 +51,21 @@
     [Parameter] public string UserId { get; set; }
 
     public UserInfo userInfo = new UserInfo();
-
+    
     private List<RoleDTO> roles = new List<RoleDTO>();
     private string selectedRole = "0";
 
     protected override async Task OnInitializedAsync()
     {
         roles = await usersRepository.GetRoles();
-        userInfo = await usersRepository.GetUserById(UserId);        
+        userInfo = await usersRepository.GetUserById(UserId);
     }
 
     private async Task UpdateUser()
     {
         try
         {
-            userInfo.UserId = UserId;
+            userInfo.UserId = UserId;            
             await usersRepository.UpdateUser(userInfo);
             await displayMessage.SweetAlert(Constants.SWSuccess, Constants.UpdatedUser);
             userInfo = await usersRepository.GetUserById(UserId);
