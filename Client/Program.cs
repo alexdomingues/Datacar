@@ -66,6 +66,8 @@ namespace Datacar.Client
             services.AddScoped<ILoginService, JWTAuthenticationStateProvider>(
                 provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
                 );
+
+            services.AddScoped<TokenRenewer>();
         }
     }
 }

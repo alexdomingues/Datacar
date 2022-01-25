@@ -20,6 +20,7 @@ namespace Datacar.Client.Helpers
         public const string RegistrationFailed = "Erro no Registo";
         public const string Logout = "Logout efetuado com sucesso";
         public const string NewUserCreated = "Novo utilizador criado com sucesso";
+        public const string NewUserError = "Erro ao criar utilizador";
         public const string UpdatedUser = "Utilizador atualizado com sucesso";
         public const string UpdatedUserError = "Erro na atualização do utilizador";
         public const string RoleAssignedSuccess = "Role atribuído";

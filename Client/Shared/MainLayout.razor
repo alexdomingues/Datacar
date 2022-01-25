@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager navigationManager
+@inject Datacar.Client.Auth.TokenRenewer tokenRenewer
 
 <div class="page">
     <div class="sidebar">
@@ -27,10 +28,10 @@
 </div>
 
 @code {
-    
-    protected override async Task OnInitializedAsync()
-    {        
-       //
+
+    protected override void OnInitialized()
+    {
+        tokenRenewer.Initiate();
     }
 
     private void LogoutUser()

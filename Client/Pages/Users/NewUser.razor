@@ -1,6 +1,7 @@
 ﻿@page "/users/create"
 @layout MainLayout
 @inject IAccountsRepository accountsRepository
+@inject IUsersRepository usersRepository
 @inject NavigationManager navigationManager
 @inject ILoginService loginService
 @inject IDisplayMessage displayMessage
@@ -20,6 +21,16 @@
     <div class="row">
         <div class="col col-lg-6 form-list">
             <div>
+                <label>User Role</label>
+                <select class="form-control mb-2 mr-sm-2" @bind="selectedRole" >
+                    <option value="0">--Select a role--</option>
+                    @foreach (var role in roles)
+                    {
+                        <option value="@role.RoleName">@role.RoleName</option>
+                    }
+                </select>
+            </div>
+            <div>
                 <UserForm UserInfo=userInfo OnValidSubmit="RegisterUser"></UserForm>
             </div>
         </div>
@@ -29,24 +40,42 @@
 
 @code {
     private UserInfo userInfo = new UserInfo();
+    private List<RoleDTO> roles = new List<RoleDTO>();
+    private string selectedRole = "0";
+    ApplicationUser appUser = new ApplicationUser();
+
+    protected override async Task OnInitializedAsync()
+    {
+        roles = await usersRepository.GetRoles();
+    }
 
     private async Task RegisterUser()
     {
         try
         {
-            logger.LogInformation($"New User : {userInfo.Email}");
-            var userToken = await accountsRepository.Register(userInfo);
-            await displayMessage.SweetAlert(Constants.SWSuccess, Constants.NewUserCreated);
-            navigationManager.NavigateTo("users");
-
+            if (selectedRole == "0")
+            {
+                await displayMessage.SweetAlert(Constants.SWWarning, Constants.RoleMandatory);
+                return;
+            }
+            else
+            {
+                logger.LogInformation($"New User : {userInfo.Email}");
+                await accountsRepository.Register(userInfo);             
+                appUser = await usersRepository.GetUserByName(userInfo.Email);
+                await usersRepository.AssignRole(new EditRoleDTO() { RoleName = selectedRole, UserId = appUser.Id });
+                await displayMessage.SweetAlert(Constants.SWSuccess, Constants.NewUserCreated);
+                navigationManager.NavigateTo("users");
+            }
             //if I want to try to login immediatelly with new user credentials
             //await loginService.Login(userToken);
         }
         catch (Exception ex)
         {
-            await displayMessage.SweetAlert(Constants.SWError, Constants.AuthorizationFailed);
+            await displayMessage.SweetAlert(Constants.SWError, Constants.NewUserError);
             logger.LogError($"ERROR : Creat User : {ex.Message}");
         }
     }
+
 }
 
