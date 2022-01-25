@@ -21,7 +21,14 @@
 }
 else if (UserId != null)
 {
-    <p>@userClaimRole.ClaimValue </p>
+    if (userClaimRole.ClaimValue != null)
+    {
+        <p>@userClaimRole.ClaimValue </p>
+    }
+    else
+    {
+        <p>No role assigned</p>
+    }
 }
 
 @code {
@@ -38,7 +45,10 @@ else if (UserId != null)
         if (UserId != null)
         {
             userClaims = await usersRepository.GetUserRoles(UserId);
-            userClaimRole = userClaims.FirstOrDefault();
+            if (userClaims != null || userClaims.Count != 0)
+            {
+                userClaimRole = userClaims.FirstOrDefault();
+            }
         }
     }
 }

@@ -27,7 +27,8 @@
         </div>
         <div class="col">
             <div>
-                <h3>ROLE</h3>                
+                <h3>ROLE:</h3>                
+                <ShowUserRole UserId="@UserId" />          
             </div>
             <div class="form-inline">
                 <select class="form-control mb-2 mr-sm-2" @bind="selectedRole">
@@ -37,7 +38,6 @@
                         <option value="@role.RoleName">@role.RoleName</option>
                     }
                 </select>
-
                 <button class="btn btn-info mb-2 mr-sm-2" @onclick="AssignRole">Assign Role</button>
                 <button class="btn btn-danger mb-2 mr-sm-2" @onclick="RemoveRole">Remove Role</button>
             </div>
@@ -96,14 +96,7 @@
             await displayMessage.SweetAlert(Constants.SWWarning, Constants.RoleMandatory);
             return;
         }
-
         await usersRepository.RemoveRole(new EditRoleDTO() { RoleName = selectedRole, UserId = UserId });
         await displayMessage.SweetAlert(Constants.SWSuccess, Constants.RoleRemovedSuccess);
     }
 }
-
-
- @*var identityUser = await _userManager.FindByEmailAsync(userLogin.Email);
-            var claimsDB = await _userManager.GetClaimsAsync(identityUser);
-
-            claims.AddRange(claimsDB);*@
