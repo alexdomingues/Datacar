@@ -45,7 +45,9 @@
                                         <td>
                                             @user.MobilePhoneNumber
                                         </td>
-                                        <td>TBD</td>
+                                        <td>
+                                            <ShowUserRole UserId="@user.UserId" />
+                                        </td>
                                         <td>
                                             <a href="/users/edit/@user.UserId" class="btn btn-success">Edit</a>
                                             <button class="btn btn-danger" @onclick="@(()=>DeleteUser(user.UserId))">Delete</button>

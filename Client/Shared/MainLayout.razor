@@ -1,7 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager navigationManager
 
-
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -12,7 +11,7 @@
                 <AuthorizeView>
                     <Authorized>
                         <div class="">
-                            <p class="top-nav-p">@context.User.Identity.Name ( <ShowUserRole auth="@context" /> )</p>
+                            <p class="top-nav-p">@context.User.Identity.Name ( <ShowUserRole Auth="@context" /> )</p>
                         </div>
                     </Authorized>
                 </AuthorizeView>
@@ -28,6 +27,11 @@
 </div>
 
 @code {
+    
+    protected override async Task OnInitializedAsync()
+    {        
+       //
+    }
 
     private void LogoutUser()
     {        

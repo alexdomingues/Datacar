@@ -1,20 +1,44 @@
-﻿@if (auth.User.IsInRole(Constants.Admin))
+﻿@inject IUsersRepository usersRepository
+
+@if (Auth != null)
 {
-    <text>Admin</text>
+    if (Auth.User.IsInRole(Constants.Admin))
+    {
+        <text>Admin</text>
+    }
+    else if (Auth.User.IsInRole(Constants.User))
+    {
+        <text>User</text>
+    }
+    else if (Auth.User.IsInRole(Constants.Guest))
+    {
+        <text>Guest</text>
+    }
+    else
+    {
+        <text></text>
+    }
 }
-else if (auth.User.IsInRole(Constants.User))
+else if (UserId != null)
 {
-    <text>User</text>
-}
-else if (auth.User.IsInRole(Constants.Guest))
-{
-    <text>Guest</text>
-}
-else
-{
-    <text></text>
+    <p>@userClaimRole.ClaimValue </p>
 }
 
 @code {
-    [Parameter] public AuthenticationState auth { get; set; }
+    // from user name
+    [Parameter] public string UserId { get; set; }
+    // from context
+    [Parameter] public AuthenticationState Auth { get; set; }
+
+    private List<UserClaims> userClaims = new List<UserClaims>();
+    public UserClaims userClaimRole = new UserClaims();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UserId != null)
+        {
+            userClaims = await usersRepository.GetUserRoles(UserId);
+            userClaimRole = userClaims.FirstOrDefault();
+        }
+    }
 }
