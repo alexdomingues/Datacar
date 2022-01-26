@@ -13,14 +13,14 @@ namespace Datacar.Client.Helpers
 
         public static async ValueTask<bool> Confirm(this IJSRuntime js, string message)
         {
-            return await js.InvokeAsync<bool>("confirm",message);
+            return await js.InvokeAsync<bool>("confirm", message);
         }
 
         public static ValueTask<object> SetInLocalStorage(this IJSRuntime js, string key, string content)
-=> js.InvokeAsync<object>(
-"localStorage.setItem",
-key, content
-);
+            => js.InvokeAsync<object>(
+                "localStorage.setItem",
+                key, content
+                );
 
         public static ValueTask<string> GetFromLocalStorage(this IJSRuntime js, string key)
             => js.InvokeAsync<string>(
