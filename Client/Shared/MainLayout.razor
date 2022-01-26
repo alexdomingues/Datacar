@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager navigationManager
 @inject Datacar.Client.Auth.TokenRenewer tokenRenewer
+@inject IJSRuntime js
 
 <div class="page">
     <div class="sidebar">
@@ -28,9 +29,11 @@
 </div>
 
 @code {
+    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await js.InitializeInactivityTimer(DotNetObjectReference.Create(this));
         tokenRenewer.Initiate();
     }
 
@@ -38,5 +41,16 @@
     {        
         //TODO: to change to not go to a page to perform logout immediatelly
         navigationManager.NavigateTo("logout");
+    }
+
+    [JSInvokable]
+    public async Task Logout()
+    {
+        var authState = await AuthenticationState;
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            // Uncomment to activate automatic logout
+            navigationManager.NavigateTo("logout");
+        }
     }
 }
