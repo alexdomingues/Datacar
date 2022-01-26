@@ -3,13 +3,15 @@
 
 @if (List == null)
 {
-    <div class="spinner-border" role="status">
-        <span class="visually-hidden"></span>
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden"></span>
+        </div>
     </div>
 }
 else if (List.Count == 0)
 {
-    <text>There are not records to show</text>
+    <text>@Constants.NoRecords</text>
 }
 else
 {
@@ -18,7 +20,7 @@ else
         @foreach (var element in List)
         {
             @ElementTemplate(element)
-            
+
         }
     }
     else
@@ -28,11 +30,15 @@ else
 }
 
 @code {
-    // to display the type of list
-    [Parameter] public string ListType { get; set; }
-    // to define how to render the TItem
-    [Parameter] public RenderFragment<TItem> ElementTemplate { get; set; }
-    [Parameter] public RenderFragment WholeListTemplate { get; set; }
     // to receive any list
     [Parameter] public List<TItem> List { get; set; }
+
+    // to define how to render the TItem (former IndividualComponent)
+    [Parameter] public RenderFragment<TItem> ElementTemplate { get; set; }
+
+    // to define how to render the whole list - more flexibility on how to show the elements (e.g. <table>)
+    [Parameter] public RenderFragment WholeListTemplate { get; set; }
+
+    // to display the type of list
+    //[Parameter] public string ListType { get; set; }
 }

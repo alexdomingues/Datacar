@@ -1,17 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Datacar.Shared.DTOs
 {
-    public class UserInfo
+    public class ApplicationUser : IdentityUser
     {
-        public string UserId { get; set; }
-        [Required]
-        public string Email { get; set; }
-        public string Password { get; set; }
         // new fields required by Datacar scope
         public string Language { get; set; }
         public string FirstName { get; set; }
@@ -20,10 +17,11 @@ namespace Datacar.Shared.DTOs
         public string PostalCode { get; set; }
         public string Local { get; set; }
         public DateTime? BornDate { get; set; }
-        [Required]
         public string MobilePhoneNumber { get; set; }
         public string Comment { get; set; }
+        // Use roles
+        //[Required]
+        //public int AccessLevel { get; set; }
         public DateTime? ExpireDate { get; set; }
-        public string PhoneNumber { get; set; }
     }
 }

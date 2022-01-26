@@ -30,9 +30,21 @@ namespace Datacar.Client.Repository
             return httpResponse.Response;
         }
 
-        public async Task<UserToken> Login(UserInfo userInfo)
+        //public async Task<UserToken> Login(UserInfo userInfo)
+        //{
+        //    var httpResponse = await httpService.Post<UserInfo, UserToken>($"{baseURL}/login", userInfo);
+
+        //    if (!httpResponse.Success)
+        //    {
+        //        throw new ApplicationException(await httpResponse.GetBody());
+        //    }
+
+        //    return httpResponse.Response;
+        //}
+
+        public async Task<UserToken> Login(UserLoginDTO userLogin)
         {
-            var httpResponse = await httpService.Post<UserInfo, UserToken>($"{baseURL}/login", userInfo);
+            var httpResponse = await httpService.Post<UserLoginDTO, UserToken>($"{baseURL}/login", userLogin);
 
             if (!httpResponse.Success)
             {

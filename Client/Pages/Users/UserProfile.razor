@@ -1,0 +1,107 @@
+﻿@page "/profile"
+@layout MainLayout
+@inject IUsersRepository usersRepository
+@inject IDisplayMessage displayMessage
+@attribute [Authorize]
+
+<div class="container">
+    <div class="row">
+        <div class="col col-lg-12">
+            <div class="list-title">
+                <h3>Meu Perfil</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-lg-6">
+            <UserForm UserInfo=userInfo OnValidSubmit="UpdateUser"></UserForm>
+        </div>
+        <div class="col col-lg-6">
+            <EditForm Model="userPwd" OnValidSubmit="ChangePassword">
+                <DataAnnotationsValidator />
+                <div class="form-group">
+                    <label>Password Atual</label>
+                    <InputPassword class="form-control" @bind-Value="@userPwd.CurrentPassword" />
+                    <ValidationMessage For="@(() => userPwd.CurrentPassword)" />
+                </div>
+                <div class="form-group">
+                    <label>Nova Password</label>
+                    <InputPassword class="form-control" @bind-Value="@userPwd.NewPassword" />
+                    <ValidationMessage For="@(() => userPwd.NewPassword)" />
+                </div>
+                <div class="form-group">
+                    <label>Repetir Nova Password</label>
+                    <InputPassword class="form-control" @bind-Value="@userPwd.ConfirmationPassword" />
+                    <ValidationMessage For="@(() => userPwd.ConfirmationPassword)" />
+                </div>
+                <button class="btn btn-success" type="submit">Alterar</button>
+            </EditForm>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
+    UserInfo userInfo = new UserInfo();
+    ChangePasswordDTO userPwd = new ChangePasswordDTO();
+    ApplicationUser appUser = new ApplicationUser();
+    private string userName = "";
+    private string userId = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authenticationStateTask;
+        var user = authState.User;        
+
+        if (user.Identity.IsAuthenticated)
+        {
+            userName = user.Identity.Name;
+            // get user ID
+            appUser = await usersRepository.GetUserByName(userName);
+            //get user details
+            userInfo = await usersRepository.GetUserById(appUser.Id);
+        }
+    }
+
+    protected async Task UpdateUser()
+    {
+        try
+        {
+            userInfo.UserId = appUser.Id;
+            await usersRepository.UpdateUser(userInfo);
+            await displayMessage.SweetAlert(Constants.SWSuccess, Constants.UpdatedUser);
+            //userInfo = await usersRepository.GetUserById(userInfo.UserId);
+        }
+        catch (Exception ex)
+        {
+            await displayMessage.SweetAlert(Constants.SWError, Constants.UpdatedUserError);
+            userInfo = await usersRepository.GetUserById(userInfo.UserId);
+        }
+    }
+
+    protected async Task ChangePassword()
+    {
+        try
+        {
+            if (String.Equals(userPwd.NewPassword, userPwd.ConfirmationPassword))
+            {
+                userPwd.UserId = appUser.Id;
+                await usersRepository.ChangePassword(userPwd);
+                await displayMessage.SweetAlert(Constants.SWSuccess, Constants.ChangePasswordSuccess);
+                userPwd.CurrentPassword = "";
+                userPwd.NewPassword = "";
+                userPwd.ConfirmationPassword = "";
+                //userInfo = await usersRepository.GetUserById(userPwd.UserId);
+            }
+            else
+            {
+                await displayMessage.SweetAlert(Constants.SWWarning, Constants.PasswordsMismatch);
+            }
+        }
+        catch (Exception ex)
+        {
+            await displayMessage.SweetAlert(Constants.SWError, Constants.ChangePasswordError);
+        }
+    }
+}

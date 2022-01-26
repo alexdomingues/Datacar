@@ -1,54 +1,101 @@
-﻿@page "/users/edit/{userId}"
+﻿@page "/users/edit/{UserId}"
+@layout MainLayout
 @inject IUsersRepository usersRepository
 @inject IDisplayMessage displayMessage
+@inject ILogger<UserInfo> logger
+@inject NavigationManager navigationManager
+@attribute [Authorize(Roles = "Admin")]
 
-<h3>Edit User</h3>
-
-<div class="form-inline">
-    <select class="form-control mb-2 mr-sm-2" @bind="selectedRole">
-        <option value="0">--Select a role--</option>
-        @foreach (var role in roles)
-        {
-            <option value="@role.RoleName">@role.RoleName</option>
-        }
-    </select>
-
-    <button class="btn btn-info mb-2 mr-sm-2" @onclick="AssignRole">Assign Role</button>
-    <button class="btn btn-danger mb-2 mr-sm-2" @onclick="RemoveRole">Remove Role</button>
+<div class="container">
+    <div class="row">
+        <div class="col ">
+            <div class="list-title">
+                <h3>Editar utilizador</h3>
+            </div>
+        </div>
+        <div class="col btn-area">
+            <div>
+                <a href="/users">Voltar</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div>
+                <UserForm UserInfo=userInfo OnValidSubmit="UpdateUser"></UserForm>
+            </div>
+        </div>
+        <div class="col">
+            <div>
+                <p>ROLE : <ShowUserRole UserId="@UserId" /></p>
+            </div>
+            <div class="form-inline">
+                <select class="form-control mb-2 mr-sm-2" @bind="selectedRole">
+                    <option value="0">--Select a role--</option>
+                    @foreach (var role in roles)
+                    {
+                        <option value="@role.RoleName">@role.RoleName</option>
+                    }
+                </select>
+                <button class="btn btn-info mb-2 mr-sm-2" @onclick="AssignRole">Assign Role</button>
+                <button class="btn btn-danger mb-2 mr-sm-2" @onclick="RemoveRole">Remove Role</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
+    bool isLoaded = false;
+
     [Parameter] public string UserId { get; set; }
+
+    public UserInfo userInfo = new UserInfo();
+    
     private List<RoleDTO> roles = new List<RoleDTO>();
     private string selectedRole = "0";
 
     protected override async Task OnInitializedAsync()
     {
         roles = await usersRepository.GetRoles();
+        userInfo = await usersRepository.GetUserById(UserId);
+    }
+
+    private async Task UpdateUser()
+    {
+        try
+        {
+            userInfo.UserId = UserId;            
+            await usersRepository.UpdateUser(userInfo);
+            await displayMessage.SweetAlert(Constants.SWSuccess, Constants.UpdatedUser);
+            userInfo = await usersRepository.GetUserById(UserId);
+        }
+        catch (Exception ex)
+        {
+            await displayMessage.SweetAlert(Constants.SWError, Constants.UpdatedUserError);
+            logger.LogError($"Edit user error {userInfo.Email}: {ex.Message}");
+        }
     }
 
     private async Task AssignRole()
     {
         if (selectedRole == "0")
         {
-            await displayMessage.DisplayErrorMessage("You must select a role");
+            await displayMessage.SweetAlert(Constants.SWWarning, Constants.RoleMandatory);
             return;
         }
 
         await usersRepository.AssignRole(new EditRoleDTO() { RoleName = selectedRole, UserId = UserId });
-        await displayMessage.DisplaySuccessMessage("Role assigned");
+        await displayMessage.SweetAlert(Constants.SWSuccess, Constants.RoleAssignedSuccess);
     }
 
     private async Task RemoveRole()
     {
         if (selectedRole == "0")
         {
-            await displayMessage.DisplayErrorMessage("You must select a role");
+            await displayMessage.SweetAlert(Constants.SWWarning, Constants.RoleMandatory);
             return;
         }
-
         await usersRepository.RemoveRole(new EditRoleDTO() { RoleName = selectedRole, UserId = UserId });
-        await displayMessage.DisplaySuccessMessage("Role removed");
+        await displayMessage.SweetAlert(Constants.SWSuccess, Constants.RoleRemovedSuccess);
     }
-
 }

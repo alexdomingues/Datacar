@@ -1,41 +1,82 @@
 ﻿@page "/users"
+@layout MainLayout
 @inject IUsersRepository usersRepository
+@inject NavigationManager navigationManager
+@inject IJSRuntime js
+@inject ILogger<UserInfo> logger
+@attribute [Authorize(Roles = Constants.Admin)]
 
-<Pagination CurrentPage="@paginationDTO.Page" SelectedPage="SelectedPage"
-            TotalAmountPages="totalAmountOfPages"></Pagination>
-
-<h3>Index Users</h3>
-
-<GenericList List="Users">
-    <WholeListTemplate>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>User</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Users)
-                {
-                    <tr>
-                        <td>
-                            <a href="/users/edit/@user.UserId" class="btn btn-success">Edit</a>
-                        </td>
-                        <td>
-                            @user.Email
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </WholeListTemplate>
-</GenericList>
+<div class="container">
+    <div class="row list-title">
+        <div class="col">
+            <h3>Lista de utilizadores</h3>
+        </div>
+        <div class="col">
+            <div class="btn-area">
+                <button type="button" class="btn btn-outline-dark" @onclick="@(()=>Register())">Novo Utilizador</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div>
+                <GenericList List="Users">
+                    <WholeListTemplate>
+                        <table class="table table-hover generic-list">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Utilizador</th>
+                                    <th scope="col">Telemóvel</th>
+                                    <th scope="col">Role</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Users)
+                                {
+                                    <tr>
+                                        <td>
+                                            @user.FirstName
+                                        </td>
+                                        <td>
+                                            @user.Email
+                                        </td>
+                                        <td>
+                                            @user.MobilePhoneNumber
+                                        </td>
+                                        <td>
+                                            <ShowUserRole UserId="@user.UserId" />
+                                        </td>
+                                        <td>
+                                            <a href="/users/edit/@user.UserId" class="btn btn-success">Edit</a>
+                                            <button class="btn btn-danger" @onclick="@(()=>DeleteUser(user.UserId))">Delete</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </WholeListTemplate>
+                </GenericList>
+            </div>
+            <div>
+                <Pagination CurrentPage="@paginationDTO.Page" TotalAmountPages="totalAmountPages"
+                            SelectedPage="SelectedPage" />
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
-    List<UserDTO> Users;
+    List<UserInfo> Users;    
+
     PaginationDTO paginationDTO = new PaginationDTO();
-    int totalAmountOfPages;
+    int totalAmountPages;
+
+    private void Register()
+    {
+        navigationManager.NavigateTo("users/create");
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -50,8 +91,28 @@
 
     private async Task LoadUsers()
     {
+        //TODO : implement order by
         var paginatedResponse = await usersRepository.GetUsers(paginationDTO);
         Users = paginatedResponse.Response;
-        totalAmountOfPages = paginatedResponse.TotalAmountPages;
+        totalAmountPages = paginatedResponse.TotalAmountPages;
+    }
+
+    private async Task DeleteUser(string UserId)
+    {
+        try
+        {
+            var confirmed = await js.Confirm($"Tem a certeza que pretende apagar o utilizador?");
+            if (confirmed)
+            {
+                logger.LogInformation($"Users Page: User {UserId} to be deleted");
+                await usersRepository.DeleteUser(UserId);
+                logger.LogInformation("Users Page: Get Users list");
+                await LoadUsers();
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Users Page:{ex.Message.ToString()}");
+        }
     }
 }

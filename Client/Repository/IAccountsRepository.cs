@@ -8,7 +8,7 @@ namespace Datacar.Client.Repository
 {
     public interface IAccountsRepository
     {
-        Task<UserToken> Login(UserInfo userInfo);
+        Task<UserToken> Login(UserLoginDTO userLogin);
         Task<UserToken> Register(UserInfo userInfo);
         Task<UserToken> RenewToken();
     }

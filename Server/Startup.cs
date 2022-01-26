@@ -1,4 +1,5 @@
 using Datacar.Server.Helpers;
+using Datacar.Shared.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,7 +35,7 @@ namespace Datacar.Server
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             //configure the identity.entityframeworkcore to allow user authentication
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDBContext>()
                 .AddDefaultTokenProviders();
 

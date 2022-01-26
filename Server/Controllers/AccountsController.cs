@@ -1,4 +1,5 @@
-﻿using Datacar.Shared.DTOs;
+﻿using Datacar.Server.Helpers;
+using Datacar.Shared.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,13 +20,13 @@ namespace Datacar.Server.Controllers
     [Route("api/[controller]")]
     public class AccountsController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
 
         public AccountsController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             IConfiguration configuration)
         {
             _userManager = userManager;
@@ -36,11 +37,32 @@ namespace Datacar.Server.Controllers
         [HttpPost("Create")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
         {
-            var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                // new fields required by Datacar scope
+                Language = model.Language,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Address = model.Address,
+                PostalCode = model.PostalCode,
+                Local = model.Local,
+                BornDate = model.BornDate,
+                MobilePhoneNumber = model.MobilePhoneNumber,
+                Comment = model.Comment,
+                ExpireDate = model.ExpireDate
+            };
+
+            model.Password = Constants.DefaultPassword;
+
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return await BuildToken(model);
+                UserLoginDTO userLogin = new UserLoginDTO();
+                userLogin.Email = model.Email;
+                userLogin.Password = model.Password;
+                return await BuildToken(userLogin);
             }
             else
             {
@@ -48,15 +70,16 @@ namespace Datacar.Server.Controllers
             }
         }
 
+
         [HttpPost("Login")]
-        public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
+        public async Task<ActionResult<UserToken>> Login([FromBody] UserLoginDTO userLogin)
         {
-            var result = await _signInManager.PasswordSignInAsync(userInfo.Email,
-                userInfo.Password, isPersistent: false, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(userLogin.Email,
+                userLogin.Password, isPersistent: false, lockoutOnFailure: false);
 
             if (result.Succeeded)
-            {
-                return await BuildToken(userInfo);
+            {                
+                return await BuildToken(userLogin);
             }
             else
             {
@@ -64,39 +87,40 @@ namespace Datacar.Server.Controllers
             }
         }
 
+
         [HttpGet("RenewToken")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<UserToken>> Renew()
         {
-            var userInfo = new UserInfo()
+            var userLogin = new UserLoginDTO()
             {
                 Email = HttpContext.User.Identity.Name
             };
 
-            return await BuildToken(userInfo);
+            return await BuildToken(userLogin);
         }
 
-        private async Task<UserToken> BuildToken(UserInfo userinfo)
+        private async Task<UserToken> BuildToken(UserLoginDTO userLogin)
         {
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, userinfo.Email),
-                new Claim(ClaimTypes.Email, userinfo.Email),
-                new Claim("myvalue", "whatever I want")
+                new Claim(ClaimTypes.Name, userLogin.Email),
+                new Claim(ClaimTypes.Email, userLogin.Email)
             };
 
-            var identityUser = await _userManager.FindByEmailAsync(userinfo.Email);
+            var identityUser = await _userManager.FindByEmailAsync(userLogin.Email);
             var claimsDB = await _userManager.GetClaimsAsync(identityUser);
-
+            
             claims.AddRange(claimsDB);
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expiration = DateTime.UtcNow.AddYears(1);
+            var expiration = DateTime.UtcNow.AddDays(30);
+            //var expiration = DateTime.UtcNow.AddMinutes(5);
 
             JwtSecurityToken token = new JwtSecurityToken(
-                  issuer: null,
+               issuer: null,
                audience: null,
                claims: claims,
                expires: expiration,
@@ -110,3 +134,19 @@ namespace Datacar.Server.Controllers
         }
     }
 }
+
+//[HttpPost("Login")]
+//public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
+//{
+//    var result = await _signInManager.PasswordSignInAsync(userInfo.Email,
+//        userInfo.Password, isPersistent: false, lockoutOnFailure: false);
+
+//    if (result.Succeeded)
+//    {
+//        return await BuildToken(userInfo);
+//    }
+//    else
+//    {
+//        return BadRequest("Invalid login attempt");
+//    }
+//}

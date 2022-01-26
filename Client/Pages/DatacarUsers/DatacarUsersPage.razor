@@ -1,8 +1,9 @@
 ﻿@page "/datacaruser"
+@layout MainLayout
 @inject IDatacarUserRepository usersRepository
 @inject ILogger<DatacarUser> logger
 @inject IJSRuntime js
-@*attribute [Authorize]*@
+@attribute [Authorize]
 
 <div class="main-page-container">
     <div class="row main-page-header">

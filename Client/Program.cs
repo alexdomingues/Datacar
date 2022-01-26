@@ -1,3 +1,4 @@
+using BlazorStrap;
 using Datacar.Client.Auth;
 using Datacar.Client.Helpers;
 using Datacar.Client.Repository;
@@ -53,7 +54,9 @@ namespace Datacar.Client
             services.AddScoped<IAccountsRepository, AccountsRepository>();
             services.AddScoped<IDisplayMessage, DisplayMessage>();
 
-            services.AddAuthorizationCore();
+            services.AddBlazorStrap();
+
+            services.AddAuthorizationCore();            
 
             services.AddScoped<JWTAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(
@@ -63,6 +66,8 @@ namespace Datacar.Client
             services.AddScoped<ILoginService, JWTAuthenticationStateProvider>(
                 provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
                 );
+
+            services.AddScoped<TokenRenewer>();
         }
     }
 }

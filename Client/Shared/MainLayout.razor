@@ -1,17 +1,27 @@
 ﻿@inherits LayoutComponentBase
-@inject IDisplayMessage displayMessage
 @inject NavigationManager navigationManager
+@inject Datacar.Client.Auth.TokenRenewer tokenRenewer
+@inject IJSRuntime js
 
 <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
     <div class="main">
-        <div class="top-row px-4">
-            @*<a href="" class="btn btn-danger" @onclick="@(()=>sweetalert())">Logout</a>*@
-            <a href="" class="btn btn-danger" @onclick="@(()=>LogoutUser())">Logout</a>
-        </div>
-        @*<div class="content px-4">*@
+        <div class="top-row px-4">            
+            <div>
+                <AuthorizeView>
+                    <Authorized>
+                        <div class="">
+                            <p class="top-nav-p">@context.User.Identity.Name ( <ShowUserRole Auth="@context" /> )</p>
+                        </div>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
+            <div>
+                <a href="" class="btn btn-danger" @onclick="@(()=>LogoutUser())">Logout</a>
+            </div>
+        </div>        
         <div class="main-content">
             @Body
         </div>
@@ -19,15 +29,28 @@
 </div>
 
 @code {
+    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
 
-    private async void sweetalert()
+    protected override async Task OnInitializedAsync()
     {
-        await displayMessage.DisplayErrorMessage("You must be logged in");
+        //await js.InitializeInactivityTimer(DotNetObjectReference.Create(this));
+        tokenRenewer.Initiate();        
     }
 
     private void LogoutUser()
-    {
-        Console.WriteLine("LOGOUT");
+    {        
+        //TODO: to change to not go to a page to perform logout immediatelly
         navigationManager.NavigateTo("logout");
+    }
+
+    [JSInvokable]
+    public async Task Logout()
+    {
+        var authState = await AuthenticationState;
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            // Uncomment to activate automatic logout
+            //navigationManager.NavigateTo("logout");
+        }
     }
 }

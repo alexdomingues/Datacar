@@ -1,15 +1,8 @@
 ﻿@page "/"
-@attribute [Authorize]
 @layout MainLayout
+@attribute [Authorize]
 
-    <h1>DATACAR</h1>
-
-    <AuthorizeView>
-        <Authorized>
-            <text>USER: @context.User.Identity.Name</text>
-        </Authorized>
-    </AuthorizeView>
-    <p>This is where the map will be displayed</p>
-    <p>No NavMenu</p>
-
+<h1>DATACAR</h1>
+<p>This is where the map will be displayed</p>
+<p>Blazor Component: index.razor</p>
 

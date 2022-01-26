@@ -25,9 +25,31 @@ namespace Datacar.Client.Helpers
             await DoDisplayMessage("Success", message, "success");
         }
 
+        public async ValueTask DisplayWarningMessage(string message)
+        {
+            await DoDisplayMessage("Warning", message, "warning");
+        }
+
         private async ValueTask DoDisplayMessage(string title, string message, string messageType)
         {
             await js.InvokeVoidAsync("Swal.fire", title, message, messageType);
+        }
+
+        public async Task SweetAlert(string type, string message)
+        {
+            //Implement CASE
+            switch (type)
+            {
+                case Constants.SWError:
+                    await DisplayErrorMessage(message);
+                    break;
+                case Constants.SWSuccess:
+                    await DisplaySuccessMessage(message);
+                    break;
+                case Constants.SWWarning:
+                    await DisplayWarningMessage(message);
+                    break;
+            }
         }
     }
 }
